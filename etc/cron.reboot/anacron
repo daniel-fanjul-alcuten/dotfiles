@@ -1,0 +1,9 @@
+#!/bin/sh
+
+for anacrontab in ~/etc/anacron.d/* ~/etc/anacron.d/`hostname`/*
+do
+	if [ -f $anacrontab ]; then
+		mkdir -p ~/var/spool/anacron
+		/usr/sbin/anacron -t $anacrontab -S ~/var/spool/anacron
+	fi
+done

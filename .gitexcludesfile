@@ -1,0 +1,6 @@
+*.egg-info
+*.pyc
+*.sw?
+*.test
+Session.vim
+tags

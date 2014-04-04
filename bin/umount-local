@@ -1,0 +1,6 @@
+#!/bin/bash
+
+umount-mdrive
+umount-wdrive
+umount-ldrive
+umount-phone

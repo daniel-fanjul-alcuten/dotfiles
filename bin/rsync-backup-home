@@ -1,0 +1,64 @@
+#!/bin/bash
+set -e
+
+lock=
+mount=
+umount=
+while getopts "lmu" opt; do
+  case $opt in
+    l) lock='-l';;
+    m) mount='-m';;
+    u) umount='-u';;
+    *) exit 1;;
+  esac
+done
+shift $((OPTIND - 1))
+
+if [ -z "$lock" ]; then
+  flock -x ~/etc/backup.cfg "$0" -l $mount $umount
+  exit
+fi
+
+source ~/etc/backup.cfg
+
+s3ql_mountpoint=/media/s3ql
+s3ql_storagedir=/var/s3ql
+s3ql_storageurl=local://"$s3ql_storagedir"
+
+sudo -v
+if [ "$mount" ]; then
+  (
+    umask 002
+    if ! sudo mountpoint -q "$s3ql_mountpoint"; then
+      if [ -d "$s3ql_storagedir" ]; then
+        sudo mount.s3ql --allow-other --metadata-upload-interval 0 "$s3ql_storageurl" "$s3ql_mountpoint"
+      else
+        sudo mkdir -p "$s3ql_storagedir" "$s3ql_mountpoint"
+        sudo mkfs.s3ql --plain "$s3ql_storageurl"
+        sudo mount.s3ql --allow-other --metadata-upload-interval 0 "$s3ql_storageurl" "$s3ql_mountpoint"
+        sudo chmod a+rwxt "$s3ql_mountpoint"
+      fi
+    fi
+  )
+else
+  sudo mountpoint -q "$s3ql_mountpoint"
+fi
+
+basedir="$s3ql_mountpoint"/$(hostname)
+work="$basedir"/work
+dir="$basedir"/"$now"
+
+mkdir -p "$work"
+rsync -avhq --stats --delete --delete-excluded $basic_excludes --whole-file --inplace --one-file-system ~/ "$work"
+
+sudo s3qlcp "$work" "$dir".s3qlcp
+mv "$dir".s3qlcp "$dir".s3qllock
+
+sudo s3qllock "$dir".s3qllock
+mv "$dir".s3qllock "$dir"
+
+if [ "$umount" ]; then
+  sudo umount.s3ql "$s3ql_mountpoint"
+else
+  sudo s3qlctrl upload-meta "$s3ql_mountpoint"
+fi

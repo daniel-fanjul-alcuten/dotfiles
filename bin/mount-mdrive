@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mount-drive -n mdrive -em 37 -cu 8f2253b6-0b83-4f0c-a3dd-450ae2c2831f

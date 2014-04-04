@@ -1,0 +1,53 @@
+#!/bin/bash
+
+while getopts "n:c" opt; do
+	case $opt in
+		n) name="$OPTARG";;
+		c) crypt=true;;
+		*) exit 1;;
+	esac
+done
+shift $((OPTIND - 1))
+
+function red   { tput setaf 1; }
+function blue  { tput setaf 4; }
+function reset { tput sgr0;    }
+
+function ok {
+	blue
+	echo "$@"
+	reset
+	exit 0
+}
+
+function ko {
+	red
+	echo "$@"
+	reset
+	exit 1
+}
+
+mount_point=/media/"$name"
+if ! mountpoint -q "$mount_point"; then
+	ok "$name: already umounted"
+fi
+
+if ! sudo umount "$mount_point"; then
+	ko "$name: umount failed"
+fi
+
+if ! sudo rm /"$name"; then
+	ko "$name: rm failed"
+fi
+
+if ! sudo rmdir "$mount_point"; then
+	ko "$name: rmdir failed"
+fi
+
+if [ "$crypt" ]; then
+	if ! sudo cryptsetup luksClose "$name"; then
+		ko "$name: crypt close failed"
+	fi
+fi
+
+ok "$name: umounted"

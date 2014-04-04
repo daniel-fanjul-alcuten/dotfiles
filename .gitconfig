@@ -1,0 +1,149 @@
+[user]
+	name = Daniel Fanjul
+	email = daniel.fanjul.alcuten@gmail.com
+[core]
+	attributesfile = ~/.gitattributesfile
+	excludesfile = ~/.gitexcludesfile
+[advice]
+	pushUpdateRejected = false
+	statusHints = false
+	statusUoption = false
+	commitBeforeMerge = false
+	resolveConflict = false
+	implicitIdentity = false
+	detachedHead = false
+	rmHints = false
+[help]
+	autocorrect = 12
+[color]
+	ui = auto
+[alias]
+	a = add
+	aa = add --update
+	aadd = annex add
+	acopy = annex copy
+	addxid = commit --amend -C HEAD
+	adrop = annex drop
+	adropf = annex drop --force
+	aedit = annex edit
+	afind = annex find
+	afix = annex fix
+	afsck = !"git async; git annex fsck --fast --quiet"
+	aget = annex get
+	alock = annex lock
+	alog = annex log
+	amove = annex move
+	ap = add -p
+	astatus = annex status
+	async = annex sync --quiet
+	aunused = !"git async; git annex unused --quiet && git annex dropunused 1-99999"
+	awhereis = annex whereis
+	b = branch
+	bm = !"i=`whoami` && { git show-ref | grep \" refs/heads/$i\"; for r in `git remote`; do echo $r: && git ls-remote $r | grep \"\trefs/heads/$i\"; done; }"
+	bmr = !"i=`whoami` && { for r in `git remote`; do echo $r: && git ls-remote $r | grep \"$i\"; done; }"
+	bump = !"submodule=\"${1%/}\" && shift && { branch=\"$1\" && shift || branch=$(git symbolic-ref-head); } && ( cd \"$submodule\" && git fetch origin \"$branch\" && git checkout FETCH_HEAD ) && git commit -e -m \"Bump $submodule submodule to $branch\" \"$submodule\""
+	c = checkout
+	c- = checkout @{-1}
+	ca = commit -v -a
+	ci = commit -v
+	cu = checkout @{u}
+	d = diff
+	ds = diff --stat
+	du = diff @{u}
+	empty = commit --allow-empty -m empty
+	f = fetch
+	fa = fetch --prune --all
+	ff = merge --ff-only
+	ffu = merge --ff-only HEAD@{u}
+	fhardu = !git fa && git hardu
+	fixup = !f=\"$1\" && shift && git ci --fixup=\"$f\"
+	freu = !git fa && git reu
+	freus = !git fa && git reus
+	fsb = !"git fa; git sb"
+	fsbm = !git fa && git sbm
+	fsbs = !git fa && git sbs
+	fsbu = !git fa && git sbu
+	fsr = !"git fa; git sr"
+	gerrit = review
+	gerrit-hook = !"scp git.spotify.net:hooks/commit-msg $(git rev-parse --git-dir)/hooks/"
+	gerrit-hook-submodules = !"git submodule foreach --recursive 'scp git.spotify.net:hooks/commit-msg $(git rev-parse --git-dir)/hooks/'"
+	greb = !"~/usr/local/bin/git-greb"
+	hard = reset --hard
+	hardu = reset --hard @{u}
+	history-reset = !git reset `echo init | git commit-tree HEAD:`
+	k = cherry-pick
+	kf = cherry-pick --ff
+	l = log --oneline --abbrev-commit
+	lg = log --pretty=oneline --abbrev-commit --graph
+	lgd = log --pretty=oneline --abbrev-commit --graph --decorate
+	lgda = log --pretty=oneline --abbrev-commit --graph --decorate --all
+	lrb = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	n = commit -v --amend
+	objs = count-objects -v
+	p = diff --cached
+	pf = pull --ff-only
+	pm = pull --no-rebase
+	pr = pull --rebase
+	ps = diff --cached --stat
+	pull-from-peer = !bash -c \"b=\\$(git symbolic-ref --short HEAD) && c=\\$(sed s/$(whoami)/$1/ <<< \\$b) && set -x && git pull origin \\$c\"
+	pushm = !me=$(whoami) && git push -v origin \"refs/heads/$me/*\"
+	pushmf = !me=$(whoami) && git push -vf origin \"refs/heads/$me/*\"
+	r = remote
+	re = rebase --interactive
+	reu = !git re HEAD@{u}
+	reus = !git reset --soft $(git commit-tree -p @{u} HEAD: <<< $(git symbolic-ref-head))
+	rsclean = !git clean -fdx && git submodule foreach --recursive git clean -fdx
+	rshard = !git reset --hard && git submodule foreach --recursive git reset --hard
+	rsupdate = submodule update --init --recursive
+	s = status -sb
+	sb = show-branch
+	sbc = show-branch --current
+	sbm = !git show-branch `git symbolic-ref-head -q || echo HEAD` master
+	sbs = !git show-branch \\*`git symbolic-ref-head -q || echo HEAD`
+	sbu = !git show-branch `git symbolic-ref-head -q || echo HEAD` `git rev-parse --symbolic-full-name --abbrev-ref HEAD@{u}`
+	soft = reset --soft
+	squash = !s=\"$1\" && shift && git ci --squash=\"$s\"
+	sr = show-ref
+	symbolic-ref-head = symbolic-ref --short HEAD
+	ur = update-ref
+[status]
+	submodulesummary = true
+[log]
+	date = local
+[diff]
+	mnemonicprefix = true
+	renames = copy
+	algorithm = patience
+[diff "textutil"]
+	textconv = textutil -convert txt -stdout
+[merge]
+	stat = false
+	tool = vimdiff
+	conflictstyle = diff3
+[mergetool]
+	keepBackup = false
+	prompt = false
+[rerere]
+	enabled = true
+	autoupdate = true
+[rebase]
+	stat = false
+	autosquash = true
+[push]
+	default = tracking
+[pull]
+	rebase = true
+[tig]
+	tab-size = 4
+	line-graphics = utf-8
+[instaweb]
+	browser = chromium-browser
+[gitreview]
+	rebase = false
+[pager]
+	log = /usr/bin/perl /usr/share/doc/git/contrib/diff-highlight/diff-highlight | less
+	show = /usr/bin/perl /usr/share/doc/git/contrib/diff-highlight/diff-highlight | less
+	diff = /usr/bin/perl /usr/share/doc/git/contrib/diff-highlight/diff-highlight | less
+[filter "gofmt"]
+	clean = gofmt
+	smudge = gofmt

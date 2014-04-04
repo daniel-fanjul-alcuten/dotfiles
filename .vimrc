@@ -1,0 +1,98 @@
+" general {{{
+se ts=2 sts=2 et nojs
+se sr sw=2 si
+se sm nu rnu
+se hid aw
+se is ic scs hls
+se list lcs=tab:→\ ,trail:·
+sy on
+" }}}
+
+" go runtime {{{
+filet off
+filet plugin indent off
+se runtimepath+=$GOROOT/misc/vim
+filet plugin indent on
+" }}}
+
+" vim_filetype {{{
+aug vim_filetype
+  au Filetype vim setl fdm=marker fdc=2
+aug end
+" }}}
+
+" go_filetype {{{
+fu! ImportCWord()
+  let l:c = expand("<cword>")
+  :exe ":Import " . l:c
+endf
+aug go_filetype
+  au!
+  au Filetype go setl nolist
+  au Filetype go setl cc=80
+  au Filetype go setl rnu
+  au Filetype go setl makeprg=\(go\ test\ ./...\ &&\ go\ install\ ./...\)
+  au Filetype go nnoremap <buffer> <Leader>f :Fmt<CR>
+  au Filetype go nnoremap <buffer> <Leader>gi :sil cal ImportCWord()<CR>
+  au BufWrite *.go Fmt
+  au BufWrite *.go silent !gotags -L <(find . -type f -name \*.go) > tags
+aug end
+com! -nargs=1 -complete=dir Gar :args <args>/*.go
+com! -nargs=1 -complete=dir Gargl :argl <args>/*.go
+com! -nargs=1 -complete=dir Cdgo :cd <args> | :args *.go
+com! -nargs=1 -complete=dir Lcdgo :lcd <args> | :argl *.go
+" }}}
+
+" python_filetype {{{
+aug python_filetype
+  au!
+  au Filetype python setl ts=4 sts=4 sw=4
+aug end
+" }}}
+
+" json_filetype {{{
+aug json_filetype
+  au!
+  au Filetype json nnoremap <buffer> <Leader>j :%!jshon -S<CR>
+aug end
+" }}}
+
+" key mappings {{{
+nnoremap <Leader>m :make<CR>
+" .vimrc {{{
+nnoremap <Leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <Leader>sv :source $MYVIMRC<cr>
+" }}}
+" git {{{
+nnoremap <Leader>gb :Gblame<cr>
+nnoremap <Leader>gc :Gcommit -v<cr>
+nnoremap <Leader>gca :Gcommit -v -a<cr>
+nnoremap <Leader>gcaa :Gcommit -a -m.<cr>
+nnoremap <Leader>gcc :Gcommit -m.<cr>
+nnoremap <Leader>gd :Gdiff<cr>
+nnoremap <Leader>gpp :Git push<cr>
+nnoremap <Leader>gpm :Git pushm<cr>
+nnoremap <Leader>gpmf :Git pushmf<cr>
+nnoremap <Leader>gs :Gstatus<cr>
+nnoremap <Leader>gw :Gwrite<cr>
+nnoremap git :Git
+" }}}
+" }}}
+
+" pathogen {{{
+cal pathogen#infect()
+" }}}
+
+" solarized {{{
+se background=dark
+colo solarized
+" }}}
+
+" syntastic {{{
+let g:syntastic_auto_jump=1
+let g:syntastic_auto_loc_list=1
+let g:syntastic_check_on_open=0
+let g:syntastic_python_checkers=['python', 'pep8', 'flake8']
+nnoremap <Leader>sc :SyntasticCheck<CR>
+nnoremap <Leader>st :SyntasticToggleMode<CR>
+" }}}

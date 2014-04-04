@@ -1,0 +1,13 @@
+#!/bin/sh
+
+if [ $# -eq 0 ]; then
+  file=*md5*
+else
+  file="$1"
+fi
+
+if [ `dirname "$file"` = . ]; then
+  file=`pwd`/"$file"
+fi
+
+exec nice forcdrom md5sum -c "$file"

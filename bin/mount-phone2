@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mount-drive -n phone2 -u 1271-849B

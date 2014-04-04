@@ -1,0 +1,4 @@
+#!/bin/bash
+
+mount-phone1
+mount-phone2

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+for fs in /mdrive /wdrive /ldrive ~/var/annex; do
+	cd $fs/.git 2>/dev/null && cd $fs && {
+		tput setaf 4
+		echo `pwd`: "$@"
+		tput sgr0
+		eval "$@"
+	}
+done

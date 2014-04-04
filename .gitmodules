@@ -1,0 +1,45 @@
+[submodule ".vim/bundle/ctrlp"]
+	path = .vim/bundle/ctrlp
+	url = https://github.com/kien/ctrlp.vim.git
+[submodule ".vim/bundle/gitv"]
+	path = .vim/bundle/gitv
+	url = https://github.com/gregsexton/gitv.git
+[submodule ".vim/bundle/vim-bad-whitespace"]
+	path = .vim/bundle/vim-bad-whitespace
+	url = https://github.com/bitc/vim-bad-whitespace.git
+[submodule ".vim/bundle/vim-colors-solarized"]
+	path = .vim/bundle/vim-colors-solarized
+	url = https://github.com/altercation/vim-colors-solarized.git
+[submodule ".vim/bundle/vim-fugitive"]
+	path = .vim/bundle/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive.git
+[submodule ".vim/bundle/vim-git"]
+	path = .vim/bundle/vim-git
+	url = https://github.com/tpope/vim-git.git
+[submodule ".vim/bundle/vim-repeat"]
+	path = .vim/bundle/vim-repeat
+	url = https://github.com/tpope/vim-repeat.git
+[submodule ".vim/bundle/vim-surround"]
+	path = .vim/bundle/vim-surround
+	url = https://github.com/tpope/vim-surround.git
+[submodule ".vim/bundle/vim-unimpaired"]
+	path = .vim/bundle/vim-unimpaired
+	url = https://github.com/tpope/vim-unimpaired.git
+[submodule ".vim/bundle/syntastic"]
+	path = .vim/bundle/syntastic
+	url = https://github.com/scrooloose/syntastic.git
+[submodule "usr/share/irssi-colors-solarized"]
+	path = usr/share/irssi-colors-solarized
+	url = https://github.com/huyz/irssi-colors-solarized.git
+[submodule "usr/share/gnome-terminal-colors-solarized"]
+	path = usr/share/gnome-terminal-colors-solarized
+	url = https://github.com/sigurdga/gnome-terminal-colors-solarized.git
+[submodule "lib/go/src/github.com/nsf/gocode"]
+	path = lib/go/src/github.com/nsf/gocode
+	url = https://github.com/nsf/gocode.git
+[submodule "lib/go/src/github.com/jstemmer/gotags"]
+	path = lib/go/src/github.com/jstemmer/gotags
+	url = https://github.com/jstemmer/gotags.git
+[submodule "lib/go/src/github.com/daniel-fanjul-alcuten/git-greb"]
+	path = lib/go/src/github.com/daniel-fanjul-alcuten/git-greb
+	url = https://github.com/daniel-fanjul-alcuten/git-greb.git

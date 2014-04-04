@@ -1,0 +1,5 @@
+Rxvt*foreground: white
+Rxvt*background: black
+Rxvt*transparent: true
+Rxvt*shading: 10
+Rxvt*fading: 25

@@ -1,0 +1,98 @@
+#!/bin/bash
+
+while getopts "n:em:cu:" opt; do
+	case $opt in
+		n) name="$OPTARG";;
+		e) ext=true;;
+		m) mounts="$OPTARG";;
+		c) crypt=true;;
+		u) uuid="$OPTARG";;
+		*) exit 1;;
+	esac
+done
+shift $((OPTIND - 1))
+
+function red   { tput setaf 1; }
+function blue  { tput setaf 4; }
+function reset { tput sgr0;    }
+
+function ok {
+	blue
+	echo "$@"
+	reset
+	exit 0
+}
+
+function ko {
+	red
+	echo "$@"
+	reset
+	exit 1
+}
+
+device=/dev/disk/by-uuid/"$uuid"
+if ! [ -b "$device" ]; then
+	ko "$name: not found"
+fi
+
+if [ "$crypt" ]; then
+	mapper=/dev/mapper/"$name"
+	if ! [ -h "$mapper" ]; then
+		echo -n "$name: "
+		if ! sudo cryptsetup luksOpen "$device" "$name"; then
+			ko "$name: crypt open failed"
+		fi
+	fi
+	device="$mapper"
+fi
+
+mount_point=/media/"$name"
+if mountpoint -q "$mount_point"; then
+	ok "$name: already mounted"
+fi
+
+mount_options=''
+if [ "$ext" ]; then
+	mount_options='-o noatime'
+
+	if ! sudo e2fsck "$device"; then
+		ko "$name: fsck failed"
+	fi
+
+	if ! sudo tune2fs -L "$name" "$device"; then
+		ko "$name: label tuning failed"
+	fi
+
+	if [ "$mounts" ]; then
+		if ! sudo tune2fs -c "$mounts" "$device"; then
+			ko "$name: max mounts tuning failed"
+		fi
+	fi
+
+	echo $(($mounts - `sudo tune2fs -l /dev/mapper/"$name" | grep '^Mount count' | cut -c 27-`)) mounts
+
+else
+	mount_options='-o uid=dfanjul,gid=dfanjul'
+fi
+
+if ! sudo mkdir -p "$mount_point"; then
+	ko "$name: mkdir failed"
+fi
+
+if ! sudo ln -sfn "$mount_point" /"$name"; then
+	ko "$name: ln -s failed"
+fi
+	
+if ! sudo mount $mount_options "$device" "$mount_point"; then
+	ko "$name: mount failed"
+fi
+
+if [ -d "$mount_point"/.git ]; then
+	(cd "$mount_point" && {
+		if `which git-fsck-and-gc >&/dev/null`; then
+			git-fsck-and-gc
+		fi
+	})
+fi
+
+ok "$name: mounted"

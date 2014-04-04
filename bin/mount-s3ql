@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mount-media -n s3ql -s s3://s3ql.dfanjul

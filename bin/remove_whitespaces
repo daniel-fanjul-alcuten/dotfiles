@@ -1,0 +1,23 @@
+#!/bin/sh
+
+if [ $# -eq 0 ]; then
+
+  find . -depth -name '* *' -print0 | xargs -0 --no-run-if-empty remove_whitespaces
+
+else
+  while [ $# -gt 0 ]; do
+
+    if [ -e "$1" ]; then
+      dirname=`dirname "$1"`
+      oldname=`basename "$1"`
+      newname=`echo $oldname | sed 's/ /_/g'`
+      if [ "$newname" != "$oldname" ]; then
+        echo mv "$dirname"/"$oldname" "$dirname"/"$newname"
+        mv "$dirname"/"$oldname" "$dirname"/"$newname"
+      fi
+    fi
+
+    shift
+  done
+fi
+

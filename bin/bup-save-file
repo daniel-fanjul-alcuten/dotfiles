@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+
+file="$1" && shift || { echo file?; exit 1; }
+branch="$1" && shift || { branch="$file"; }
+
+pv "$file" | flock -x ~/.bup bup split -n "$branch" 2>/dev/null
+if [ -f "$file" ]; then
+  git --git-dir ~/.bup notes add -f -m `stat -c %s "$file"` "$branch"
+fi

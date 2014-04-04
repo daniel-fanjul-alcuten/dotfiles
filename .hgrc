@@ -1,0 +1,19 @@
+[ui]
+username = Daniel Fanjul <daniel.fanjul.alcuten@gmail.com>
+verbose = True
+merge = vimdiff
+
+[merge-tools]
+vimdiff.executable = vim
+vimdiff.args = -d $local $output $other
+
+[extensions]
+color =
+relink =
+hgext.churn =
+hgext.bookmarks =
+hgext.git =
+pager =
+
+[pager]
+pager = less -FRSX

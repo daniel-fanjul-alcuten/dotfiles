@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mount-drive -n phone1 -u E099-1CEB

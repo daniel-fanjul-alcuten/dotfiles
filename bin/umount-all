@@ -1,0 +1,4 @@
+#!/bin/bash
+
+umount-local
+umount-remote

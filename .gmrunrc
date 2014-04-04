@@ -1,0 +1,3 @@
+Terminal = gnome-terminal
+TermExec = gnome-terminal -e
+AlwaysInTerm = ftp git lftp lynx man mc mutt perldoc pine ping ssh telnet vi vifm vim ranger

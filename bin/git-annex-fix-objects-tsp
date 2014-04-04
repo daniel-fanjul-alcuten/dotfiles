@@ -1,0 +1,13 @@
+#!/bin/bash
+
+for dir in \
+		~/var/annex \
+		/mdrive \
+		/wdrive \
+		/ldrive \
+		;
+do
+	cd "$dir" 2>/dev/null && {
+		tsp -m -L "$dir" git-annex-fix-objects > /dev/null
+	}
+done

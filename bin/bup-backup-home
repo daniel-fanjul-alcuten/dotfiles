@@ -1,0 +1,6 @@
+#!/bin/bash
+set -e
+
+source ~/etc/backup.cfg
+
+tar cf - $basic_excludes ~ 2>/dev/null | pv | flock -x ~/etc/backup.cfg bup split -n "$now".tar 2>/dev/null

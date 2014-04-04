@@ -1,0 +1,14 @@
+#!/bin/bash -x
+
+cd ./.git/annex/objects && {
+
+	find -not -user dfanjul -or -not -group dfanjul -print0 | xargs -0 -r chown -c dfanjul:dfanjul
+
+	for i in 1 2 3; do
+		find -type d -empty -print0 | xargs -0 -r rmdir -v
+	done
+
+	find -mindepth 1 -maxdepth 2 -not -perm 700 -print0 | xargs -0 -r chmod -c 700
+	find -mindepth 3 -maxdepth 3 -not -perm 500 -print0 | xargs -0 -r chmod -c 500
+	find -mindepth 4 -maxdepth 4 -not -perm 400 -print0 | xargs -0 -r chmod -c 400
+}

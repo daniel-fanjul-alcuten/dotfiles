@@ -1,0 +1,12 @@
+# WARNING: This file is entirely auto-generated.
+
+# Key Mappings:
+# Command Macros:
+M:1
+A:zaf
+
+M:2
+A:zbf
+
+M:3
+A:zcf
