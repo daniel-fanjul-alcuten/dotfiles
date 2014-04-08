@@ -4,19 +4,37 @@ EXECUTABLES=\
 						gotags
 
 .PHONY: default
-default: clean compile install
+default: clean list compile install test
 
 .PHONY: clean
 clean:
-	git clean -fdx .
+	rm -rf pkg bin
+
+.PHONY: list
+list:
+	go list ./...
+
+.PHONY: fix
+fix:
+	go fix github.com/daniel-fanjul-alcuten/...
+
+.PHONY: vet
+vet:
+	go vet github.com/daniel-fanjul-alcuten/...
 
 .PHONY: compile
-compile:
+compile: fix vet
 	go install ./...
 
 .PHONY: install
 install: $(foreach filename,$(EXECUTABLES),~/usr/local/bin/$(filename))
 
-~/usr/local/bin/%: ./bin/% compile
-	@mkdir -p ~/usr/local/bin
+~/usr/local/bin:
+	mkdir -p $@
+
+~/usr/local/bin/%: ./bin/% compile ~/usr/local/bin
 	cp $< $@
+
+.PHONY: test
+test:
+	go test github.com/daniel-fanjul-alcuten/...
