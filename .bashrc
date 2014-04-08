@@ -323,6 +323,7 @@ alias gf='go fmt ./...'
 alias gt='go test ./...'
 alias gtc='go test -coverprofile=/tmp/coverage.data ./... && go tool cover -html=/tmp/coverage.data'
 alias gb='go build ./...'
+alias gm='go build -gcflags -m ./...'
 alias gi='go install ./...'
 alias gti='gi && gt'
 
