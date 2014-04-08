@@ -242,16 +242,26 @@ done
 
 # git configuration
 if which git >/dev/null 2>&1; then
-  for command in \
+  _complete_git_funcname=$(complete -p git | sed 's/.*-F \([^ ]*\) .*/\1/')
+  _complete_git_aliases() {
+    COMP_CWORD=$((COMP_CWORD+1))
+    COMP_LINE="git $COMP_LINE"
+    COMP_POINT=$((COMP_POINT+4))
+    COMP_WORDS=(git "${COMP_WORDS[@]}")
+    $_complete_git_funcname
+  }
+  for command in $(git config -l --global | grep ^alias\\. | cut -d= -f1 | cut -c7-)\
       add \
       archive \
       bisect \
       blame \
+      branch \
       bundle \
       cherry \
       cherry-pick \
       clean \
       clone \
+      commit-tree \
       config \
       describe \
       diff \
@@ -292,10 +302,7 @@ if which git >/dev/null 2>&1; then
       whatchanged \
       ; do
     alias $command="git $command"
-    # TODO complete
-  done
-  for command in $(git config -l --global | grep ^alias\\. | cut -c7- | cut -d= -f1); do
-    alias $command="git $command"
+    eval `complete -p git | sed -e "s/ git$/ $command/" -e "s/$_complete_git_funcname/_complete_git_aliases/"`
   done
 fi
 
