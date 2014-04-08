@@ -166,16 +166,18 @@ alias alert='notify-send --urgency=low -i ~/usr/share/images/$([ $? = 0 ] && ech
 # functions
 halt-now() {
   sudo -v && \
-    tsp run-parts -v ~/etc/cron.halt >/dev/null && \
-    tsp run-parts -v ~/etc/cron.halt/$(hostname) >/dev/null && \
+    mkdir -p ~/etc/cron.halt/$(hostname) && \
+    run-parts -v ~/etc/cron.halt && \
+    run-parts -v ~/etc/cron.halt/$(hostname) && \
     tsp umount-all >/dev/null && \
     tsp sudo shutdown -h +1 >/dev/null && \
     tsp
 }
 reboot-now() {
   sudo -v && \
-    tsp run-parts -v ~/etc/cron.halt >/dev/null && \
-    tsp run-parts -v ~/etc/cron.halt/$(hostname) >/dev/null && \
+    mkdir -p ~/etc/cron.halt/$(hostname) && \
+    run-parts -v ~/etc/cron.halt && \
+    run-parts -v ~/etc/cron.halt/$(hostname) && \
     tsp umount-all >/dev/null && \
     tsp sudo shutdown -r +1 >/dev/null && \
     tsp

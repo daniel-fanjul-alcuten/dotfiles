@@ -1,0 +1,1 @@
+1 0 bup-backup-home cd ~ && tsp ~/bin/bup-backup-home >/dev/null
