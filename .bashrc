@@ -126,7 +126,7 @@ eval `complete -p less | sed "s/ less$/ reless/"`
 alias regrep='pipe grep'
 eval `complete -p grep | sed "s/ grep$/ regrep/"`
 alias cmatrix='cmatrix -lb'
-if which mutt >/dev/null; then
+if type mutt >/dev/null; then
   alias mu='mutt -f ~/var/mail/dfanjul'
   eval `complete -p mutt | sed "s/ mutt$/ mu/"`
   alias emu='exec mutt -f ~/var/mail/dfanjul'
@@ -136,7 +136,7 @@ alias iocp='ionice -n 7 cp'
 eval `complete -p cp | sed "s/ cp$/ iocp/"`
 alias iomv='ionice -n 7 mv'
 eval `complete -p mv | sed "s/ mv$/ iomv/"`
-if which moosic >/dev/null; then
+if type moosic >/dev/null; then
   alias m='moosic'
   eval `complete -p moosic | sed "s/ moosic$/ m/"`
 fi
@@ -241,7 +241,7 @@ for command in \
 done
 
 # git configuration
-if which git >/dev/null 2>&1; then
+if type git >/dev/null 2>&1; then
   _complete_git_funcname=$(complete -p git | sed 's/.*-F \([^ ]*\) .*/\1/')
   _complete_git_aliases() {
     COMP_CWORD=$((COMP_CWORD+1))
@@ -307,7 +307,7 @@ if which git >/dev/null 2>&1; then
 fi
 
 # vim configuration
-if which vim >/dev/null; then
+if type vim >/dev/null; then
   export EDITOR=$(which vim)
 fi
 set -o vi
@@ -332,7 +332,7 @@ alias gi='go install ./...'
 alias gti='gi && gt'
 
 # wcd configuration
-if which wcd.exec >/dev/null; then
+if type wcd.exec >/dev/null; then
   wcd() {
     mkdir -p ~/var
     wcd.exec -z 40 -G ~/var "$@"
@@ -466,12 +466,12 @@ export CRAWL_DIR=~/.crawl
 down
 
 # pal
-if which pal >/dev/null; then
+if type pal >/dev/null; then
   pal -r 7 -c 1
 fi
 
 # gvm
-if which gvm >/dev/null; then
+if type gvm >/dev/null; then
   gvm use 1.2
   GOPATH=~/lib/go:"$GOPATH"
 fi
