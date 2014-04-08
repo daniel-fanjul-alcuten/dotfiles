@@ -1,0 +1,5 @@
+#!/bin/bash
+set -e
+set -x
+
+git --git-dir ~/.bup for-each-ref refs/heads --format '%(refname:short)' | ~/usr/local/bin/forget-backups | xargs -r -t -n 1 git --git-dir ~/.bup branch -q -D

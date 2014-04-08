@@ -1,0 +1,1 @@
+1 0 obnam-backup-home-forget cd ~ && tsp ~/bin/obnam-backup-home-forget >/dev/null

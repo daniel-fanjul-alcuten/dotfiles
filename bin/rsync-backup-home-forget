@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e
+set -x
+
+dir=/media/s3ql/$(hostname)
+
+find "$dir" -mindepth 1 -maxdepth 1 -type d | ~/usr/local/bin/forget-backups | xargs -r -t -n 1 sudo s3qlrm

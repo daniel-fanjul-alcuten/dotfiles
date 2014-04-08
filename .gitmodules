@@ -43,3 +43,6 @@
 [submodule "lib/go/src/github.com/daniel-fanjul-alcuten/git-greb"]
 	path = lib/go/src/github.com/daniel-fanjul-alcuten/git-greb
 	url = https://github.com/daniel-fanjul-alcuten/git-greb.git
+[submodule "lib/go/src/github.com/daniel-fanjul-alcuten/forget-backups"]
+	path = lib/go/src/github.com/daniel-fanjul-alcuten/forget-backups
+	url = https://github.com/daniel-fanjul-alcuten/forget-backups.git
