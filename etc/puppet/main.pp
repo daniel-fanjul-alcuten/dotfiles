@@ -13,6 +13,45 @@ Exec {
   logoutput => 'on_failure',
 }
 
+# spotify
+file { '/etc/apt/sources.list.d/spotify.list':
+  tag     => 'apt-list',
+  content => '# spotify
+deb http://repository.spotify.com stable non-free
+',
+}
+exec { '/usr/bin/apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 94558F59':
+  tag     => 'apt-key',
+}
+
+# # wdrive apt repository
+# file { '/etc/apt/sources.list.d/wdrive.list':
+#   content => '# wdrive
+# deb file:///wdrive/downloads/software/apt/mirror/ftp.es.debian.org/debian/ wheezy main contrib non-free
+# deb file:///wdrive/downloads/software/apt/mirror/ftp.es.debian.org/debian/ wheezy-proposed-updates main contrib non-free
+# deb file:///wdrive/downloads/software/apt/mirror/security.debian.org/ wheezy/updates main contrib non-free
+# deb file:///wdrive/downloads/software/apt/mirror/repository.spotify.com stable non-free
+# ',
+# }
+
+# # ldrive apt repository
+# file { '/etc/apt/sources.list.d/ldrive.list':
+#   content => '# ldrive
+# deb file:///ldrive/downloads/software/apt/mirror/ftp.es.debian.org/debian/ wheezy main contrib non-free
+# deb file:///ldrive/downloads/software/apt/mirror/ftp.es.debian.org/debian/ wheezy-proposed-updates main contrib non-free
+# deb file:///ldrive/downloads/software/apt/mirror/security.debian.org/ wheezy/updates main contrib non-free
+# deb file:///ldrive/downloads/software/apt/mirror/repository.spotify.com stable non-free
+# ',
+# }
+
+exec { '/usr/bin/aptitude update':
+  refreshonly => true,
+  require     => Package['aptitude'],
+}
+File<| tag == 'apt-list' |> ~> Exec['/usr/bin/aptitude update']
+Exec<| tag == 'apt-key' |> ~> Exec['/usr/bin/aptitude update']
+Exec['/usr/bin/aptitude update'] -> Package<| title != 'aptitude' |>
+
 # packages
 package { [
            'abcde',
@@ -172,7 +211,7 @@ package { [
            'screen',
            'simhash',
            'smem',
-           'spotify-client-qt',
+           'spotify-client',
            'sshfs',
            'sshpass',
            'stgit',
@@ -263,34 +302,3 @@ define crontab () {
 }
 crontab { [ 'reboot', 'hourly', 'daily', 'monthly', 'weekly', 'yearly', ]:
 }
-
-# # wdrive apt repository
-# file { '/etc/apt/sources.list.d/wdrive.list':
-#   content => '# wdrive
-# deb file:///wdrive/downloads/software/apt/mirror/ftp.es.debian.org/debian/ wheezy main contrib non-free
-# deb file:///wdrive/downloads/software/apt/mirror/ftp.es.debian.org/debian/ wheezy-proposed-updates main contrib non-free
-# deb file:///wdrive/downloads/software/apt/mirror/security.debian.org/ wheezy/updates main contrib non-free
-# deb file:///wdrive/downloads/software/apt/mirror/repository.spotify.com stable non-free
-# ',
-# }
-#
-# # ldrive apt repository
-# file { '/etc/apt/sources.list.d/ldrive.list':
-#   content => '# ldrive
-# deb file:///ldrive/downloads/software/apt/mirror/ftp.es.debian.org/debian/ wheezy main contrib non-free
-# deb file:///ldrive/downloads/software/apt/mirror/ftp.es.debian.org/debian/ wheezy-proposed-updates main contrib non-free
-# deb file:///ldrive/downloads/software/apt/mirror/security.debian.org/ wheezy/updates main contrib non-free
-# deb file:///ldrive/downloads/software/apt/mirror/repository.spotify.com stable non-free
-# ',
-# }
-#
-# exec { '/usr/bin/aptitude update':
-#   require     => Package['aptitude'],
-#   refreshonly => true,
-#   subscribe   => [
-#                   File['/etc/apt/sources.list.d/wdrive.list'],
-#                   File['/etc/apt/sources.list.d/ldrive.list'],
-#                  ],
-# }
-#
-# 'gem update'
