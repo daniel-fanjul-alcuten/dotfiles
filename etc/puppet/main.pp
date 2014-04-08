@@ -65,6 +65,7 @@ package { [
            'fbreader',
            'feh',
            'flac',
+           'fonts-inconsolata',
            'freecdb',
            'gawk',
            'genders',
