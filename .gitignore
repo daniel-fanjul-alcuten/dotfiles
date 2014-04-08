@@ -14,7 +14,9 @@
 /.config/compiz-1
 /.config/dconf
 /.config/eog
+/.config/evolution
 /.config/gedit
+/.config/gnome-control-center
 /.config/google-chrome
 /.config/htop
 /.config/libreoffice
@@ -33,6 +35,7 @@
 /.gimp-2.6
 /.gmrun_history
 /.gnome2
+/.gnupg/gpg-agent-*
 /.gnupg/random_seed
 /.gtk-bookmarks
 /.gvm
@@ -42,6 +45,7 @@
 /.moosic/saved_state
 /.moosic/server_log
 /.mozilla
+/.mplayer
 /.obnam
 /.pip
 /.pki
@@ -53,6 +57,7 @@
 /.speech-dispatcher
 /.stack.wcd
 /.thumbnails
+/.thunderbird
 /.treedata.wcd
 /.viminfo
 /.virtualenvs
