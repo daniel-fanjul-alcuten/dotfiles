@@ -197,7 +197,7 @@ down() {
   done
   echo v
 }
-runtil() {
+reuntil() {
   seconds="$1" && shift || seconds=5
   until $(history -p !!); do
     sleep "$seconds"
