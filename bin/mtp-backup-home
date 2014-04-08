@@ -1,0 +1,33 @@
+#!/bin/bash
+set -e
+set -x
+
+while getopts 'mu' opt; do
+  case $opt in
+    m) mount=true;;
+    u) umount=true;;
+    *) exit 1
+  esac
+done
+shift $((OPTIND - 1))
+
+if [ "$mount" ]; then
+  mount-mtp
+fi
+
+dir=/media/mtp/Download
+if [ -d "$dir" ]; then
+  filename=$(hostname)-home.bundle.git
+  file1=~/tmp/"$filename".mtp
+  file2="$dir"/"$filename"
+
+  cd ~
+  git bundle create "$file1" --all
+  git bundle list-heads "$file1"
+  cp --no-preserve=all --remove-destination "$file1" "$file2"
+  rm "$file1"
+fi
+
+if [ "$umount" ]; then
+  umount-mtp
+fi
