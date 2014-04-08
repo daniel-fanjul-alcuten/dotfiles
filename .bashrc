@@ -315,6 +315,10 @@ if [ -d ~/lib/ruby ]; then
 fi
 
 # go configuration
+# bash < <(curl -s https://raw.github.com/moovweb/gvm/master/binscripts/gvm-installer)
+# go get code.google.com/p/go.tools/cmd/vet
+# go get code.google.com/p/go.tools/cmd/cover
+# go get code.google.com/p/go.tools/cmd/godoc
 [ -s ~/.gvm/scripts/gvm ] && source ~/.gvm/scripts/gvm
 if [ "$(uname)" = Darwin ]; then
   GOMAXPROCS=$(sysctl -n hw.ncpu)
@@ -323,7 +327,7 @@ else
 fi
 alias gf='go fmt ./...'
 alias gt='go test ./...'
-alias gtc='go test -coverprofile=/tmp/coverage.data ./... && go tool cover -html=/tmp/coverage.data'
+alias gtc='go test -coverprofile=/tmp/coverage.data && go tool cover -html=/tmp/coverage.data'
 alias gb='go build ./...'
 alias gm='go build -gcflags -m ./...'
 alias gi='go install ./...'
