@@ -471,3 +471,8 @@ if type gvm >/dev/null; then
   gvm use 1.2
   GOPATH=~/lib/go:"$GOPATH"
 fi
+
+# from
+if type from >/dev/null; then
+  from -c
+fi
