@@ -21,30 +21,30 @@ fi
 
 source ~/etc/backup.cfg
 
-s3ql_mountpoint=/media/s3ql
-s3ql_storagedir=/var/s3ql
-s3ql_storageurl=local://"$s3ql_storagedir"
+mountpoint=/media/s3ql
+storagedir=/var/s3ql
+storageurl=local://"$storagedir"
 
 sudo -v
 if [ "$mount" ]; then
   (
     umask 002
-    if ! sudo mountpoint -q "$s3ql_mountpoint"; then
-      if [ -d "$s3ql_storagedir" ]; then
-        sudo mount.s3ql --allow-other --metadata-upload-interval 0 "$s3ql_storageurl" "$s3ql_mountpoint"
+    if ! sudo mountpoint -q "$mountpoint"; then
+      if [ -d "$storagedir" ]; then
+        sudo mount.s3ql --allow-other --metadata-upload-interval 0 "$storageurl" "$mountpoint"
       else
-        sudo mkdir -p "$s3ql_storagedir" "$s3ql_mountpoint"
-        sudo mkfs.s3ql --plain "$s3ql_storageurl"
-        sudo mount.s3ql --allow-other --metadata-upload-interval 0 "$s3ql_storageurl" "$s3ql_mountpoint"
-        sudo chmod a+rwxt "$s3ql_mountpoint"
+        sudo mkdir -p "$storagedir" "$mountpoint"
+        sudo mkfs.s3ql --plain "$storageurl"
+        sudo mount.s3ql --allow-other --metadata-upload-interval 0 "$storageurl" "$mountpoint"
+        sudo chmod a+rwxt "$mountpoint"
       fi
     fi
   )
 else
-  sudo mountpoint -q "$s3ql_mountpoint"
+  sudo mountpoint -q "$mountpoint"
 fi
 
-basedir="$s3ql_mountpoint"/$(hostname)
+basedir="$mountpoint"/$(hostname)
 work="$basedir"/work
 dir="$basedir"/"$now"
 
@@ -58,7 +58,7 @@ sudo s3qllock "$dir".s3qllock
 mv "$dir".s3qllock "$dir"
 
 if [ "$umount" ]; then
-  sudo umount.s3ql "$s3ql_mountpoint"
+  sudo umount.s3ql "$mountpoint"
 else
-  sudo s3qlctrl upload-meta "$s3ql_mountpoint"
+  sudo s3qlctrl upload-meta "$mountpoint"
 fi
