@@ -121,6 +121,8 @@ eval `complete -p pushd | sed "s/ pushd$/ i/"`
 alias o='popd'
 alias u='dirs -v'
 alias pipe='$(history -p \!\!) |&'
+alias reless='pipe less'
+eval `complete -p less | sed "s/ less$/ reless/"`
 alias cmatrix='cmatrix -lb'
 if which mutt >/dev/null; then
   alias mu='mutt -f ~/var/mail/dfanjul'
