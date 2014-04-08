@@ -113,42 +113,38 @@ PS1='`_prompt_status``_prompt_date``_prompt__hostname``_prompt_git``_prompt_jobs
 # aliases
 alias ls='ls -F'
 alias ll='ls -l'
-eval `complete -p ls | sed "s/ ls$/ ll/"`
+complete -o default -F _longopt ll
 alias la='ls -a'
-eval `complete -p ls | sed "s/ ls$/ ll/"`
+complete -o default -F _longopt la
 alias i='pushd'
-eval `complete -p pushd | sed "s/ pushd$/ i/"`
+complete -d i
 alias o='popd'
 alias u='dirs -v'
 alias pipe='$(history -p \!\!) |&'
 alias reless='pipe less'
-eval `complete -p less | sed "s/ less$/ reless/"`
+complete -o default -F _longopt reless
 alias regrep='pipe grep'
-eval `complete -p grep | sed "s/ grep$/ regrep/"`
+complete -o default -F _longopt regrep
 alias cmatrix='cmatrix -lb'
-if type mutt >/dev/null; then
-  alias mu='mutt -f ~/var/mail/dfanjul'
-  eval `complete -p mutt | sed "s/ mutt$/ mu/"`
-  alias emu='exec mutt -f ~/var/mail/dfanjul'
-  eval `complete -p mutt | sed "s/ mutt$/ emu/"`
-fi
+alias mu='mutt -f ~/var/mail/dfanjul'
+complete -o default -F _mutt mu
+alias emu='exec mutt -f ~/var/mail/dfanjul'
+complete -o default -F _mutt emu
 alias iocp='ionice -n 7 cp'
-eval `complete -p cp | sed "s/ cp$/ iocp/"`
+complete -o default -F _longopt iocp
 alias iomv='ionice -n 7 mv'
-eval `complete -p mv | sed "s/ mv$/ iomv/"`
-if type moosic >/dev/null; then
-  alias m='moosic'
-  eval `complete -p moosic | sed "s/ moosic$/ m/"`
-fi
+complete -o default -F _longopt iomv
+alias m='moosic'
+complete -o filenames -F _moosic m
 alias hgrep='history | grep'
-eval `complete -p grep | sed "s/ grep$/ hgrep/"`
-alias psaxgrep='command ps ax | grep'
-eval `complete -p grep | sed "s/ grep$/ psaxgrep/"`
+complete -o default -F _longopt hgrep
 alias psuxgrep='command ps ux | grep'
-eval `complete -p grep | sed "s/ grep$/ psuxgrep/"`
+complete -o default -F _longopt psuxgrep
+alias psaxgrep='command ps ax | grep'
+complete -o default -F _longopt psaxgrep
 alias less='less -R'
 alias co='command'
-eval `complete -p command | sed "s/ command$/ co/"`
+complete -F _command co
 
 # colored aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -242,13 +238,12 @@ done
 
 # git configuration
 if type git >/dev/null 2>&1; then
-  _complete_git_funcname=$(complete -p git | sed 's/.*-F \([^ ]*\) .*/\1/')
   _complete_git_aliases() {
     COMP_CWORD=$((COMP_CWORD+1))
     COMP_LINE="git $COMP_LINE"
     COMP_POINT=$((COMP_POINT+4))
     COMP_WORDS=(git "${COMP_WORDS[@]}")
-    $_complete_git_funcname
+    __git_wrap__git_main
   }
   for command in $(git config -l --global | grep ^alias\\. | cut -d= -f1 | cut -c7-)\
       add \
@@ -302,7 +297,7 @@ if type git >/dev/null 2>&1; then
       whatchanged \
       ; do
     alias $command="git $command"
-    eval `complete -p git | sed -e "s/ git$/ $command/" -e "s/$_complete_git_funcname/_complete_git_aliases/"`
+    complete -o bashdefault -o default -o nospace -F _complete_git_aliases $command
   done
 fi
 
