@@ -78,6 +78,7 @@ deb http://repository.spotify.com stable non-free
               'bar',
               'bc',
               'biabam',
+              'blueman',
               'bsdiff',
               'buffer',
               'bugs-everywhere',
