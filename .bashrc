@@ -316,9 +316,6 @@ fi
 
 # go configuration
 # bash < <(curl -s https://raw.github.com/moovweb/gvm/master/binscripts/gvm-installer)
-# go get code.google.com/p/go.tools/cmd/vet
-# go get code.google.com/p/go.tools/cmd/cover
-# go get code.google.com/p/go.tools/cmd/godoc
 [ -s ~/.gvm/scripts/gvm ] && source ~/.gvm/scripts/gvm
 if [ "$(uname)" = Darwin ]; then
   GOMAXPROCS=$(sysctl -n hw.ncpu)
@@ -474,7 +471,7 @@ fi
 
 # gvm
 if type gvm >/dev/null; then
-  gvm use 1.2
+  gvm use 1.2.1
   GOPATH=~/lib/go:"$GOPATH"
 fi
 

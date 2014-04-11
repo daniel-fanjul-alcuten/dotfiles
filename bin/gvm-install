@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+
+version="$1" && shift || exit 1
+
+[ -s ~/.gvm/scripts/gvm ] && source ~/.gvm/scripts/gvm
+gvm install "$version"
+gvm use "$version"
+set -x
+go get -u code.google.com/p/go.tools/cmd/vet
+go get -u code.google.com/p/go.tools/cmd/cover
+go get -u code.google.com/p/go.tools/cmd/godoc
+go get -u github.com/petar/GoLLRB/llrb
