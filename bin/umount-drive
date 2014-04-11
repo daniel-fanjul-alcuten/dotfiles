@@ -1,53 +1,46 @@
 #!/bin/bash
+set -e
 
-while getopts "n:c" opt; do
-	case $opt in
-		n) name="$OPTARG";;
-		c) crypt=true;;
-		*) exit 1;;
-	esac
+umask 027
+
+while getopts "n:sl" opt; do
+  case $opt in
+    n) name="$OPTARG";;
+    s) s3ql=true;;
+    l) luks=true;;
+    *) exit 1;;
+  esac
 done
 shift $((OPTIND - 1))
 
-function red   { tput setaf 1; }
-function blue  { tput setaf 4; }
-function reset { tput sgr0;    }
-
-function ok {
-	blue
-	echo "$@"
-	reset
-	exit 0
-}
-
-function ko {
-	red
-	echo "$@"
-	reset
-	exit 1
-}
+source ~/etc/colors.cfg
 
 mount_point=/media/"$name"
-if ! mountpoint -q "$mount_point"; then
-	ok "$name: already umounted"
+if ! sudo mountpoint -q "$mount_point"; then
+  green "$name: already umounted"
+fi
+
+umount=umount
+if [ "$s3ql" ]; then
+  umount=umount.s3ql
 fi
 
 if ! sudo umount "$mount_point"; then
-	ko "$name: umount failed"
+  red "$name: umount failed"
 fi
 
-if ! sudo rm /"$name"; then
-	ko "$name: rm failed"
+if ! sudo rm -f /"$name"; then
+  red "$name: rm failed"
 fi
 
 if ! sudo rmdir "$mount_point"; then
-	ko "$name: rmdir failed"
+  red "$name: rmdir failed"
 fi
 
-if [ "$crypt" ]; then
-	if ! sudo cryptsetup luksClose "$name"; then
-		ko "$name: crypt close failed"
-	fi
+if [ "$luks" ]; then
+  if ! sudo cryptsetup luksClose "$name"; then
+    red "$name: luks close failed"
+  fi
 fi
 
-ok "$name: umounted"
+blue "$name: umounted"

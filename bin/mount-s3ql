@@ -1,3 +1,4 @@
 #!/bin/bash
 
-mount-media -n s3ql -s s3://s3ql.dfanjul
+# sudo mkfs.s3ql --plain /var/s3ql
+~/bin/mount-drive -n s3ql -s local:///var/s3ql

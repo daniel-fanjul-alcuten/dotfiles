@@ -167,6 +167,8 @@ package { [
            'mpg321',
            'mplayer',
            'mtools',
+           'mtp-tools',
+           'mtpfs',
            'mutt',
            'netpipes',
            'network-manager',

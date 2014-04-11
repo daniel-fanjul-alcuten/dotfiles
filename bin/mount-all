@@ -1,4 +1,4 @@
 #!/bin/bash
 
-mount-local
-mount-remote
+~/bin/mount-local
+~/bin/mount-remote

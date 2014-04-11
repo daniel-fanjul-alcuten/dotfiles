@@ -1,0 +1,3 @@
+#!/bin/bash
+
+~/bin/mount-drive -n mtp -t

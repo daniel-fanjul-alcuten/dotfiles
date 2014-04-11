@@ -1,6 +1,6 @@
 #!/bin/bash
 
-umount-mdrive
-umount-wdrive
-umount-ldrive
-umount-phone
+~/bin/umount-mdrive
+~/bin/umount-wdrive
+~/bin/umount-ldrive
+~/bin/umount-s3ql

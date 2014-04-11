@@ -1,98 +1,105 @@
 #!/bin/bash
+set -e
 
-while getopts "n:em:cu:" opt; do
-	case $opt in
-		n) name="$OPTARG";;
-		e) ext=true;;
-		m) mounts="$OPTARG";;
-		c) crypt=true;;
-		u) uuid="$OPTARG";;
-		*) exit 1;;
-	esac
+umask 027
+
+while getopts "n:u:lem:s:t" opt; do
+  case $opt in
+    n) name="$OPTARG";;
+    u) uuid="$OPTARG";;
+    l) luks=true;;
+    e) ext=true;;
+    m) mounts="$OPTARG";;
+    s) s3ql="$OPTARG";;
+    t) mtp=true;;
+    *) exit 1;;
+  esac
 done
 shift $((OPTIND - 1))
 
-function red   { tput setaf 1; }
-function blue  { tput setaf 4; }
-function reset { tput sgr0;    }
-
-function ok {
-	blue
-	echo "$@"
-	reset
-	exit 0
-}
-
-function ko {
-	red
-	echo "$@"
-	reset
-	exit 1
-}
-
-device=/dev/disk/by-uuid/"$uuid"
-if ! [ -b "$device" ]; then
-	ko "$name: not found"
-fi
-
-if [ "$crypt" ]; then
-	mapper=/dev/mapper/"$name"
-	if ! [ -h "$mapper" ]; then
-		echo -n "$name: "
-		if ! sudo cryptsetup luksOpen "$device" "$name"; then
-			ko "$name: crypt open failed"
-		fi
-	fi
-	device="$mapper"
-fi
+source ~/etc/colors.cfg
 
 mount_point=/media/"$name"
-if mountpoint -q "$mount_point"; then
-	ok "$name: already mounted"
+if sudo mountpoint -q "$mount_point"; then
+  green "$name: already mounted"
 fi
 
-mount_options=''
-if [ "$ext" ]; then
-	mount_options='-o noatime'
+if [ "$uuid" ]; then
+  device=/dev/disk/by-uuid/"$uuid"
+  if ! [ -b "$device" ]; then
+    red "$name: not found"
+  fi
 
-	if ! sudo e2fsck "$device"; then
-		ko "$name: fsck failed"
-	fi
+  if [ "$luks" ]; then
+    mapper=/dev/mapper/"$name"
+    if ! [ -h "$mapper" ]; then
+      echo -n "$name: "
+      if ! sudo cryptsetup luksOpen "$device" "$name"; then
+        red "$name: luks open failed"
+      fi
+    fi
+    device="$mapper"
+  fi
 
-	if ! sudo tune2fs -L "$name" "$device"; then
-		ko "$name: label tuning failed"
-	fi
+  mount=mount
+  mount_options=''
+  if [ "$ext" ]; then
+    mount_options='-o noatime'
 
-	if [ "$mounts" ]; then
-		if ! sudo tune2fs -c "$mounts" "$device"; then
-			ko "$name: max mounts tuning failed"
-		fi
-	fi
+    if ! sudo e2fsck "$device"; then
+      red "$name: fsck failed"
+    fi
 
-	echo $(($mounts - `sudo tune2fs -l /dev/mapper/"$name" | grep '^Mount count' | cut -c 27-`)) mounts
+    if ! sudo tune2fs -L "$name" "$device"; then
+      red "$name: label tuning failed"
+    fi
 
-else
-	mount_options='-o uid=dfanjul,gid=dfanjul'
+    if [ "$mounts" ]; then
+      if ! sudo tune2fs -c "$mounts" "$device"; then
+        red "$name: max mounts tuning failed"
+      fi
+    fi
+
+    echo $(($mounts - `sudo tune2fs -l /dev/mapper/"$name" | grep '^Mount count' | cut -c 27-`)) mounts
+
+  fi
+
+elif [ "$s3ql" ]; then
+  device="$s3ql"
+  mount=mount.s3ql
+  mount_options='--compress bzip2 --allow-other'
+
+  case "$s3ql" in
+    local://*)
+      if ! sudo fsck.s3ql "$s3ql"; then
+        red "$name: fsck.s3ql failed"
+      fi
+  esac
+
+elif [ "$mtp" ]; then
+  device=""
+  mount=mtpfs
+  mount_options='-o allow_other'
 fi
 
 if ! sudo mkdir -p "$mount_point"; then
-	ko "$name: mkdir failed"
+  red "$name: mkdir failed"
 fi
 
 if ! sudo ln -sfn "$mount_point" /"$name"; then
-	ko "$name: ln -s failed"
+  red "$name: ln -s failed"
 fi
-	
-if ! sudo mount $mount_options "$device" "$mount_point"; then
-	ko "$name: mount failed"
+
+if ! sudo $mount $mount_options $device "$mount_point"; then
+  red "$name: $mount failed"
 fi
 
 if [ -d "$mount_point"/.git ]; then
-	(cd "$mount_point" && {
-		if `which git-fsck-and-gc >&/dev/null`; then
-			git-fsck-and-gc
-		fi
-	})
+  (cd "$mount_point" && {
+    if `which git-fsck-and-gc >&/dev/null`; then
+      git-fsck-and-gc
+    fi
+  })
 fi
 
-ok "$name: mounted"
+blue "$name: mounted"
