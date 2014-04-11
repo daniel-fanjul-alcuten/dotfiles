@@ -13,294 +13,303 @@ Exec {
   logoutput => 'on_failure',
 }
 
-# spotify
-file { '/etc/apt/sources.list.d/spotify.list':
-  tag     => 'apt-list',
-  content => '# spotify
+class dfanjul ($user = 'dfanjul') {
+
+  if $operatingsystem == 'Debian' {
+
+    # wdrive apt repository
+    file { '/etc/apt/sources.list.d/wdrive.list':
+      tag     => 'apt-list',
+      content => '# wdrive
+deb file:///wdrive/downloads/software/apt/mirror/ftp.es.debian.org/debian/ wheezy main contrib non-free
+deb file:///wdrive/downloads/software/apt/mirror/ftp.es.debian.org/debian/ wheezy-proposed-updates main contrib non-free
+deb file:///wdrive/downloads/software/apt/mirror/security.debian.org/ wheezy/updates main contrib non-free
+deb file:///wdrive/downloads/software/apt/mirror/repository.spotify.com stable non-free
+',
+    }
+
+    # ldrive apt repository
+    file { '/etc/apt/sources.list.d/ldrive.list':
+      tag     => 'apt-list',
+      content => '# ldrive
+deb file:///ldrive/downloads/software/apt/mirror/ftp.es.debian.org/debian/ wheezy main contrib non-free
+deb file:///ldrive/downloads/software/apt/mirror/ftp.es.debian.org/debian/ wheezy-proposed-updates main contrib non-free
+deb file:///ldrive/downloads/software/apt/mirror/security.debian.org/ wheezy/updates main contrib non-free
+deb file:///ldrive/downloads/software/apt/mirror/repository.spotify.com stable non-free
+',
+    }
+  }
+
+  # spotify
+  file { '/etc/apt/sources.list.d/spotify.list':
+    tag     => 'apt-list',
+    content => '# spotify
 deb http://repository.spotify.com stable non-free
 ',
-}
-exec { '/usr/bin/apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 94558F59':
-  tag     => 'apt-key',
-}
+  }
+  exec { '/usr/bin/apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 94558F59':
+    tag     => 'apt-key',
+  }
 
-# # wdrive apt repository
-# file { '/etc/apt/sources.list.d/wdrive.list':
-#   content => '# wdrive
-# deb file:///wdrive/downloads/software/apt/mirror/ftp.es.debian.org/debian/ wheezy main contrib non-free
-# deb file:///wdrive/downloads/software/apt/mirror/ftp.es.debian.org/debian/ wheezy-proposed-updates main contrib non-free
-# deb file:///wdrive/downloads/software/apt/mirror/security.debian.org/ wheezy/updates main contrib non-free
-# deb file:///wdrive/downloads/software/apt/mirror/repository.spotify.com stable non-free
-# ',
-# }
+  # aptitude
+  exec { '/usr/bin/aptitude update':
+    refreshonly => true,
+    require     => Package['aptitude'],
+  }
+  File<| tag == 'apt-list' |> ~> Exec['/usr/bin/aptitude update']
+  Exec<| tag == 'apt-key' |>  ~> Exec['/usr/bin/aptitude update']
+  Exec['/usr/bin/aptitude update'] -> Package<| title != 'aptitude' |>
 
-# # ldrive apt repository
-# file { '/etc/apt/sources.list.d/ldrive.list':
-#   content => '# ldrive
-# deb file:///ldrive/downloads/software/apt/mirror/ftp.es.debian.org/debian/ wheezy main contrib non-free
-# deb file:///ldrive/downloads/software/apt/mirror/ftp.es.debian.org/debian/ wheezy-proposed-updates main contrib non-free
-# deb file:///ldrive/downloads/software/apt/mirror/security.debian.org/ wheezy/updates main contrib non-free
-# deb file:///ldrive/downloads/software/apt/mirror/repository.spotify.com stable non-free
-# ',
-# }
+  # packages
+  package { [
+              'abcde',
+              'abook',
+              'ack-grep',
+              'aegis',
+              'anacron',
+              'ant',
+              'aptitude',
+              'apvlv',
+              'aria2',
+              'attr',
+              'avfs',
+              'awesome',
+              'azureus',
+              'bar',
+              'bc',
+              'biabam',
+              'bsdiff',
+              'buffer',
+              'bugs-everywhere',
+              'bup',
+              'burn',
+              'bzip2',
+              'capistrano',
+              'cfget',
+              'cfv',
+              'clusterssh',
+              'cmatrix',
+              'cmatrix-xfont',
+              'crawl',
+              'cron',
+              'curl',
+              'cwcp',
+              'dc',
+              'dctrl-tools',
+              'debsums',
+              'dict',
+              'dict-freedict-eng-spa',
+              'dict-freedict-spa-eng',
+              'dict-jargon',
+              'dictd',
+              'disper',
+              'dstat',
+              'dvdisaster',
+              'e2fsprogs',
+              'electricsheep',
+              'etckeeper',
+              'evince',
+              'fbreader',
+              'feh',
+              'flac',
+              'fonts-inconsolata',
+              'freecdb',
+              'gawk',
+              'genders',
+              'genisoimage',
+              'gimp',
+              'git',
+              'git-annex',
+              'git-doc',
+              'git-flow',
+              'git-svn',
+              'git2cl',
+              'gitstats',
+              'gmrun',
+              'gnome-terminal',
+              'gnupg',
+              'gnupg-agent',
+              'google-chrome-stable',
+              'gource',
+              'hardinfo',
+              'hgview',
+              'htop',
+              'httpcode',
+              'hwdata',
+              'id3',
+              'id3ren',
+              'id3v2',
+              'iftop',
+              'inotail',
+              'inotify-tools',
+              'ioping',
+              'iotop',
+              'irssi',
+              'ispanish',
+              'ispell',
+              'iwatch',
+              'lftp',
+              'libreoffice',
+              'links',
+              'lltag',
+              'loadwatch',
+              'lockout',
+              'lrzip',
+              'lsyncd',
+              'mail-notification',
+              'mailutils',
+              'make',
+              'markdown',
+              'maven2',
+              'mbuffer',
+              'md5deep',
+              'mdadm',
+              'meld',
+              'mercurial',
+              'mercurial-git',
+              'mlocate',
+              'moosic',
+              'mp3gain',
+              'mp3info',
+              'mp3splt',
+              'mpg321',
+              'mplayer',
+              'mtools',
+              'mtp-tools',
+              'mtpfs',
+              'mutt',
+              'netpipes',
+              'network-manager',
+              'network-manager-gnome',
+              'nilfs-tools',
+              'ntfs-3g',
+              'ntfsprogs',
+              'ntp',
+              'obnam',
+              'openjdk-6-jdk',
+              'openjdk-6-jre',
+              'openjdk-6-jre-headless',
+              'openjdk-6-jre-lib',
+              'openjdk-6-source',
+              'openoffice.org',
+              'openssh-client',
+              'openssh-server',
+              'orpie',
+              'pal',
+              'par2',
+              'parted',
+              'pexec',
+              'pinpoint',
+              'pipebench',
+              'postpone',
+              'privbind',
+              'pv',
+              'pwgen',
+              'pydf',
+              'qdbm-util',
+              'qiv',
+              'ranger',
+              'razzle',
+              'reptyr',
+              'rpl',
+              'rsync',
+              's3cmd',
+              's3ql',
+              'saidar',
+              'sc',
+              'schedtool',
+              'screen',
+              'simhash',
+              'smem',
+              'spotify-client',
+              'sshfs',
+              'sshpass',
+              'stgit',
+              'subversion',
+              'taggrepper',
+              'tagtool',
+              'task-spooler',
+              'telnet-ssl',
+              'tig',
+              'timelimit',
+              'tinycdb',
+              'tmux',
+              'topgit',
+              'totem',
+              'tree',
+              'trend',
+              'trickle',
+              'ttyload',
+              'ttyrec',
+              'ucspi-proxy',
+              'ucspi-tcp',
+              'ucspi-unix',
+              'udpcast',
+              'unrar',
+              'unzip',
+              'uptimed',
+              'uuid',
+              'vdmfec',
+              'vim',
+              'vim-doc',
+              'vim-gnome',
+              'vim-puppet',
+              'vim-syntax-go',
+              'w3m',
+              'wamerican',
+              'wbritish',
+              'wcd',
+              'wipe',
+              'wodim',
+              'wspanish',
+              'xclip',
+              'xdu',
+              'xsel',
+              'zip',
+            ]:
+    ensure => 'present',
+  }
 
-exec { '/usr/bin/aptitude update':
-  refreshonly => true,
-  require     => Package['aptitude'],
-}
-File<| tag == 'apt-list' |> ~> Exec['/usr/bin/aptitude update']
-Exec<| tag == 'apt-key' |> ~> Exec['/usr/bin/aptitude update']
-Exec['/usr/bin/aptitude update'] -> Package<| title != 'aptitude' |>
+  # git submodules
+  exec { '/usr/bin/git submodule update --init --recursive':
+    user    => $dfanjul::user,
+    group   => $dfanjul::user,
+    cwd     => "/home/$dfanjul::user/",
+    require => Package['git'],
+  }
 
-# packages
-package { [
-           'abcde',
-           'abook',
-           'ack-grep',
-           'aegis',
-           'anacron',
-           'ant',
-           'aptitude',
-           'apvlv',
-           'aria2',
-           'attr',
-           'avfs',
-           'awesome',
-           'azureus',
-           'bar',
-           'bc',
-           'biabam',
-           'bsdiff',
-           'buffer',
-           'bugs-everywhere',
-           'bup',
-           'burn',
-           'bzip2',
-           'capistrano',
-           'cfget',
-           'cfv',
-           'clusterssh',
-           'cmatrix',
-           'cmatrix-xfont',
-           'crawl',
-           'cron',
-           'curl',
-           'cwcp',
-           'dc',
-           'dctrl-tools',
-           'debsums',
-           'dict',
-           'dict-freedict-eng-spa',
-           'dict-freedict-spa-eng',
-           'dict-jargon',
-           'dictd',
-           'disper',
-           'dstat',
-           'dvdisaster',
-           'e2fsprogs',
-           'electricsheep',
-           'etckeeper',
-           'evince',
-           'fbreader',
-           'feh',
-           'flac',
-           'fonts-inconsolata',
-           'freecdb',
-           'gawk',
-           'genders',
-           'genisoimage',
-           'gimp',
-           'git',
-           'git-annex',
-           'git-doc',
-           'git-flow',
-           'git-svn',
-           'git2cl',
-           'gitstats',
-           'gmrun',
-           'gnome-terminal',
-           'gnupg',
-           'gnupg-agent',
-           'google-chrome-stable',
-           'gource',
-           'hardinfo',
-           'hgview',
-           'htop',
-           'httpcode',
-           'hwdata',
-           'id3',
-           'id3ren',
-           'id3v2',
-           'iftop',
-           'inotail',
-           'inotify-tools',
-           'ioping',
-           'iotop',
-           'irssi',
-           'ispanish',
-           'ispell',
-           'iwatch',
-           'lftp',
-           'libreoffice',
-           'links',
-           'lltag',
-           'loadwatch',
-           'lockout',
-           'lrzip',
-           'lsyncd',
-           'mail-notification',
-           'mailutils',
-           'make',
-           'markdown',
-           'maven2',
-           'mbuffer',
-           'md5deep',
-           'mdadm',
-           'meld',
-           'mercurial',
-           'mercurial-git',
-           'mlocate',
-           'moosic',
-           'mp3gain',
-           'mp3info',
-           'mp3splt',
-           'mpg321',
-           'mplayer',
-           'mtools',
-           'mtp-tools',
-           'mtpfs',
-           'mutt',
-           'netpipes',
-           'network-manager',
-           'network-manager-gnome',
-           'nilfs-tools',
-           'ntfs-3g',
-           'ntfsprogs',
-           'ntp',
-           'obnam',
-           'openjdk-6-jdk',
-           'openjdk-6-jre',
-           'openjdk-6-jre-headless',
-           'openjdk-6-jre-lib',
-           'openjdk-6-source',
-           'openoffice.org',
-           'openssh-client',
-           'openssh-server',
-           'orpie',
-           'pal',
-           'par2',
-           'parted',
-           'pexec',
-           'pinpoint',
-           'pipebench',
-           'postpone',
-           'privbind',
-           'pv',
-           'pwgen',
-           'pydf',
-           'qdbm-util',
-           'qiv',
-           'ranger',
-           'razzle',
-           'reptyr',
-           'rpl',
-           'rsync',
-           's3cmd',
-           's3ql',
-           'saidar',
-           'sc',
-           'schedtool',
-           'screen',
-           'simhash',
-           'smem',
-           'spotify-client',
-           'sshfs',
-           'sshpass',
-           'stgit',
-           'subversion',
-           'taggrepper',
-           'tagtool',
-           'task-spooler',
-           'telnet-ssl',
-           'tig',
-           'timelimit',
-           'tinycdb',
-           'tmux',
-           'topgit',
-           'totem',
-           'tree',
-           'trend',
-           'trickle',
-           'ttyload',
-           'ttyrec',
-           'ucspi-proxy',
-           'ucspi-tcp',
-           'ucspi-unix',
-           'udpcast',
-           'unrar',
-           'unzip',
-           'uptimed',
-           'uuid',
-           'vdmfec',
-           'vim',
-           'vim-doc',
-           'vim-gnome',
-           'vim-puppet',
-           'vim-syntax-go',
-           'w3m',
-           'wamerican',
-           'wbritish',
-           'wcd',
-           'wipe',
-           'wodim',
-           'wspanish',
-           'xclip',
-           'xdu',
-           'xsel',
-           'zip',
-          ]:
-  ensure => 'present',
-}
+  # sudoers
+  file { "/etc/sudoers.d/$dfanjul::user":
+    mode    => '0440',
+    content => "
+Defaults:$dfanjul::user !tty_tickets, timestamp_timeout=-1
+",
+  }
 
-# git submodules
-exec { '/usr/bin/git submodule update --init --recursive':
-  user      => 'dfanjul',
-  group     => 'dfanjul',
-  cwd       => '/home/dfanjul/',
-  require   => Package['git'],
-}
-
-# sudoers
-file { '/etc/sudoers.d/dfanjul':
-  mode    => '0440',
-  content => '
-Defaults:dfanjul !tty_tickets, timestamp_timeout=-1
-',
-}
-
-# crontabs
-cron { 'uprecords':
-  user    => 'dfanjul',
-  ensure  => 'present',
-  command => 'uprecords -M | mail -s uprecords dfanjul',
-  minute  => 0,
-  require => Package['cron'],
-}
-define crontab () {
-  cron { $title:
-    user    => 'dfanjul',
+  # crontabs
+  cron { 'uprecords':
+    user    => $dfanjul::user,
     ensure  => 'present',
-    command => "d=~/etc/cron.$title && mkdir -p \"\$d\" && run-parts \"\$d\"",
-    special => $title,
+    command => "uprecords -M | mail -s uprecords $dfanjul::user",
+    minute  => 0,
     require => Package['cron'],
   }
-  cron { "local $title":
-    user    => 'dfanjul',
-    ensure  => 'present',
-    command => "d=~/etc/cron.$title/\$(hostname) && mkdir -p \"\$d\" && run-parts \"\$d\"",
-    special => $title,
-    require => Package['cron'],
+  define crontab () {
+    cron { $title:
+      user    => $dfanjul::user,
+      ensure  => 'present',
+      command => "d=~/etc/cron.$title && mkdir -p \"\$d\" && run-parts \"\$d\"",
+      special => $title,
+      require => Package['cron'],
+    }
+    cron { "local $title":
+      user    => $dfanjul::user,
+      ensure  => 'present',
+      command => "d=~/etc/cron.$title/\$(hostname) && mkdir -p \"\$d\" && run-parts \"\$d\"",
+      special => $title,
+      require => Package['cron'],
+    }
   }
-}
-crontab { [ 'reboot', 'hourly', 'daily', 'monthly', 'weekly', 'yearly', ]:
+  crontab { [ 'reboot', 'hourly', 'daily', 'monthly', 'weekly', 'yearly', ]:
+  }
 }
