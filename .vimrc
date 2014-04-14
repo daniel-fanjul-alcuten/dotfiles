@@ -30,8 +30,8 @@ aug go_filetype
   au!
   au Filetype go setl nolist
   au Filetype go setl cc=80
-  au Filetype go setl rnu
   au Filetype go setl makeprg=\(go\ test\ ./...\ &&\ go\ install\ ./...\)
+  au Filetype go setl foldmethod=syntax foldcolumn=3
   au Filetype go nnoremap <buffer> <Leader>f :Fmt<CR>
   au Filetype go nnoremap <buffer> <Leader>gi :sil cal ImportCWord()<CR>
   au BufWrite *.go Fmt
