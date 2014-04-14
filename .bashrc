@@ -201,6 +201,12 @@ reuntil() {
     sleep "$seconds"
   done
 }
+rewhile() {
+  seconds="$1" && shift || seconds=5
+  while $(history -p !!); do
+    sleep "$seconds"
+  done
+}
 iwhile() {
   while echo && inotifywait -q -e create -e modify -e move -e delete -r . --exclude ".*\\.sw.$"; do
     eval "$*"
