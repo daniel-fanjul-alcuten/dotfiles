@@ -170,10 +170,28 @@ halt-now() {
     run-parts -v ~/etc/cron.halt && \
     run-parts -v ~/etc/cron.halt/$(hostname) && \
     tsp umount-all >/dev/null && \
+    tsp sudo shutdown -h now >/dev/null && \
+    tsp
+}
+halt-later() {
+  sudo -v && \
+    mkdir -p ~/etc/cron.halt/$(hostname) && \
+    run-parts -v ~/etc/cron.halt && \
+    run-parts -v ~/etc/cron.halt/$(hostname) && \
+    tsp umount-all >/dev/null && \
     tsp sudo shutdown -h +1 >/dev/null && \
     tsp
 }
 reboot-now() {
+  sudo -v && \
+    mkdir -p ~/etc/cron.halt/$(hostname) && \
+    run-parts -v ~/etc/cron.halt && \
+    run-parts -v ~/etc/cron.halt/$(hostname) && \
+    tsp umount-all >/dev/null && \
+    tsp sudo shutdown -r now >/dev/null && \
+    tsp
+}
+reboot-later() {
   sudo -v && \
     mkdir -p ~/etc/cron.halt/$(hostname) && \
     run-parts -v ~/etc/cron.halt && \
