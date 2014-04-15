@@ -403,4 +403,3 @@ client.add_signal("unfocus", function(c) c.border_color = beautiful.border_norma
 
 -- start applications
 awful.util.spawn("gnome-session")
-awful.util.spawn("spotify")
