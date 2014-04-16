@@ -234,6 +234,16 @@ iwhile() {
 function mailtodo {
 	echo "$*" | mail -s "$*" dfanjul
 }
+function mutt {
+  command mutt "$@"
+  local s=$?
+  (cd ~ && {
+    for dir in var/mail var/spool; do
+      git commit -m $dir $dir &>/dev/null
+    done
+  })
+  return $s
+}
 
 # set PATH for private bin folders
 if [ -d ~/usr/local/bin ]; then
