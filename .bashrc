@@ -232,7 +232,7 @@ iwhile() {
   done
 }
 function mailtodo {
-	echo "$*" | mail -s "$*" dfanjul
+  echo "$*" | mail -s "$*" dfanjul
 }
 function mutt {
   command mutt "$@"
