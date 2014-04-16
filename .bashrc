@@ -200,6 +200,15 @@ reboot-later() {
     tsp sudo shutdown -r +1 >/dev/null && \
     tsp
 }
+gnome-logout() {
+  sudo -v && \
+    mkdir -p ~/etc/cron.halt/$(hostname) && \
+    run-parts -v ~/etc/cron.halt && \
+    run-parts -v ~/etc/cron.halt/$(hostname) && \
+    tsp umount-all >/dev/null && \
+    tsp gnome-session-quit --logout >/dev/null && \
+    tsp
+}
 down() {
   yes "|" | head -$(($LINES - 3)) && echo v
 }
