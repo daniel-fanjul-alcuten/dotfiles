@@ -299,14 +299,7 @@ Defaults:$dfanjul::user !tty_tickets, timestamp_timeout=-1
     cron { $title:
       user    => $dfanjul::user,
       ensure  => 'present',
-      command => "d=~/etc/cron.$title && mkdir -p \"\$d\" && run-parts \"\$d\"",
-      special => $title,
-      require => Package['cron'],
-    }
-    cron { "local $title":
-      user    => $dfanjul::user,
-      ensure  => 'present',
-      command => "d=~/etc/cron.$title/\$(hostname) && mkdir -p \"\$d\" && run-parts \"\$d\"",
+      command => "~/bin/run-parts-cron $title",
       special => $title,
       require => Package['cron'],
     }

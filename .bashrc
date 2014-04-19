@@ -166,54 +166,42 @@ alias alert='notify-send --urgency=low -i ~/usr/share/images/$([ $? = 0 ] && ech
 # functions
 halt-now() {
   sudo -v && \
-    mkdir -p ~/etc/cron.halt/$(hostname) && \
-    run-parts -v ~/etc/cron.halt && \
-    run-parts -v ~/etc/cron.halt/$(hostname) && \
+    run-parts-cron halt -v && \
     tsp -m umount-all >/dev/null && \
     tsp -m sudo shutdown -h now >/dev/null && \
     tsp
 }
 halt-later() {
   sudo -v && \
-    mkdir -p ~/etc/cron.halt/$(hostname) && \
-    run-parts -v ~/etc/cron.halt && \
-    run-parts -v ~/etc/cron.halt/$(hostname) && \
+    run-parts-cron halt -v && \
     tsp -m umount-all >/dev/null && \
     tsp -m sudo shutdown -h +1 >/dev/null && \
     tsp
 }
 reboot-now() {
   sudo -v && \
-    mkdir -p ~/etc/cron.halt/$(hostname) && \
-    run-parts -v ~/etc/cron.halt && \
-    run-parts -v ~/etc/cron.halt/$(hostname) && \
+    run-parts-cron halt -v && \
     tsp -m umount-all >/dev/null && \
     tsp -m sudo shutdown -r now >/dev/null && \
     tsp
 }
 reboot-later() {
   sudo -v && \
-    mkdir -p ~/etc/cron.halt/$(hostname) && \
-    run-parts -v ~/etc/cron.halt && \
-    run-parts -v ~/etc/cron.halt/$(hostname) && \
+    run-parts-cron halt -v && \
     tsp -m umount-all >/dev/null && \
     tsp -m sudo shutdown -r +1 >/dev/null && \
     tsp
 }
 gnome-logout() {
   sudo -v && \
-    mkdir -p ~/etc/cron.halt/$(hostname) && \
-    run-parts -v ~/etc/cron.halt && \
-    run-parts -v ~/etc/cron.halt/$(hostname) && \
+    run-parts-cron halt -v && \
     tsp -m umount-all >/dev/null && \
     tsp -m gnome-session-quit --logout >/dev/null && \
     tsp
 }
 gnome-quit() {
   sudo -v && \
-    mkdir -p ~/etc/cron.halt/$(hostname) && \
-    run-parts -v ~/etc/cron.halt && \
-    run-parts -v ~/etc/cron.halt/$(hostname) && \
+    run-parts-cron halt -v && \
     tsp -m umount-all >/dev/null && \
     tsp -m gnome-session-quit --power-off >/dev/null && \
     tsp

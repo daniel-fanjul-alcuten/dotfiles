@@ -1,0 +1,12 @@
+#!/bin/bash
+set -e
+
+suffix="$1" && shift || { echo suffix? ; exit 1; }
+
+dir1=~/etc/cron."$suffix"
+dir2="$dir1"/$(hostname)
+for dir in "$dir1" "$dir2"; do
+  if [ -d "$dir" ]; then
+    run-parts "$dir" "$@"
+  fi
+done
