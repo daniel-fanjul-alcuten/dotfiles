@@ -1,7 +1,6 @@
 EXECUTABLES=\
 						forget-backups \
 						git-greb \
-						gocode \
 						gotags
 
 .PHONY: default

@@ -64,6 +64,7 @@
 /.thunderbird
 /.treedata.wcd
 /.vagrant.d
+/.vim-go
 /.vim/view
 /.viminfo
 /.virtualenvs

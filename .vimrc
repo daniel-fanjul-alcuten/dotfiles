@@ -6,12 +6,6 @@ se hid aw
 se is ic scs hls
 se list lcs=tab:→\ ,trail:·
 sy on
-" }}}
-
-" go runtime {{{
-filet off
-filet plugin indent off
-se runtimepath+=$GOROOT/misc/vim
 filet plugin indent on
 " }}}
 
@@ -22,19 +16,13 @@ aug end
 " }}}
 
 " go_filetype {{{
-fu! ImportCWord()
-  let l:c = expand("<cword>")
-  :exe ":Import " . l:c
-endf
 aug go_filetype
   au!
   au Filetype go setl nolist
   au Filetype go setl cc=80
-  au Filetype go setl makeprg=\(go\ test\ ./...\ &&\ go\ install\ ./...\)
   au Filetype go setl foldmethod=syntax foldcolumn=3
-  au Filetype go nnoremap <buffer> <Leader>f :Fmt<CR>
-  au Filetype go nnoremap <buffer> <Leader>gi :sil cal ImportCWord()<CR>
-  au BufWrite *.go Fmt
+  au Filetype go setl makeprg=go\ test\ ./...
+  au Filetype go nnoremap <buffer> <Leader>f :GoFmt<CR>
   au BufWrite *.go silent !gotags -L <(find . -type f -name \*.go) > tags
 aug end
 com! -nargs=1 -complete=dir Gar :args <args>/*.go

@@ -34,9 +34,6 @@
 [submodule "usr/share/gnome-terminal-colors-solarized"]
 	path = usr/share/gnome-terminal-colors-solarized
 	url = https://github.com/sigurdga/gnome-terminal-colors-solarized.git
-[submodule "lib/go/src/github.com/nsf/gocode"]
-	path = lib/go/src/github.com/nsf/gocode
-	url = https://github.com/nsf/gocode.git
 [submodule "lib/go/src/github.com/jstemmer/gotags"]
 	path = lib/go/src/github.com/jstemmer/gotags
 	url = https://github.com/jstemmer/gotags.git
@@ -46,3 +43,6 @@
 [submodule "lib/go/src/github.com/daniel-fanjul-alcuten/forget-backups"]
 	path = lib/go/src/github.com/daniel-fanjul-alcuten/forget-backups
 	url = https://github.com/daniel-fanjul-alcuten/forget-backups.git
+[submodule ".vim/bundle/vim-go"]
+	path = .vim/bundle/vim-go
+	url = https://github.com/fatih/vim-go.git
