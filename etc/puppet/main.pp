@@ -288,13 +288,6 @@ Defaults:$dfanjul::user !tty_tickets, timestamp_timeout=-1
   }
 
   # crontabs
-  cron { 'uprecords':
-    user    => $dfanjul::user,
-    ensure  => 'present',
-    command => "uprecords -M | mail -s uprecords $dfanjul::user",
-    minute  => 0,
-    require => Package['cron'],
-  }
   define crontab () {
     cron { $title:
       user    => $dfanjul::user,

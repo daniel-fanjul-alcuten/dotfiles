@@ -1,0 +1,3 @@
+#!/bin/sh
+
+uprecords -M | mail -s uprecords $(whoami)
