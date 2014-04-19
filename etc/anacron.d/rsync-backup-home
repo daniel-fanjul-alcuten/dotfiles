@@ -1,1 +1,1 @@
-1 9 rsync-backup-home cd ~ && TERM= tsp ~/bin/rsync-backup-home >/dev/null
+1 9 rsync-backup-home cd ~ && TERM= tsp -m ~/bin/rsync-backup-home >/dev/null

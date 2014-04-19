@@ -1,1 +1,1 @@
-7 0 bup-git-gc cd ~ && tsp ~/bin/bup-git-gc >/dev/null
+7 0 bup-git-gc cd ~ && tsp -m ~/bin/bup-git-gc >/dev/null

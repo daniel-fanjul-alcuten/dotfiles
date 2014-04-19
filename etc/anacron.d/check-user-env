@@ -1,0 +1,1 @@
+1 0 check-user-env cd ~ && [ "$USER" ] || echo '$USER is not set in anacron'
