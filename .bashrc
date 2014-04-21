@@ -145,6 +145,8 @@ complete -o default -F _longopt psaxgrep
 alias less='less -R'
 alias co='command'
 complete -F _command co
+alias puppet-apply-home='sudo puppet apply ~/etc/puppet/main.pp'
+complete -o default -F _service puppet-apply-home
 
 # colored aliases
 if [ -x /usr/bin/dircolors ]; then
