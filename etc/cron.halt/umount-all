@@ -1,0 +1,3 @@
+#!/bin/sh
+
+tsp -m umount-all >/dev/null

@@ -164,47 +164,25 @@ alias alert='notify-send --urgency=low -i ~/usr/share/images/$([ $? = 0 ] && ech
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh /usr/bin/lesspipe)"
 
 # functions
-halt-now() {
+halt() {
   sudo -v && \
     run-parts-cron halt -v && \
-    tsp -m umount-all >/dev/null && \
-    tsp -m sudo shutdown -h now >/dev/null && \
-    tsp
+    tsp -m sudo shutdown -h +1 >/dev/null
 }
-halt-later() {
+reboot() {
   sudo -v && \
     run-parts-cron halt -v && \
-    tsp -m umount-all >/dev/null && \
-    tsp -m sudo shutdown -h +1 >/dev/null && \
-    tsp
+    tsp -m sudo shutdown -r +1 >/dev/null
 }
-reboot-now() {
+xlogout() {
   sudo -v && \
     run-parts-cron halt -v && \
-    tsp -m umount-all >/dev/null && \
-    tsp -m sudo shutdown -r now >/dev/null && \
-    tsp
+    tsp -m gnome-session-quit --logout >/dev/null
 }
-reboot-later() {
+xhalt() {
   sudo -v && \
     run-parts-cron halt -v && \
-    tsp -m umount-all >/dev/null && \
-    tsp -m sudo shutdown -r +1 >/dev/null && \
-    tsp
-}
-gnome-logout() {
-  sudo -v && \
-    run-parts-cron halt -v && \
-    tsp -m umount-all >/dev/null && \
-    tsp -m gnome-session-quit --logout >/dev/null && \
-    tsp
-}
-gnome-quit() {
-  sudo -v && \
-    run-parts-cron halt -v && \
-    tsp -m umount-all >/dev/null && \
-    tsp -m gnome-session-quit --power-off >/dev/null && \
-    tsp
+    tsp -m gnome-session-quit --power-off >/dev/null
 }
 down() {
   yes "|" | head -$(($LINES - 3)) && echo v
@@ -268,11 +246,9 @@ for command in \
     aptitude \
     debfoster \
     fdisk \
-    halt \
     hibernate \
     iftop \
     iotop \
-    reboot \
     shutdown \
     ; do
   alias $command="sudo $command"
