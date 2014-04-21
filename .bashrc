@@ -223,10 +223,14 @@ iwhile() {
     sleep 1
   done
 }
-function mailtodo {
+mailnow() {
   echo "$*" | mail -s "$*" dfanjul
 }
-function mutt {
+maillater() {
+  minutes="$1" && shift || minutes=1
+  echo echo \""$*"\" \| mail -s \""$*"\" dfanjul | at now + "$minutes" minute
+}
+mutt() {
   command mutt "$@"
   local s=$?
   (cd ~ && {
@@ -366,7 +370,7 @@ if type wcd.exec >/dev/null; then
   }
   alias j='wcd -j'
   alias g='wcd -g'
-  function _wcd_complete() {
+  _wcd_complete() {
     local list=$(xargs -a ~/.treedata.wcd -r -n 1 -d '\n' basename | sed 's/ .*//' | sort -u)
     COMPREPLY=( $(compgen -W "$list" "$2") )
   }
