@@ -41,6 +41,7 @@
 /.gnome2
 /.gnupg/gpg-agent-*
 /.gnupg/random_seed
+/.goutputstream-*
 /.gtk-bookmarks
 /.gvm
 /.lesshst
@@ -58,6 +59,7 @@
 /.pulse-cookie
 /.puppet
 /.s3ql
+/.sc_history
 /.snapshot
 /.speech-dispatcher
 /.stack.wcd
