@@ -54,7 +54,6 @@
 	f = fetch
 	fa = fetch --prune --all
 	ff = merge --ff-only
-	ffu = merge --ff-only HEAD@{u}
 	fhardu = !git fa && git hardu
 	fixup = !f=\"$1\" && shift && git ci --fixup=\"$f\"
 	freu = !git fa && git reu
@@ -90,7 +89,6 @@
 	pushmf = !me=$(whoami) && git push -vf origin \"refs/heads/$me/*\"
 	r = remote
 	re = rebase --interactive
-	reu = !git re HEAD@{u}
 	reus = !git reset --soft $(git commit-tree -p @{u} HEAD: <<< $(git symbolic-ref-head))
 	rsclean = !git clean -fdx && git submodule foreach --recursive git clean -fdx
 	rshard = !git reset --hard && git submodule foreach --recursive git reset --hard
@@ -120,6 +118,7 @@
 	stat = false
 	tool = vimdiff
 	conflictstyle = diff3
+	defaultToUpstream = true
 [mergetool]
 	keepBackup = false
 	prompt = false
