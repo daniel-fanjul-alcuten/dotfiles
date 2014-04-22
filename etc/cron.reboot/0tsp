@@ -1,3 +1,3 @@
 #!/bin/sh
 
-TS_MAXFINISHED=40 tsp >/dev/null
+TS_MAXFINISHED=30 tsp >/dev/null
