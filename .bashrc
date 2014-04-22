@@ -172,6 +172,13 @@ alias alert='notify-send --urgency=low -i ~/usr/share/images/$([ $? = 0 ] && ech
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh /usr/bin/lesspipe)"
 
 # functions
+cd() {
+  builtin cd "$@" && {
+    if [ "$STY" ]; then
+      screen -X title "$(basename "$PWD")"
+    fi
+  }
+}
 halt() {
   sudo -v && \
     run-parts-cron halt -v && \
@@ -233,7 +240,7 @@ maillater() {
 mutt() {
   command mutt "$@"
   local s=$?
-  (cd ~ && {
+  (builtin cd ~ && {
     for dir in var/mail var/spool; do
       git commit -m $dir $dir &>/dev/null
     done
@@ -364,9 +371,6 @@ if type wcd.exec >/dev/null; then
     mkdir -p ~/var
     wcd.exec -z 40 -G ~/var "$@"
     . ~/var/wcd.go
-    if [ "$STY" ]; then
-      screen -X title "$(basename "$PWD")"
-    fi
   }
   alias j='wcd -j'
   alias g='wcd -g'
@@ -382,9 +386,6 @@ else
     for dir in ~/src/* ~/lib/go/src/github.com/daniel-fanjul-alcuten/*; do
       if local dirname=$(basename "$dir") && grep "^$1" &>/dev/null <<<$dirname; then
         cd "$dir" && {
-          if [ "$STY" ]; then
-            screen -X title "$dirname"
-          fi
           echo "$PWD"
           return 0
         }
