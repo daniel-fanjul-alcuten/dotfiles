@@ -132,6 +132,8 @@ deb http://repository.spotify.com stable non-free
               'gnupg-agent',
               'google-chrome-stable',
               'gource',
+              'graphviz',
+              'graphviz-doc',
               'hardinfo',
               'hgview',
               'htop',
