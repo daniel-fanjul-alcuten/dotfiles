@@ -164,7 +164,7 @@ deb http://repository.spotify.com stable non-free
               'mailutils',
               'make',
               'markdown',
-              'maven2',
+              'maven',
               'mbuffer',
               'md5deep',
               'mdadm',
@@ -272,6 +272,12 @@ deb http://repository.spotify.com stable non-free
               'zip',
             ]:
     ensure => 'present',
+  }
+
+  package { [
+              'maven2',
+            ]:
+    ensure => 'purged',
   }
 
   # git submodules
