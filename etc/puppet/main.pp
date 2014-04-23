@@ -85,6 +85,7 @@ deb http://repository.spotify.com stable non-free
               'bup',
               'burn',
               'bzip2',
+              'cadaver',
               'capistrano',
               'cfget',
               'cfv',
