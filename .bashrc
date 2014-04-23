@@ -461,34 +461,34 @@ alias mvn="mvn-color"
 export MAVEN_OPTS='-XX:MaxPermSize=256m -Xmx2048m'
 # shortcuts
 mi() {
-  mvn install -DskipTests=true
+  mvn install -DskipTests=true "$@"
 }
 mci() {
-  mvn clean install -DskipTests=true
+  mvn clean install -DskipTests=true "$@"
 }
 mt() {
-  mvn test -DskipTests=false
+  mvn test -DskipTests=false "$@"
 }
 mct() {
-  mvn clean test -DskipTests=false
+  mvn clean test -DskipTests=false "$@"
 }
 mit() {
-  mvn install -DskipTests=false
+  mvn install -DskipTests=false "$@"
 }
 mcit() {
-  mvn clean install -DskipTests=false
+  mvn clean install -DskipTests=false "$@"
 }
 mj() {
-  mvn jetty:run -DskipTests=true
+  mvn jetty:run -DskipTests=true "$@"
 }
 mcj() {
-  mvn clean jetty:run -DskipTests=true
+  mvn clean jetty:run -DskipTests=true "$@"
 }
 mij() {
-  mvn install jetty:run -DskipTests=true
+  mvn install jetty:run -DskipTests=true "$@"
 }
 mcij() {
-  mvn clean install jetty:run -DskipTests=true
+  mvn clean install jetty:run -DskipTests=true "$@"
 }
 
 # crawl
