@@ -1,9 +1,9 @@
 /.ICEauthority
 /.VirtualBox
 /.Xauthority
-/.abook/addressbook~
 /.aptitude
 /.apvlvinfo
+/.aria2/dht.dat
 /.azureus
 /.bash_history
 /.bup
@@ -43,6 +43,7 @@
 /.gnupg/random_seed
 /.goutputstream-*
 /.gtk-bookmarks
+/.gvfs
 /.gvm
 /.lesshst
 /.local
@@ -71,6 +72,7 @@
 /.vim/view
 /.viminfo
 /.virtualenvs
+/.w3m
 /.xsession-errors
 /.xsession-errors.old
 /Downloads
