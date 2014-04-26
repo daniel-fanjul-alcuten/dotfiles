@@ -278,7 +278,7 @@ for command in \
 done
 
 # git configuration
-if type git >/dev/null 2>&1; then
+if type git &>/dev/null; then
   _complete_git_aliases() {
     COMP_CWORD=$((COMP_CWORD+1))
     COMP_LINE="git $COMP_LINE"
@@ -343,7 +343,7 @@ if type git >/dev/null 2>&1; then
 fi
 
 # vim configuration
-if type vim >/dev/null; then
+if type vim &>/dev/null; then
   export EDITOR=$(which vim)
 fi
 set -o vi
@@ -370,7 +370,7 @@ alias gi='go install ./...'
 alias gti='gi && gt'
 
 # wcd configuration
-if type wcd.exec >/dev/null; then
+if type wcd.exec &>/dev/null; then
   wcd() {
     mkdir -p ~/var
     wcd.exec -z 40 -G ~/var "$@"
@@ -498,17 +498,17 @@ export CRAWL_DIR=~/.crawl
 down
 
 # pal
-if type pal >/dev/null; then
+if type pal &>/dev/null; then
   pal -r 7 -c 1
 fi
 
 # gvm
-if type gvm >/dev/null; then
+if type gvm &>/dev/null; then
   gvm use 1.2.1
   GOPATH=~/lib/go:"$GOPATH"
 fi
 
 # from
-if type from >/dev/null; then
+if type from &>/dev/null; then
   from -c
 fi
