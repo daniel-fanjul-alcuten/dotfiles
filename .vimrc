@@ -44,9 +44,10 @@ aug go_filetype
   au!
   au Filetype go setl nolist
   au Filetype go setl cc=80
-  au Filetype go setl foldmethod=syntax foldcolumn=3
+  au Filetype go setl fdm=syntax fdc=3
   au Filetype go setl makeprg=go\ test\ ./...
   au Filetype go nnoremap <buffer> <Leader>f :GoFmt<CR>
+  au Filetype go nnoremap <buffer> <Leader>t :GoTest<CR>
   au BufWrite *.go silent !gotags -L <(find . -type f -name \*.go) > tags
 aug end
 com! -nargs=1 -complete=dir Gar :args <args>/*.go
