@@ -13,12 +13,17 @@ filet plugin indent on
 aug vim_filetype
   au Filetype vim setl fdm=marker fdc=2
 aug end
+" .vimrc {{{
+nnoremap <Leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <Leader>sv :source $MYVIMRC<cr>
+" }}}
 " }}}
 
 " git {{{
 aug gitconfig_filetype
   au Filetype gitconfig setl noet
 aug end
+" vim-fugitive {{{
 nnoremap <Leader>gb :Gblame<cr>
 nnoremap <Leader>gc :Gcommit -v<cr>
 nnoremap <Leader>gca :Gcommit -v -a<cr>
@@ -31,6 +36,7 @@ nnoremap <Leader>gpmf :Git pushmf<cr>
 nnoremap <Leader>gs :Gstatus<cr>
 nnoremap <Leader>gw :Gwrite<cr>
 nnoremap git :Git
+" }}}
 " }}}
 
 " go {{{
@@ -65,10 +71,6 @@ aug end
 
 " key mappings {{{
 nnoremap <Leader>m :make<CR>
-" .vimrc {{{
-nnoremap <Leader>ev :vsplit $MYVIMRC<cr>
-nnoremap <Leader>sv :source $MYVIMRC<cr>
-" }}}
 " }}}
 
 " pathogen {{{
