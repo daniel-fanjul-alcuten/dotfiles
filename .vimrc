@@ -9,13 +9,31 @@ sy on
 filet plugin indent on
 " }}}
 
-" vim_filetype {{{
+" vim {{{
 aug vim_filetype
   au Filetype vim setl fdm=marker fdc=2
 aug end
 " }}}
 
-" go_filetype {{{
+" git {{{
+aug gitconfig_filetype
+  au Filetype gitconfig setl noet
+aug end
+nnoremap <Leader>gb :Gblame<cr>
+nnoremap <Leader>gc :Gcommit -v<cr>
+nnoremap <Leader>gca :Gcommit -v -a<cr>
+nnoremap <Leader>gcaa :Gcommit -a -m.<cr>
+nnoremap <Leader>gcc :Gcommit -m.<cr>
+nnoremap <Leader>gd :Gdiff<cr>
+nnoremap <Leader>gpp :Git push<cr>
+nnoremap <Leader>gpm :Git pushm<cr>
+nnoremap <Leader>gpmf :Git pushmf<cr>
+nnoremap <Leader>gs :Gstatus<cr>
+nnoremap <Leader>gw :Gwrite<cr>
+nnoremap git :Git
+" }}}
+
+" go {{{
 aug go_filetype
   au!
   au Filetype go setl nolist
@@ -31,17 +49,17 @@ com! -nargs=1 -complete=dir Cdgo :cd <args> | :args *.go
 com! -nargs=1 -complete=dir Lcdgo :lcd <args> | :argl *.go
 " }}}
 
-" python_filetype {{{
-aug python_filetype
-  au!
-  au Filetype python setl ts=4 sts=4 sw=4
-aug end
-" }}}
-
-" json_filetype {{{
+" json {{{
 aug json_filetype
   au!
   au Filetype json nnoremap <buffer> <Leader>j :%!jshon -S<CR>
+aug end
+" }}}
+
+" python {{{
+aug python_filetype
+  au!
+  au Filetype python setl ts=4 sts=4 sw=4
 aug end
 " }}}
 
@@ -50,20 +68,6 @@ nnoremap <Leader>m :make<CR>
 " .vimrc {{{
 nnoremap <Leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <Leader>sv :source $MYVIMRC<cr>
-" }}}
-" git {{{
-nnoremap <Leader>gb :Gblame<cr>
-nnoremap <Leader>gc :Gcommit -v<cr>
-nnoremap <Leader>gca :Gcommit -v -a<cr>
-nnoremap <Leader>gcaa :Gcommit -a -m.<cr>
-nnoremap <Leader>gcc :Gcommit -m.<cr>
-nnoremap <Leader>gd :Gdiff<cr>
-nnoremap <Leader>gpp :Git push<cr>
-nnoremap <Leader>gpm :Git pushm<cr>
-nnoremap <Leader>gpmf :Git pushmf<cr>
-nnoremap <Leader>gs :Gstatus<cr>
-nnoremap <Leader>gw :Gwrite<cr>
-nnoremap git :Git
 " }}}
 " }}}
 
