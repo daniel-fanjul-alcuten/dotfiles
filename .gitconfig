@@ -41,7 +41,9 @@
 	b = branch
 	bm = !"i=`whoami` && { git show-ref | grep \" refs/heads/$i\"; for r in `git remote`; do echo $r: && git ls-remote $r | grep \"\trefs/heads/$i\"; done; }"
 	bmr = !"i=`whoami` && { for r in `git remote`; do echo $r: && git ls-remote $r | grep \"$i\"; done; }"
+	bt = !"~/usr/local/bin/git-greb -t"
 	bump = !"submodule=\"${1%/}\" && shift && { branch=\"$1\" && shift || branch=$(git symbolic-ref-head); } && ( cd \"$submodule\" && git fetch origin \"$branch\" && git checkout FETCH_HEAD ) && git commit -e -m \"Bump $submodule submodule to $branch\" \"$submodule\""
+	bx = !"~/usr/local/bin/git-greb -x"
 	c = checkout
 	c- = checkout @{-1}
 	ca = commit -v -a
