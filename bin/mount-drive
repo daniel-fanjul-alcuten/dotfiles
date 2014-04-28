@@ -3,7 +3,7 @@ set -e
 
 umask 027
 
-while getopts "n:u:lem:s:t" opt; do
+while getopts "n:u:lem:s:ct" opt; do
   case $opt in
     n) name="$OPTARG";;
     u) uuid="$OPTARG";;
@@ -11,6 +11,7 @@ while getopts "n:u:lem:s:t" opt; do
     e) ext=true;;
     m) mounts="$OPTARG";;
     s) s3ql="$OPTARG";;
+    c) crypt=true;;
     t) mtp=true;;
     *) exit 1;;
   esac
@@ -69,12 +70,12 @@ elif [ "$s3ql" ]; then
   mount=mount.s3ql
   mount_options='--compress bzip2 --allow-other'
 
-  case "$s3ql" in
-    local://*)
-      if ! sudo fsck.s3ql "$s3ql"; then
-        red "$name: fsck.s3ql failed"
-      fi
-  esac
+  if [ "$crypt" ]; then
+    echo -n "$name: "
+  fi
+  if ! sudo fsck.s3ql "$s3ql"; then
+    red "$name: fsck.s3ql failed"
+  fi
 
 elif [ "$mtp" ]; then
   device=""
@@ -90,6 +91,9 @@ if ! sudo ln -sfn "$mount_point" /"$name"; then
   red "$name: ln -s failed"
 fi
 
+if [ "$crypt" ]; then
+  echo -n "$name: "
+fi
 if ! sudo $mount $mount_options $device "$mount_point"; then
   red "$name: $mount failed"
 fi

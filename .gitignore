@@ -59,7 +59,11 @@
 /.pulse
 /.pulse-cookie
 /.puppet
-/.s3ql
+/.s3ql/authinfo2
+/.s3ql/fsck.log
+/.s3ql/local:*
+/.s3ql/mount.log
+/.s3ql/s3:*
 /.sc_history
 /.snapshot
 /.speech-dispatcher

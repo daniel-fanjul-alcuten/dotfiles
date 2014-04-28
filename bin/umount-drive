@@ -25,7 +25,7 @@ if [ "$s3ql" ]; then
   umount=umount.s3ql
 fi
 
-if ! sudo umount "$mount_point"; then
+if ! sudo $umount "$mount_point"; then
   red "$name: umount failed"
 fi
 

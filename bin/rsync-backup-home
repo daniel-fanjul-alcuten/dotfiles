@@ -18,20 +18,31 @@ fi
 
 source ~/etc/backup.cfg
 
-mountpoint=/media/s3ql
-basedir="$mountpoint"/$(hostname)
-work="$basedir"/work
-dir="$basedir"/"$now"
+for name in s3ql dfs3ql; do
 
-~/bin/mount-s3ql
+  mountpoint="/media/$name"
+  if ! sudo mountpoint -q "$mountpoint"; then
+    continue
+  fi
 
-mkdir -p "$work"
-rsync -avhq --xattrs --hard-links --delete --delete-excluded $basic_excludes --whole-file --inplace --one-file-system ~/ "$work"
+  if [ "$name" = dfs3ql ]; then
+    if [ $(hostname) == furya ]; then
+      continue
+    fi
+  fi
 
-sudo s3qlcp "$work" "$dir".s3qlcp
-mv "$dir".s3qlcp "$dir".s3qllock
+  basedir="$mountpoint"/backups/$(hostname)/$(whoami)
+  work="$basedir"/work
+  dir="$basedir"/"$now"
 
-sudo s3qllock "$dir".s3qllock
-mv "$dir".s3qllock "$dir"
+  mkdir -p "$work"
+  ~/bin/rsync-s3ql -v --delete --delete-excluded $basic_excludes   --one-file-system ~/ "$work"
 
-sudo s3qlctrl upload-meta "$mountpoint"
+  sudo s3qlcp "$work" "$dir".s3qlcp
+  mv "$dir".s3qlcp "$dir".s3qllock
+
+  sudo s3qllock "$dir".s3qllock
+  mv "$dir".s3qllock "$dir"
+
+  sudo s3qlctrl upload-meta "$mountpoint"
+done
