@@ -160,6 +160,7 @@ deb http://repository.spotify.com stable non-free
               'lockout',
               'lrzip',
               'lsyncd',
+              'lynx',
               'mail-notification',
               'mailutils',
               'make',
