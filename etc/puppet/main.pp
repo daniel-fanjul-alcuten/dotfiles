@@ -240,6 +240,7 @@ deb http://repository.spotify.com stable non-free
               'tinycdb',
               'tmux',
               'topgit',
+              'tor',
               'totem',
               'tree',
               'trend',
