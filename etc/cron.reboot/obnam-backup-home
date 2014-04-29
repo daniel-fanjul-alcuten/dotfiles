@@ -1,3 +1,0 @@
-#!/bin/bash
-
-tsp -m ~/bin/obnam-backup-home >/dev/null
