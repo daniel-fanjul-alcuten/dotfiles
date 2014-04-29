@@ -1,0 +1,19 @@
+#!/bin/bash
+set -e
+set -x
+
+cd ~
+for name in s3ql dfs3ql; do
+  mountpoint="/media/$name"
+  if ! sudo mountpoint -q "$mountpoint"; then
+    continue
+  fi
+  dir="$mountpoint"/homes/$(hostname)/$(whoami)
+  mkdir -p "$dir"
+  now=$(date +%Y%m%d%H%M%S)
+  file="$dir"/"$now".bundle.git
+  git bundle create "$file".tmp --all
+  sudo s3qllock "$file".tmp
+  mv "$file"{.tmp,}
+  find "$dir" -type f | ~/usr/local/bin/forget-backups | xargs -r -t -n 1 sudo s3qlrm
+done
