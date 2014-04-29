@@ -1,3 +1,0 @@
-#!/bin/bash
-
-tsp -m ~/bin/bup-backup-home >/dev/null

@@ -1,1 +1,1 @@
-../cron.reboot/rsync-backup-home
+../cron.hourly/rsync-backup-home

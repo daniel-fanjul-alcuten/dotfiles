@@ -1,1 +1,3 @@
-../cron.reboot/rsync-backup-home
+#!/bin/bash
+
+TERM= tsp -m ~/bin/rsync-backup-home >/dev/null

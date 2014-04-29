@@ -1,1 +1,3 @@
-../cron.reboot/bup-backup-home
+#!/bin/bash
+
+tsp -m ~/bin/bup-backup-home >/dev/null
