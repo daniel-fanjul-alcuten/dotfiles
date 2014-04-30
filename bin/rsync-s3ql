@@ -1,3 +1,4 @@
 #!/bin/bash
+set -e
 
 rsync --archive --human-readable --xattrs --hard-links --whole-file --inplace "$@"
