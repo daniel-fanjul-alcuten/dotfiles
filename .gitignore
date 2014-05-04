@@ -1,6 +1,7 @@
 /.ICEauthority
 /.VirtualBox
 /.Xauthority
+/.appdata
 /.aptitude
 /.apvlvinfo
 /.aria2/dht.dat
@@ -11,9 +12,12 @@
 /.compiz
 /.compiz-1
 /.config/Empathy
+/.config/MonoGame
+/.config/RogueLegacyStorageContainer
 /.config/Trolltech.conf
 /.config/autostart
 /.config/awesome/rc.lua
+/.config/com.grapefrukt.games.rymdkapsel1
 /.config/compiz-1
 /.config/dconf
 /.config/eog
@@ -49,6 +53,7 @@
 /.lesshst
 /.local
 /.m2/repository
+/.macromedia
 /.mission-control
 /.moosic/saved_state
 /.moosic/server_log
