@@ -28,6 +28,7 @@
 /.config/ranger
 /.config/software-center
 /.config/spotify
+/.config/update-notifier
 /.config/user-dirs.dirs
 /.config/user-dirs.locale
 /.dbus
@@ -68,6 +69,9 @@
 /.snapshot
 /.speech-dispatcher
 /.stack.wcd
+/.steam
+/.steampath
+/.steampid
 /.thumbnails
 /.thunderbird
 /.treedata.wcd
@@ -79,6 +83,7 @@
 /.w3m
 /.xsession-errors
 /.xsession-errors.old
+/Desktop/steam.desktop
 /Downloads
 /VirtualBox VMs
 /examples.desktop
