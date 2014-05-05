@@ -32,6 +32,7 @@
 /.config/ranger
 /.config/software-center
 /.config/spotify
+/.config/unity3d
 /.config/update-notifier
 /.config/user-dirs.dirs
 /.config/user-dirs.locale
@@ -79,6 +80,7 @@
 /.steampid
 /.thumbnails
 /.thunderbird
+/.towns
 /.treedata.wcd
 /.vagrant.d
 /.vim-go
