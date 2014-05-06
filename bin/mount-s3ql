@@ -1,4 +1,3 @@
 #!/bin/bash
 
-# sudo mkfs.s3ql --plain /var/s3ql
 ~/bin/mount-drive -n s3ql -s local:///var/s3ql

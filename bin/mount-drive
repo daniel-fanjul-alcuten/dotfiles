@@ -3,7 +3,7 @@ set -e
 
 umask 027
 
-while getopts "n:u:lem:s:ct" opt; do
+while getopts "n:u:lem:s:cti:" opt; do
   case $opt in
     n) name="$OPTARG";;
     u) uuid="$OPTARG";;
@@ -13,6 +13,7 @@ while getopts "n:u:lem:s:ct" opt; do
     s) s3ql="$OPTARG";;
     c) crypt=true;;
     t) mtp=true;;
+    i) cifs="$OPTARG";;
     *) exit 1;;
   esac
 done
@@ -25,6 +26,7 @@ if sudo mountpoint -q "$mount_point"; then
   green "$name: already mounted"
 fi
 
+mount=mount
 if [ "$uuid" ]; then
   device=/dev/disk/by-uuid/"$uuid"
   if ! [ -b "$device" ]; then
@@ -42,7 +44,6 @@ if [ "$uuid" ]; then
     device="$mapper"
   fi
 
-  mount=mount
   mount_options=''
   if [ "$ext" ]; then
     mount_options='-o noatime'
@@ -81,6 +82,10 @@ elif [ "$mtp" ]; then
   device=""
   mount=mtpfs
   mount_options='-o allow_other'
+
+elif [ "$cifs" ]; then
+  device="$cifs"
+  mount_options='-t cifs'
 fi
 
 if ! sudo mkdir -p "$mount_point"; then
@@ -94,7 +99,7 @@ fi
 if [ "$crypt" ]; then
   echo -n "$name: "
 fi
-if ! sudo $mount $mount_options $device "$mount_point"; then
+if ! sudo $mount $mount_options $MOUNT_OPTIONS $device "$mount_point"; then
   red "$name: $mount failed"
 fi
 

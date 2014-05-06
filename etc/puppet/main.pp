@@ -89,6 +89,7 @@ deb http://repository.spotify.com stable non-free
               'capistrano',
               'cfget',
               'cfv',
+              'cifs-utils',
               'clusterssh',
               'cmatrix',
               'cmatrix-xfont',
