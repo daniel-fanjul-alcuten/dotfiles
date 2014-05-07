@@ -182,12 +182,12 @@ cd() {
 halt() {
   sudo -v && \
     run-parts-cron halt -v && \
-    tsp -m sudo shutdown -h +1 >/dev/null
+    tsp -m sudo shutdown -h now >/dev/null
 }
 reboot() {
   sudo -v && \
     run-parts-cron halt -v && \
-    tsp -m sudo shutdown -r +1 >/dev/null
+    tsp -m sudo shutdown -r now >/dev/null
 }
 xlogout() {
   sudo -v && \
