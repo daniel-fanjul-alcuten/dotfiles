@@ -31,6 +31,7 @@
 /.config/nautilus
 /.config/ranger
 /.config/software-center
+/.config/spacebasedf9
 /.config/spotify
 /.config/unity3d
 /.config/update-notifier
@@ -69,7 +70,7 @@
 /.s3ql/authinfo2
 /.s3ql/fsck.log
 /.s3ql/local:*
-/.s3ql/mount.log
+/.s3ql/mount.log*
 /.s3ql/s3:*
 /.sc_history
 /.snapshot
