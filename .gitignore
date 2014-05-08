@@ -46,6 +46,7 @@
 /.gimp-2.6
 /.gmrun_history
 /.gnome2
+/.gnupg/.*
 /.gnupg/gpg-agent-*
 /.gnupg/random_seed
 /.goutputstream-*
