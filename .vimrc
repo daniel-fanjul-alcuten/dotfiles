@@ -59,7 +59,7 @@ com! -nargs=1 -complete=dir Lcdgo :lcd <args> | :argl *.go
 " json {{{
 aug json_filetype
   au!
-  au Filetype json nnoremap <buffer> <Leader>j :%!jshon -S<CR>
+  au Filetype json nnoremap <buffer> <Leader>j :%!python -mjson.tool<CR>
 aug end
 " }}}
 
