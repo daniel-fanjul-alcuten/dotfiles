@@ -1,1 +1,0 @@
-1 0 bundle-backup-home cd ~ && tsp -m ~/bin/bundle-backup-home >/dev/null
