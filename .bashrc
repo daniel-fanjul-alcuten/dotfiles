@@ -340,6 +340,10 @@ if type git &>/dev/null; then
     alias $command="git $command"
     complete -o bashdefault -o default -o nospace -F _complete_git_aliases $command
   done
+  if type git-greb &>/dev/null; then
+    source <(git-greb --bash _greb_completion)
+    complete -F _greb_completion greb
+  fi
 fi
 
 # vim configuration
