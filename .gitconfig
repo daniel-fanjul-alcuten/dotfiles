@@ -92,6 +92,7 @@
 	pushmf = !me=$(whoami) && git push -vf origin \"refs/heads/$me/*\"
 	r = remote
 	re = rebase --interactive
+	reu = rebase --interactive HEAD@{u}
 	reus = !git reset --soft $(git commit-tree -p @{u} HEAD: <<< $(git symbolic-ref-head))
 	rsclean = !git clean -fdx && git submodule foreach --recursive git clean -fdx
 	rshard = !git reset --hard && git submodule foreach --recursive git reset --hard
