@@ -20,6 +20,7 @@
 /.config/com.grapefrukt.games.rymdkapsel1
 /.config/compiz-1
 /.config/dconf
+/.config/enchant
 /.config/eog
 /.config/evolution
 /.config/gedit
@@ -62,6 +63,7 @@
 /.moosic/server_log
 /.mozilla
 /.mplayer
+/.mysql_history
 /.obnam
 /.pip
 /.pki
