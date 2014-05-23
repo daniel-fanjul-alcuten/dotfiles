@@ -80,6 +80,7 @@
 	lgda = log --pretty=oneline --abbrev-commit --graph --decorate --all
 	lrb = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	n = commit -v --amend
+	nn = commit -v --amend --reset-author
 	objs = count-objects -v
 	p = diff --cached
 	pf = pull --ff-only
