@@ -253,6 +253,7 @@ deb http://repository.spotify.com stable non-free
               'ucspi-unix',
               'udpcast',
               'unrar',
+              'unrtf',
               'unzip',
               'uptimed',
               'uuid',
