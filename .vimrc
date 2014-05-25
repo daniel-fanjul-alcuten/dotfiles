@@ -60,6 +60,7 @@ com! -nargs=1 -complete=dir Lcdgo :lcd <args> | :argl *.go
 aug json_filetype
   au!
   au Filetype json nnoremap <buffer> <Leader>j :%!python -mjson.tool<CR>
+  au BufRead,BufNewFile *.json set ft=json
 aug end
 " }}}
 
