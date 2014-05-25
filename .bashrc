@@ -260,6 +260,12 @@ if [ -d ~/bin ] ; then
   PATH=~/bin:"$PATH"
 fi
 
+# completions
+if type fs &>/dev/null; then
+  source <(fs --bash _fs_completion)
+  complete -F _fs_completion fs
+fi
+
 # set CDPATH
 export CDPATH=.:~:~/src:~/lib/go/src:~/lib/go/src/github.com/daniel-fanjul-alcuten
 
