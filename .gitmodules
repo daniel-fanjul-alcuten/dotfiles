@@ -28,6 +28,9 @@
 [submodule ".vim/bundle/syntastic"]
 	path = .vim/bundle/syntastic
 	url = https://github.com/scrooloose/syntastic.git
+[submodule ".vim/bundle/vim-go"]
+	path = .vim/bundle/vim-go
+	url = https://github.com/fatih/vim-go.git
 [submodule "usr/share/irssi-colors-solarized"]
 	path = usr/share/irssi-colors-solarized
 	url = https://github.com/huyz/irssi-colors-solarized.git
@@ -43,6 +46,6 @@
 [submodule "lib/go/src/github.com/daniel-fanjul-alcuten/forget-backups"]
 	path = lib/go/src/github.com/daniel-fanjul-alcuten/forget-backups
 	url = https://github.com/daniel-fanjul-alcuten/forget-backups.git
-[submodule ".vim/bundle/vim-go"]
-	path = .vim/bundle/vim-go
-	url = https://github.com/fatih/vim-go.git
+[submodule "lib/go/src/github.com/daniel-fanjul-alcuten/fs"]
+	path = lib/go/src/github.com/daniel-fanjul-alcuten/fs
+	url = https://github.com/daniel-fanjul-alcuten/fs.git

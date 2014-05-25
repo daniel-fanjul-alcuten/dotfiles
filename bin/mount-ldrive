@@ -1,3 +1,0 @@
-#!/bin/bash
-
-~/bin/mount-drive -n ldrive -u 262cd407-0dc5-4609-9233-a7c979565f27 -l -e -m 27

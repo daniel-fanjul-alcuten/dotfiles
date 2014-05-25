@@ -1,6 +1,0 @@
-#!/bin/bash
-
-~/bin/umount-mdrive
-~/bin/umount-wdrive
-~/bin/umount-ldrive
-~/bin/umount-s3ql

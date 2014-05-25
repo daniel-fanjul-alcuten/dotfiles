@@ -1,7 +1,8 @@
 EXECUTABLES=\
 						forget-backups \
 						git-greb \
-						gotags
+						gotags \
+						fs
 
 .PHONY: default
 default: clean list compile install test

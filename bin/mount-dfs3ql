@@ -1,3 +1,0 @@
-#!/bin/bash
-
-~/bin/mount-drive -n dfs3ql -c -s s3://dfs3ql/

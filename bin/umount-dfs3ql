@@ -1,3 +1,0 @@
-#!/bin/bash
-
-~/bin/umount-drive -n dfs3ql -s

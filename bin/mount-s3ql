@@ -1,3 +1,0 @@
-#!/bin/bash
-
-~/bin/mount-drive -n s3ql -s local:///var/s3ql

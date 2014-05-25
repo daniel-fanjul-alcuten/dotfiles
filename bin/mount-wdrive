@@ -1,3 +1,0 @@
-#!/bin/bash
-
-~/bin/mount-drive -n wdrive -u e06f119a-1ac6-43b1-8229-72d97db4ffd8 -l -e -m 31
