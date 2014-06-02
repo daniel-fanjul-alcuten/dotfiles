@@ -150,5 +150,3 @@
 [filter "gofmt"]
 	clean = gofmt
 	smudge = gofmt
-[url "git@github.com:"]
-	insteadof = https://github.com/
