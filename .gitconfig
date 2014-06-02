@@ -65,6 +65,7 @@
 	fsbs = !git fa && git sbs
 	fsbu = !git fa && git sbu
 	fsr = !"git fa; git sr"
+	g- = !"if b=$(git symbolic-ref --short GREB_HEAD); then ~/usr/local/bin/git-greb -l -C \"$b\"; else ~/usr/local/bin/git-greb -l; fi"
 	gerrit = review
 	gerrit-hook = !"scp git.spotify.net:hooks/commit-msg $(git rev-parse --git-dir)/hooks/"
 	gerrit-hook-submodules = !"git submodule foreach --recursive 'scp git.spotify.net:hooks/commit-msg $(git rev-parse --git-dir)/hooks/'"
