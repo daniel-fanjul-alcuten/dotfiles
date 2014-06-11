@@ -52,6 +52,7 @@
 	d = diff
 	ds = diff --stat
 	du = diff @{u}
+	dus = diff --stat @{u}
 	empty = commit --allow-empty -m empty
 	f = fetch
 	fa = fetch --prune --all
