@@ -81,6 +81,7 @@
 /.sc_history
 /.snapshot
 /.speech-dispatcher
+/.ssh/known_hosts.old
 /.stack.wcd
 /.steam
 /.steampath
