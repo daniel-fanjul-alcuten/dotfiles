@@ -70,6 +70,7 @@
 	gerrit = review
 	gerrit-hook = !"scp git.spotify.net:hooks/commit-msg $(git rev-parse --git-dir)/hooks/"
 	gerrit-hook-submodules = !"git submodule foreach --recursive 'scp git.spotify.net:hooks/commit-msg $(git rev-parse --git-dir)/hooks/'"
+	gl = !"~/usr/local/bin/git-greb -l"
 	greb = !"~/usr/local/bin/git-greb"
 	hard = reset --hard
 	hardu = reset --hard @{u}
