@@ -37,9 +37,6 @@
 [submodule "usr/share/gnome-terminal-colors-solarized"]
 	path = usr/share/gnome-terminal-colors-solarized
 	url = git@github.com:sigurdga/gnome-terminal-colors-solarized.git
-[submodule "lib/go/src/github.com/jstemmer/gotags"]
-	path = lib/go/src/github.com/jstemmer/gotags
-	url = git@github.com:jstemmer/gotags.git
 [submodule "lib/go/src/github.com/daniel-fanjul-alcuten/git-greb"]
 	path = lib/go/src/github.com/daniel-fanjul-alcuten/git-greb
 	url = git@github.com:daniel-fanjul-alcuten/git-greb.git

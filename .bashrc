@@ -515,7 +515,7 @@ fi
 
 # gvm
 if type gvm &>/dev/null; then
-  gvm use 1.2.1
+  gvm use go1.3
   GOPATH=~/lib/go:"$GOPATH"
 fi
 

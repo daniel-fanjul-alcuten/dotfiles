@@ -48,7 +48,7 @@ aug go_filetype
   au Filetype go setl makeprg=go\ test\ ./...
   au Filetype go nnoremap <buffer> <Leader>f :GoFmt<CR>
   au Filetype go nnoremap <buffer> <Leader>t :GoTest<CR>
-  au BufWrite *.go silent !gotags -L <(find . -type f -name \*.go) > tags
+  au BufWrite *.go silent !~/.vim-go/gotags -L <(find . -type f -name \*.go) > tags
 aug end
 com! -nargs=1 -complete=dir Gar :args <args>/*.go
 com! -nargs=1 -complete=dir Gargl :argl <args>/*.go
