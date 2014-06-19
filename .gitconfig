@@ -41,9 +41,9 @@
 	b = branch
 	bm = !"i=`whoami` && { git show-ref | grep \" refs/heads/$i\"; for r in `git remote`; do echo $r: && git ls-remote $r | grep \"\trefs/heads/$i\"; done; }"
 	bmr = !"i=`whoami` && { for r in `git remote`; do echo $r: && git ls-remote $r | grep \"$i\"; done; }"
-	bt = !"~/usr/local/bin/git-greb -t"
+	bt = !~/usr/local/bin/git-greb -t
 	bump = !"submodule=\"${1%/}\" && shift && { branch=\"$1\" && shift || branch=$(git symbolic-ref-head); } && ( cd \"$submodule\" && git fetch origin \"$branch\" && git checkout FETCH_HEAD ) && git commit -e -m \"Bump $submodule submodule to $branch\" \"$submodule\""
-	bx = !"~/usr/local/bin/git-greb -x"
+	bx = !~/usr/local/bin/git-greb -x
 	c = checkout
 	c- = checkout @{-1}
 	ca = commit -v -a
@@ -67,13 +67,13 @@
 	fsbu = !git fa && git sbu
 	fsr = !"git fa; git sr"
 	g- = !"if b=$(git symbolic-ref --short GREB_HEAD); then ~/usr/local/bin/git-greb -l -C \"$b\"; else ~/usr/local/bin/git-greb -l; fi"
-	ga = !"~/usr/local/bin/git-greb -l -C a"
+	ga = !~/usr/local/bin/git-greb -l -C a
 	gerrit = review
 	gerrit-hook = !"scp git.spotify.net:hooks/commit-msg $(git rev-parse --git-dir)/hooks/"
 	gerrit-hook-submodules = !"git submodule foreach --recursive 'scp git.spotify.net:hooks/commit-msg $(git rev-parse --git-dir)/hooks/'"
-	gl = !"~/usr/local/bin/git-greb -l"
-	gn = !"~/usr/local/bin/git-greb -l -C n"
-	greb = !"~/usr/local/bin/git-greb"
+	gl = !~/usr/local/bin/git-greb -l
+	gn = !~/usr/local/bin/git-greb -l -C n
+	greb = !~/usr/local/bin/git-greb
 	hard = reset --hard
 	hardu = reset --hard @{u}
 	history-reset = !git reset `echo init | git commit-tree HEAD:`
