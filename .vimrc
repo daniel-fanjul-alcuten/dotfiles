@@ -89,6 +89,8 @@ let g:syntastic_auto_jump=1
 let g:syntastic_auto_loc_list=1
 let g:syntastic_check_on_open=0
 let g:syntastic_python_checkers=['python', 'pep8', 'flake8']
+let g:syntastic_go_checkers=['go', 'govet']
 nnoremap <Leader>sc :SyntasticCheck<CR>
 nnoremap <Leader>st :SyntasticToggleMode<CR>
+nnoremap <Leader>sr :SyntasticReset<CR>
 " }}}
