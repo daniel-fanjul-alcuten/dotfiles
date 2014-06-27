@@ -46,3 +46,9 @@
 [submodule "lib/go/src/github.com/daniel-fanjul-alcuten/fs"]
 	path = lib/go/src/github.com/daniel-fanjul-alcuten/fs
 	url = git@github.com:daniel-fanjul-alcuten/fs.git
+[submodule "lib/go/src/github.com/daniel-fanjul-alcuten/cookies"]
+	path = lib/go/src/github.com/daniel-fanjul-alcuten/cookies
+	url = git@github.com:daniel-fanjul-alcuten/cookies
+[submodule "lib/go/src/github.com/daniel-fanjul-alcuten/cookies-reset"]
+	path = lib/go/src/github.com/daniel-fanjul-alcuten/cookies-reset
+	url = git@github.com:daniel-fanjul-alcuten/cookies-reset.git

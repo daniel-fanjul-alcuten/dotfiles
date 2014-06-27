@@ -1,7 +1,9 @@
 EXECUTABLES=\
+						cookies \
+						cookies-reset \
 						forget-backups \
-						git-greb \
-						fs
+						fs \
+						git-greb
 
 .PHONY: default
 default: clean list compile install test
