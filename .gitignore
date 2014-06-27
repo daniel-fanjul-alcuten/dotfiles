@@ -5,6 +5,7 @@
 /.aptitude
 /.apvlvinfo
 /.aria2/dht.dat
+/.aws
 /.azureus
 /.bash_history
 /.bup
@@ -29,6 +30,7 @@
 /.config/google-chrome
 /.config/htop
 /.config/libreoffice
+/.config/menus
 /.config/monitors.xml
 /.config/nautilus
 /.config/ranger
@@ -48,6 +50,7 @@
 /.gegl-0.0
 /.gimp-2.6
 /.gmrun_history
+/.gnome
 /.gnome2
 /.gnupg/.*
 /.gnupg/gpg-agent-*
