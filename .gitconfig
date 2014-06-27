@@ -66,13 +66,16 @@
 	fsbs = !git fa && git sbs
 	fsbu = !git fa && git sbu
 	fsr = !"git fa; git sr"
-	g- = !"if b=$(git symbolic-ref --short GREB_HEAD); then ~/usr/local/bin/git-greb -l -C \"$b\"; else ~/usr/local/bin/git-greb -l; fi"
-	ga = !~/usr/local/bin/git-greb -l -C a
+	g- = !"if b=$(git symbolic-ref --short GREB_HEAD); then ~/usr/local/bin/git-greb -l -C \"$b\"; else ~/usr/local/bin/git-greb; fi"
+	ga = !~/usr/local/bin/git-greb -C a
 	gerrit = review
 	gerrit-hook = !"scp git.spotify.net:hooks/commit-msg $(git rev-parse --git-dir)/hooks/"
 	gerrit-hook-submodules = !"git submodule foreach --recursive 'scp git.spotify.net:hooks/commit-msg $(git rev-parse --git-dir)/hooks/'"
 	gl = !~/usr/local/bin/git-greb -l
-	gn = !~/usr/local/bin/git-greb -l -C n
+	gl- = !"if b=$(git symbolic-ref --short GREB_HEAD); then ~/usr/local/bin/git-greb -l -C \"$b\"; else ~/usr/local/bin/git-greb -l; fi"
+	gla = !~/usr/local/bin/git-greb -l -C a
+	gln = !~/usr/local/bin/git-greb -l -C n
+	gn = !~/usr/local/bin/git-greb -C n
 	greb = !~/usr/local/bin/git-greb
 	hard = reset --hard
 	hardu = reset --hard @{u}
