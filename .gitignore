@@ -69,6 +69,7 @@
 /.moosic/server_log
 /.mozilla
 /.mplayer
+/.mysql
 /.mysql_history
 /.obnam
 /.pip
