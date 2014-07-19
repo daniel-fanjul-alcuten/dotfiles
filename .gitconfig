@@ -86,6 +86,10 @@
 	lg = log --pretty=oneline --abbrev-commit --graph
 	lgd = log --pretty=oneline --abbrev-commit --graph --decorate
 	lgda = log --pretty=oneline --abbrev-commit --graph --decorate --all
+	lgdar = log --pretty=oneline --abbrev-commit --graph --decorate --all --format=raw
+	lgdr = log --pretty=oneline --abbrev-commit --graph --decorate --format=raw
+	lgr = log --pretty=oneline --abbrev-commit --graph --format=raw
+	lr = log --oneline --abbrev-commit --format=raw
 	lrb = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	n = commit -v --amend
 	nn = commit -v --amend --reset-author
