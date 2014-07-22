@@ -3,7 +3,10 @@ set -e
 
 version="$1" && shift || exit 1
 
-[ -s ~/.gvm/scripts/gvm ] && source ~/.gvm/scripts/gvm
+sudo aptitude install vim curl bison
+
+[ -s ~/.gvm/scripts/gvm ] || bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
+source ~/.gvm/scripts/gvm
 gvm install "$version"
 gvm use "$version"
 set -x
