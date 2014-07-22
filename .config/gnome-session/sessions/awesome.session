@@ -1,5 +1,0 @@
-[GNOME Session]
-Name=AWESOME
-RequiredComponents=gnome-settings-daemon;
-FallbackSession=gnome-fallback
-DesktopName=AWESOME

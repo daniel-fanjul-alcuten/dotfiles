@@ -1,3 +1,13 @@
+-- Override awesome.quit when we're using GNOME
+_awesome_quit = awesome.quit
+awesome.quit = function()
+  if os.getenv("DESKTOP_SESSION") == "awesome-gnome" then
+    os.execute("/usr/bin/gnome-session-quit")
+  else
+    _awesome_quit()
+  end
+end
+
 -- Standard awesome library
 require("awful")
 require("awful.autofocus")
@@ -402,4 +412,3 @@ client.add_signal("unfocus", function(c) c.border_color = beautiful.border_norma
 -- }}}
 
 -- start applications
-awful.util.spawn("gnome-session --session=awesome")
