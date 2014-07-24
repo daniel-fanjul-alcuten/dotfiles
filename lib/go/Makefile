@@ -36,7 +36,7 @@ install: $(foreach filename,$(EXECUTABLES),~/usr/local/bin/$(filename))
 	mkdir -p $@
 
 ~/usr/local/bin/%: ./bin/% compile ~/usr/local/bin
-	cp $< $@
+	cp -f $< $@
 
 .PHONY: test
 test:
