@@ -3,7 +3,8 @@ EXECUTABLES=\
 						cookies-reset \
 						forget-backups \
 						fs \
-						git-greb
+						git-greb \
+						glacier
 
 .PHONY: default
 default: clean list compile install test
