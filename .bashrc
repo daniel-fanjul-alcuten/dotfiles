@@ -267,7 +267,7 @@ fi
 
 # completions
 if type fs &>/dev/null; then
-  source <(fs --bash _fs_completion)
+  source <(fs --bash _fs_completion 2>/dev/null)
   complete -F _fs_completion fs
 fi
 
