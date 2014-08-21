@@ -14,4 +14,7 @@ go get -u code.google.com/p/go.tools/cmd/vet
 go get -u code.google.com/p/go.tools/cmd/cover
 go get -u code.google.com/p/go.tools/cmd/godoc
 go get -u github.com/petar/GoLLRB/llrb
+go get -u github.com/ha/doozerd
+go get -u github.com/ha/doozer
+go get -u github.com/ha/doozer/cmd/doozer
 vi
