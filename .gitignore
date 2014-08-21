@@ -39,7 +39,11 @@
 /.config/monitors.xml.backup
 /.config/nautilus
 /.config/pulse
-/.config/ranger
+/.config/ranger/bookmarks
+/.config/ranger/history
+/.config/ranger/rifle.conf
+/.config/ranger/scope.sh
+/.config/ranger/tagged
 /.config/software-center
 /.config/spacebasedf9
 /.config/spotify
