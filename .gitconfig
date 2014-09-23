@@ -119,6 +119,7 @@
 	squash = !s=\"$1\" && shift && git ci --squash=\"$s\"
 	sr = show-ref
 	symbolic-ref-head = symbolic-ref --short HEAD
+	ua = !git symbolic-ref refs/heads/a $(git rev-parse --symbolic-full-name @)
 	un = !git symbolic-ref refs/heads/n $(git rev-parse --symbolic-full-name @)
 	ur = update-ref
 [status]
