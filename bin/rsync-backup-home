@@ -25,16 +25,29 @@ for name in s3ql dfs3ql; do
     continue
   fi
 
-  basedir="$mountpoint"/backups/$(hostname)/$(whoami)
-  work="$basedir"/work
-  dir="$basedir"/"$now"
+  dir="$mountpoint"
+  mkdir -p "$dir"
+  chmod g+w "$dir" || true
 
+  dir="$mountpoint"/backups
+  mkdir -p "$dir"
+  chmod g+w "$dir" || true
+
+  dir="$dir"/$(hostname)
+  mkdir -p "$dir"
+  chmod g+w "$dir" || true
+
+  dir="$dir"/$(whoami)
+  mkdir -p "$dir"
+  chmod g+w "$dir" || true
+
+  work="$dir"/work
   mkdir -p "$work"
   ~/bin/rsync-s3ql -v --delete --delete-excluded $basic_excludes --one-file-system ~/ "$work"
 
+  dir="$dir"/"$now"
   sudo s3qlcp "$work" "$dir".s3qlcp
   mv "$dir".s3qlcp "$dir".s3qllock
-
   sudo s3qllock "$dir".s3qllock
   mv "$dir".s3qllock "$dir"
 
