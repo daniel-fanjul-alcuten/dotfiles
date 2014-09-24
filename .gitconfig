@@ -102,6 +102,8 @@
 	pull-from-peer = !bash -c \"b=\\$(git symbolic-ref --short HEAD) && c=\\$(sed s/$(whoami)/$1/ <<< \\$b) && set -x && git pull origin \\$c\"
 	pushm = !me=$(whoami) && git push -v origin \"refs/heads/$me/*\"
 	pushmf = !me=$(whoami) && git push -vf origin \"refs/heads/$me/*\"
+	pushmfn = !me=$(whoami) && git push -vfn origin \"refs/heads/$me/*\"
+	pushmn = !me=$(whoami) && git push -vn origin \"refs/heads/$me/*\"
 	r = remote
 	re = rebase --interactive
 	reu = rebase --interactive HEAD@{u}
