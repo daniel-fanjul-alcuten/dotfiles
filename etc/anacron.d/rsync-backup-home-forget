@@ -1,1 +1,0 @@
-1 9 rsync-backup-home-forget cd ~ && TERM= tsp -m ~/bin/rsync-backup-home-forget >/dev/null

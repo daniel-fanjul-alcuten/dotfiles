@@ -1,9 +1,0 @@
-#!/bin/bash
-set -e
-set -x
-
-for dir in /media/{s3ql,dfs3ql}/backups/*/*; do
-  if [ -d "$dir" ]; then
-    find "$dir" -mindepth 1 -maxdepth 1 -type d | ~/usr/local/bin/forget-backups | xargs -r -t -n 1 sudo s3qlrm
-  fi
-done

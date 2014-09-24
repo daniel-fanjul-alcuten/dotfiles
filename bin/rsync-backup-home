@@ -41,6 +41,10 @@ for name in s3ql dfs3ql; do
   mkdir -p "$dir"
   chmod g+w "$dir" || true
 
+  if [ -d "$dir" ]; then
+    find "$dir" -mindepth 1 -maxdepth 1 -type d | ~/usr/local/bin/forget-backups | xargs -r -t -n 1 sudo s3qlrm
+  fi
+
   work="$dir"/work
   mkdir -p "$work"
   ~/bin/rsync-s3ql -v --delete --delete-excluded $basic_excludes --one-file-system ~/ "$work"
