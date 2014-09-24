@@ -76,15 +76,15 @@ _prompt__hostname() {
 }
 _prompt_git() {
   local subdir
-  if ! subdir=`git rev-parse --show-prefix 2>/dev/null`; then
+  if ! subdir=$(git rev-parse --show-prefix 2>/dev/null); then
     _prompt_apply_color " ${PWD}" "prefix" "gray"
     return
   fi
   subdir="${subdir%/}"
   local prefix="${PWD%/$subdir}"
   _prompt_apply_color " ${prefix/*\/}${subdir:+/$subdir}" "prefix" "gray"
-  local branch=`git symbolic-ref -q HEAD 2>/dev/null`
-  [ -n "$branch" ] && branch=${branch#refs/heads/} || branch=`git rev-parse --short HEAD 2>/dev/null`
+  local branch=$(git symbolic-ref -q HEAD 2>/dev/null)
+  [ -n "$branch" ] && branch=${branch#refs/heads/} || branch=$(git rev-parse --short HEAD 2>/dev/null)
   _prompt_apply_color " $branch" "branch" "cyan"
   local git_dir="$(git rev-parse --git-dir 2>/dev/null)"
   if test -d "$git_dir/rebase-merge"; then
@@ -109,7 +109,7 @@ _prompt_git() {
 _prompt_jobscount()
 {
   local count=$(jobs -p | wc -l | tr -d ' ')
-  if [ $count -gt 0 ]; then
+  if [ "$count" -gt 0 ]; then
     _prompt_apply_color " [$count]" "jobscount" "yellow"
   fi
 }
@@ -205,12 +205,12 @@ xhalt() {
     tsp -m gnome-session-quit --power-off >/dev/null
 }
 down() {
-  yes "|" | head -$(($LINES - 3)) && echo v
+  yes "|" | head -$((LINES - 3)) && echo v
 }
 down() {
   echo -e "\\033[6n"
   read -s -d R foo
-  lines=$((LINES - $(echo $foo | cut -d \[ -f 2 | cut -d \; -f 1) - 2))
+  lines=$((LINES - $(echo "$foo" | cut -d \[ -f 2 | cut -d \; -f 1) - 2))
   while [ $lines -gt 0 ]; do
     echo \|
     lines=$((lines - 1))
