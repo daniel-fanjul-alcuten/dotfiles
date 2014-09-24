@@ -4,4 +4,10 @@ set -x
 
 source ~/etc/backup.cfg
 
-tar cf - $basic_excludes ~ 2>/dev/null | pv | flock -x ~/etc/backup.cfg bup split -n "$now".tar 2>/dev/null
+tar cf - $basic_excludes ~ 2>/dev/null |
+  pv |
+  flock -x ~/etc/backup.cfg bup split -n "$now".tar 2>/dev/null
+
+git --git-dir ~/.bup for-each-ref refs/heads --format '%(refname:short)' |
+  ~/usr/local/bin/forget-backups |
+  xargs -r -t -n 1 git --git-dir ~/.bup branch -q -D
