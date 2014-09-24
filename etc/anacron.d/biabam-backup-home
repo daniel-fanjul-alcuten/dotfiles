@@ -1,1 +1,0 @@
-1 0 biabam-backup-home cd ~ && tsp -m ~/bin/biabam-backup-home >/dev/null
