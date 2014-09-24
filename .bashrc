@@ -423,14 +423,20 @@ fi
 # ssh configuration
 ssh() {
   if [ "$STY" ]; then
+    local skip=
     for arg in "$@"; do
-      case "$arg" in
-        -*) :;;
-        *)
-          screen -X title "$arg"
-          break
-          ;;
-      esac
+      if [ "$skip" ]; then
+        skip=
+      else
+        case "$arg" in
+          -i) skip=true;;
+          -*) :;;
+          *)
+            screen -X title "$arg"
+            break
+            ;;
+        esac
+      fi
     done
   fi
   command ssh "$@"
