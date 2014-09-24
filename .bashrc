@@ -72,7 +72,7 @@ _prompt_date() {
   _prompt_apply_color "$(date +%T)" "date" "white"
 }
 _prompt__hostname() {
-  _prompt_apply_color " $(hostname)" "hostname" "blue"
+  _prompt_apply_color " $(whoami)@$(hostname)" "hostname" "blue"
 }
 _prompt_git() {
   local subdir
