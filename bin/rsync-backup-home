@@ -26,34 +26,30 @@ for name in s3ql dfs3ql; do
   fi
 
   dir="$mountpoint"
-  mkdir -p "$dir"
-  chmod g+w "$dir" || true
+  mkdir -m 0775 -p "$dir"
 
   dir="$mountpoint"/backups
-  mkdir -p "$dir"
-  chmod g+w "$dir" || true
+  mkdir -m 0775 -p "$dir"
 
   dir="$dir"/$(hostname)
-  mkdir -p "$dir"
-  chmod g+w "$dir" || true
+  mkdir -m 0775 -p "$dir"
 
   dir="$dir"/$(whoami)
-  mkdir -p "$dir"
-  chmod g+w "$dir" || true
-
-  if [ -d "$dir" ]; then
-    find "$dir" -mindepth 1 -maxdepth 1 -type d | ~/usr/local/bin/forget-backups | xargs -r -t -n 1 sudo s3qlrm
-  fi
+  mkdir -m 0775 -p "$dir"
 
   work="$dir"/work
-  mkdir -p "$work"
+  mkdir -m 0775 -p "$work"
   ~/bin/rsync-s3ql -v --delete --delete-excluded $basic_excludes --one-file-system ~/ "$work"
 
-  dir="$dir"/"$now"
-  sudo s3qlcp "$work" "$dir".s3qlcp
-  mv "$dir".s3qlcp "$dir".s3qllock
-  sudo s3qllock "$dir".s3qllock
-  mv "$dir".s3qllock "$dir"
+  file="$dir"/"$now"
+  sudo s3qlcp "$work" "$file".s3qlcp
+  mv "$file".s3qlcp "$file".s3qllock
+  sudo s3qllock "$file".s3qllock
+  mv "$file".s3qllock "$file"
+
+  find "$dir" -mindepth 1 -maxdepth 1 -type d |
+    ~/usr/local/bin/forget-backups |
+    xargs -r -t -n 1 sudo s3qlrm
 
   sudo s3qlctrl upload-meta "$mountpoint"
 done

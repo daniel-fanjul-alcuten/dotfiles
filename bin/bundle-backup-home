@@ -9,7 +9,8 @@ now=$(date +%Y%m%d%H%M%S)
 cd ~
 git bundle create "$tmpfile" --all
 
-git bundle list-heads "$tmpfile" | biabam "$tmpfile" -s "$(whoami)@$(hostname) home bundle backup" daniel.fanjul.alcuten@gmail.com
+git bundle list-heads "$tmpfile" |
+  biabam "$tmpfile" -s "$(whoami)@$(hostname) home bundle backup" daniel.fanjul.alcuten@gmail.com
 
 for name in s3ql dfs3ql; do
   mountpoint="/media/$name"
@@ -18,26 +19,25 @@ for name in s3ql dfs3ql; do
   fi
 
   dir="$mountpoint"
-  mkdir -p "$dir"
-  chmod g+w "$dir" || true
+  mkdir -m 0775 -p "$dir"
 
   dir="$dir"/homes
-  mkdir -p "$dir"
-  chmod g+w "$dir" || true
+  mkdir -m 0775 -p "$dir"
 
   dir="$dir"/$(hostname)
-  mkdir -p "$dir"
-  chmod g+w "$dir" || true
+  mkdir -m 0775 -p "$dir"
 
   dir="$dir"/$(whoami)
-  mkdir -p "$dir"
-  chmod g+w "$dir" || true
+  mkdir -m 0775 -p "$dir"
 
   file="$dir"/"$now".bundle.git
   cp "$tmpfile" "$file".tmp
   sudo s3qllock "$file".tmp
   mv "$file"{.tmp,}
-  find "$dir" -type f | ~/usr/local/bin/forget-backups | xargs -r -t -n 1 sudo s3qlrm
+
+  find "$dir" -type f |
+    ~/usr/local/bin/forget-backups |
+    xargs -r -t -n 1 sudo s3qlrm
 done
 
 rm -f "$tmpfile"
