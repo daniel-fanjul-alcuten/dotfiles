@@ -25,18 +25,12 @@ for name in s3ql dfs3ql; do
     continue
   fi
 
-  if [ "$name" = dfs3ql ]; then
-    if [ $(hostname) == furya ]; then
-      continue
-    fi
-  fi
-
   basedir="$mountpoint"/backups/$(hostname)/$(whoami)
   work="$basedir"/work
   dir="$basedir"/"$now"
 
   mkdir -p "$work"
-  ~/bin/rsync-s3ql -v --delete --delete-excluded $basic_excludes   --one-file-system ~/ "$work"
+  ~/bin/rsync-s3ql -v --delete --delete-excluded $basic_excludes --one-file-system ~/ "$work"
 
   sudo s3qlcp "$work" "$dir".s3qlcp
   mv "$dir".s3qlcp "$dir".s3qllock
