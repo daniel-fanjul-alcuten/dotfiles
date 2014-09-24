@@ -440,6 +440,9 @@ ssh() {
     done
   fi
   command ssh "$@"
+  local s=$?
+  cd .
+  return $s
 }
 
 # maven configuration
@@ -534,3 +537,6 @@ fi
 if type from &>/dev/null; then
   from -c
 fi
+
+# cd .
+cd .
