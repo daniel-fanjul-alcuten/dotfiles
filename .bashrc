@@ -240,11 +240,11 @@ iwhile() {
   done
 }
 mailnow() {
-  echo "$*" | mail -s "$*" dfanjul
+  echo "$*" | mail -s "$*" $(whoami)
 }
 maillater() {
   minutes="$1" && shift || minutes=1
-  echo echo \""$*"\" \| mail -s \""$*"\" dfanjul | at now + "$minutes" minute
+  echo echo \""$*"\" \| mail -s \""$*"\" $(whoami) | at now + "$minutes" minute
 }
 mutt() {
   command mutt "$@"
@@ -356,6 +356,12 @@ if type git &>/dev/null; then
     complete -F _greb_completion greb
   fi
 fi
+mkdir -p ~/.git/hooks
+cat > ~/.git/hooks/post-checkout <<-EOF
+	#!/bin/bash
+	chmod 644 ~/.ssh/config
+EOF
+chmod u+x ~/.git/hooks/post-checkout
 
 # vim configuration
 if type vim &>/dev/null; then
