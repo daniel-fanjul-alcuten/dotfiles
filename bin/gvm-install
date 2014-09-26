@@ -4,12 +4,13 @@ set -e
 version="$1" && shift || exit 1
 
 sudo aptitude install vim curl bison
-
 [ -s ~/.gvm/scripts/gvm ] || bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
 source ~/.gvm/scripts/gvm
 gvm install "$version"
 gvm use "$version"
 set -x
+
+git config --global --remove-section filter.gofmt
 go get -u code.google.com/p/go.tools/cmd/vet
 go get -u code.google.com/p/go.tools/cmd/cover
 go get -u code.google.com/p/go.tools/cmd/godoc
@@ -17,4 +18,6 @@ go get -u github.com/petar/GoLLRB/llrb
 go get -u github.com/ha/doozerd
 go get -u github.com/ha/doozer
 go get -u github.com/ha/doozer/cmd/doozer
+
+rm -rf ~/.vim-go
 vi
