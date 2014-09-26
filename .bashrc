@@ -299,6 +299,8 @@ if type git &>/dev/null; then
   }
   for command in $(git config -l --global | grep ^alias\\. | cut -d= -f1 | cut -c7-)\
       add \
+      am \
+      apply \
       archive \
       bisect \
       blame \
