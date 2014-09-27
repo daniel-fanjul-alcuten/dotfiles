@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# no bell
+xset -b
+
+# agents
+gpg-agent --daemon --sh --write-env-file ~/.gnupg/gpg-agent-info-"$(hostname)"
+if [ -f ~/.gnupg/gpg-agent-info-"$(hostname)" ]; then
+  . ~/.gnupg/gpg-agent-info-"$(hostname)"
+  export GPG_AGENT_INFO
+  export SSH_AUTH_SOCK
+fi
+
+# gnome
+gnome-power-manager &
+gnome-screensaver &
+gnome-settings-daemon &
+gnome-volume-manager &
+mail-notification &
+nm-applet &
+
+# awesome
+exec awesome
