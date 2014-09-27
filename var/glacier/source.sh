@@ -1,23 +1,22 @@
 #!/bin/bash
 
 glacierdir=~/var/glacier
-alias gpg="command gpg --homedir=$glacierdir/.gnupg"
 eval $(gpg -d $glacierdir/credentials.gpg)
 
 add-to-glacier() {
   file=$1 && shift || { echo file?; return 1; }
   set -o pipefail
   set -x
-  if ! command sha512sum "$file" | tee -a $glacierdir/sha512; then
+  if ! command nice sha512sum "$file" | tee -a $glacierdir/sha512; then
     set +x
     return 2
   fi
-  if ! gpg -es -r dfanjul-vault "$file"; then
+  if ! gpg -es -r dfanjul-vault -u dfanjul-vault "$file"; then
     set +x
     return 1
   fi
   tmpfile=add-to-glacier-$RANDOM
-  if ! command sha512sum "$file".gpg | tee -a $glacierdir/sha512 $tmpfile; then
+  if ! command nice sha512sum "$file".gpg | tee -a $glacierdir/sha512 $tmpfile; then
     command rm -f "$tmpfile"
     set +x
     return 3
@@ -31,7 +30,8 @@ add-to-glacier() {
     set +x
     return 5
   fi
-  if ! archiveId=$(glacier multipart run eu-west-1 dfanjul "$file".gpg 64 "$sha"); then
+  if ! archiveId=$(command nice glacier multipart run eu-west-1 dfanjul "$file".gpg 64 "$sha"); then
+    beep -f 300 -r 3 -l 150 -n -f 200 -l 400
     glacier multipart print "$file".gpg
     set +x
     return 7
@@ -40,5 +40,6 @@ add-to-glacier() {
     set +x
     return 8
   fi
+  beep -f 1000 -r 2 -n -r 7 -l 10 -f 600
   set +x
 }
