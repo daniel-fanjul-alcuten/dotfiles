@@ -13,7 +13,7 @@ Exec {
   logoutput => 'on_failure',
 }
 
-class dfanjul ($user = 'dfanjul') {
+class root ($user = 'dfanjul') {
 
   if $operatingsystem == 'Debian' {
 
@@ -283,20 +283,23 @@ deb http://repository.spotify.com stable non-free
     ensure => 'purged',
   }
 
+  # sudoers
+  file { "/etc/sudoers.d/$root::user":
+    mode    => '0440',
+    content => "
+Defaults:$root::user !tty_tickets, timestamp_timeout=-1
+",
+  }
+}
+
+class dfanjul ($user = 'dfanjul') {
+
   # git submodules
   exec { '/usr/bin/git submodule update --init --recursive':
     user    => $dfanjul::user,
     group   => $dfanjul::user,
     cwd     => "/home/$dfanjul::user/",
     require => Package['git'],
-  }
-
-  # sudoers
-  file { "/etc/sudoers.d/$dfanjul::user":
-    mode    => '0440',
-    content => "
-Defaults:$dfanjul::user !tty_tickets, timestamp_timeout=-1
-",
   }
 
   # crontabs
