@@ -361,7 +361,8 @@ fi
 mkdir -p ~/.git/hooks
 cat > ~/.git/hooks/post-checkout <<-EOF
 	#!/bin/bash
-	chmod 644 ~/.ssh/config
+	chmod -R go-rwx ~/.ssh/*
+	chmod -R go-rwx ~/.gnupg/*
 EOF
 chmod u+x ~/.git/hooks/post-checkout
 
