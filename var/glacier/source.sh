@@ -3,6 +3,8 @@
 glacierdir=~/var/glacier
 eval $(gpg -d $glacierdir/credentials.gpg)
 
+echo | gpg -es -r dfanjul-vault -u dfanjul-vault >/dev/null
+
 add-to-glacier() {
   file=$1 && shift || { echo file?; return 1; }
   set -o pipefail
