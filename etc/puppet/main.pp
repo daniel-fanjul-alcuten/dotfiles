@@ -51,6 +51,17 @@ deb http://repository.spotify.com stable non-free
     tag     => 'apt-key',
   }
 
+  # hipchat
+  file { '/etc/apt/sources.list.d/atlassian-hipchat.list':
+    tag     => 'apt-list',
+    content => '# hipchat
+deb http://downloads.hipchat.com/linux/apt stable main
+',
+  }
+  exec { '/usr/bin/wget -O - https://www.hipchat.com/keys/hipchat-linux.key | /usr/bin/apt-key add -':
+    tag     => 'apt-key',
+  }
+
   # aptitude
   exec { '/usr/bin/aptitude update':
     refreshonly => true,
@@ -137,6 +148,7 @@ deb http://repository.spotify.com stable non-free
               'graphviz-doc',
               'hardinfo',
               'hgview',
+              'hipchat',
               'htop',
               'httpcode',
               'hwdata',
