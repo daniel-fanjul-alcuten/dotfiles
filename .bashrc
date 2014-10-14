@@ -361,10 +361,14 @@ fi
 mkdir -p ~/.git/hooks
 cat > ~/.git/hooks/post-checkout <<-EOF
 	#!/bin/bash
-	chmod -R go-rwx ~/.ssh/*
-	chmod -R go-rwx ~/.gnupg/*
+	chmod -R go-rwx ~/.{ssh,gnupg}
 EOF
-chmod u+x ~/.git/hooks/post-checkout
+cat > ~/.git/hooks/post-rewrite <<-EOF
+	#!/bin/bash
+	cat >/dev/null
+	chmod -R go-rwx ~/.{ssh,gnupg}
+EOF
+chmod u+x ~/.git/hooks/post-{checkout,rewrite}
 
 # vim configuration
 if type vim &>/dev/null; then
