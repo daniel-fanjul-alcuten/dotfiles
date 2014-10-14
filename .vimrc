@@ -82,6 +82,7 @@ cal pathogen#infect()
 " solarized {{{
 se background=dark
 colo solarized
+set t_Co=16
 " }}}
 
 " syntastic {{{
