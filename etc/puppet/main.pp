@@ -109,7 +109,6 @@ deb http://repository.spotify.com stable non-free
               'dstat',
               'dvdisaster',
               'e2fsprogs',
-              'electricsheep',
               'etckeeper',
               'evince',
               'fbreader',
@@ -133,7 +132,6 @@ deb http://repository.spotify.com stable non-free
               'gnome-terminal',
               'gnupg',
               'gnupg-agent',
-              'google-chrome-stable',
               'gource',
               'graphviz',
               'graphviz-doc',
@@ -190,7 +188,6 @@ deb http://repository.spotify.com stable non-free
               'network-manager-gnome',
               'nilfs-tools',
               'ntfs-3g',
-              'ntfsprogs',
               'ntp',
               'obnam',
               'openjdk-6-jdk',
@@ -198,7 +195,6 @@ deb http://repository.spotify.com stable non-free
               'openjdk-6-jre-headless',
               'openjdk-6-jre-lib',
               'openjdk-6-source',
-              'openoffice.org',
               'openssh-client',
               'openssh-server',
               'orpie',
@@ -313,5 +309,12 @@ class dfanjul ($user = 'dfanjul') {
     }
   }
   crontab { [ 'reboot', 'hourly', 'daily', 'monthly', 'weekly', 'yearly', ]:
+  }
+}
+
+node example {
+
+  class { ['root', 'dfanjul']:
+    user => 'dfanjul',
   }
 }
