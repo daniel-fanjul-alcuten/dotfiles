@@ -5,6 +5,8 @@
 /.cache
 /.fs.json
 /.gmrun_history
+/.gnupg/gpg-agent-info-*
+/.gnupg/random_seed
 /.gvm
 /.mysql_history
 /.obnam
