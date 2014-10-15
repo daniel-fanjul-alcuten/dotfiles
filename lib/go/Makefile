@@ -4,7 +4,8 @@ EXECUTABLES=\
 						forget-backups \
 						fs \
 						git-greb \
-						glacier
+						glacier \
+						ts
 
 .PHONY: default
 default: clean list compile install test

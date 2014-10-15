@@ -256,6 +256,14 @@ mutt() {
   })
   return $s
 }
+ts() {
+  command ts "$@"
+  local s=$?
+  (builtin cd ~ && {
+    git commit -m .ts.json .ts.json &>/dev/null
+  })
+  return $s
+}
 
 # set PATH for private bin folders
 if [ -d ~/usr/local/bin ]; then
