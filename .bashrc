@@ -291,6 +291,7 @@ for command in \
     hibernate \
     iftop \
     iotop \
+    service \
     shutdown \
     ; do
   alias $command="sudo $command"
