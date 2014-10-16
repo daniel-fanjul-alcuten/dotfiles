@@ -6,6 +6,7 @@
 /.fs.json
 /.gmrun_history
 /.gnupg/gpg-agent-info-*
+/.gnupg/private-keys-v1.d
 /.gnupg/random_seed
 /.gvm
 /.mysql_history
