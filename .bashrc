@@ -179,10 +179,17 @@ alias alert='notify-send --urgency=low -i ~/usr/share/images/$([ $? = 0 ] && ech
 # functions
 cd() {
   builtin cd "$@" && {
+    local dir="$(basename "$PWD")"
     if [ "$STY" ]; then
-      screen -X title "$(basename "$PWD")"
+      screen -X title "$dir"
     fi
-  }
+    if type task &>/dev/null; then
+      if task _projects | grep -q "$dir"; then
+        task project:"$dir" next
+      fi
+    fi
+    true
+  } 2>/dev/null
 }
 halt() {
   sudo -v && \
@@ -256,6 +263,15 @@ mutt() {
   })
   return $s
 }
+t() {
+  command task "$@"
+  local s=$?
+  (builtin cd ~ && {
+    git commit -m .task .task &>/dev/null
+  })
+  return $s
+}
+complete -o nospace -F _task t
 ts() {
   command ts "$@"
   local s=$?
@@ -555,10 +571,10 @@ if type gvm &>/dev/null; then
   GOPATH=~/lib/go:"$GOPATH"
 fi
 
+# cd .
+cd .
+
 # from
 if type from &>/dev/null; then
   from -c
 fi
-
-# cd .
-cd .
