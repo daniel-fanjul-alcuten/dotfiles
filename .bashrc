@@ -387,11 +387,13 @@ mkdir -p ~/.git/hooks
 cat > ~/.git/hooks/post-checkout <<-EOF
 	#!/bin/bash
 	chmod -f -R go-rwx ~/.{ssh,gnupg} ~/.s3ql/authinfo2
+	true
 EOF
 cat > ~/.git/hooks/post-rewrite <<-EOF
 	#!/bin/bash
 	cat >/dev/null
 	chmod -f -R go-rwx ~/.{ssh,gnupg} ~/.s3ql/authinfo2
+	true
 EOF
 chmod u+x ~/.git/hooks/post-{checkout,rewrite}
 
