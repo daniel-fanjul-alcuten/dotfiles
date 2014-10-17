@@ -386,12 +386,12 @@ fi
 mkdir -p ~/.git/hooks
 cat > ~/.git/hooks/post-checkout <<-EOF
 	#!/bin/bash
-	chmod -R go-rwx ~/.{ssh,gnupg}
+	chmod -f -R go-rwx ~/.{ssh,gnupg} ~/.s3ql/authinfo2
 EOF
 cat > ~/.git/hooks/post-rewrite <<-EOF
 	#!/bin/bash
 	cat >/dev/null
-	chmod -R go-rwx ~/.{ssh,gnupg}
+	chmod -f -R go-rwx ~/.{ssh,gnupg} ~/.s3ql/authinfo2
 EOF
 chmod u+x ~/.git/hooks/post-{checkout,rewrite}
 
