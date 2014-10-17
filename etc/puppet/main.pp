@@ -235,6 +235,7 @@ deb http://downloads.hipchat.com/linux/apt stable main
               'screen',
               'simhash',
               'smem',
+              'smplayer',
               'spotify-client',
               'sshfs',
               'sshpass',
