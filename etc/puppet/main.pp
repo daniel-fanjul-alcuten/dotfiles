@@ -88,6 +88,7 @@ deb http://downloads.hipchat.com/linux/apt stable main
               'azureus',
               'bar',
               'bc',
+              'beep',
               'biabam',
               'blueman',
               'bsdiff',

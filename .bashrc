@@ -156,8 +156,8 @@ _complete_command() {
   _command
 }
 complete -F _complete_command co
-alias puppet-apply-home='sudo puppet apply ~/etc/puppet/main.pp'
-complete -o default -F _service puppet-apply-home
+alias puppet-apply-main='sudo puppet apply ~/etc/puppet/main.pp'
+complete -o default -F _service puppet-apply-main
 
 # colored aliases
 if [ -x /usr/bin/dircolors ]; then
