@@ -191,30 +191,26 @@ cd() {
     true
   } 2>/dev/null
 }
+pause() {
+  sudo -v && run-parts-cron halt -v
+}
+unpause() {
+  sudo -v && service cron start
+}
 halt() {
-  sudo -v && \
-    run-parts-cron halt -v && \
-    tsp -m sudo shutdown -h now >/dev/null
+  pause && tsp -m sudo shutdown -h now >/dev/null
 }
 reboot() {
-  sudo -v && \
-    run-parts-cron halt -v && \
-    tsp -m sudo shutdown -r now >/dev/null
+  pause && tsp -m sudo shutdown -r now >/dev/null
 }
 xlogout() {
-  sudo -v && \
-    run-parts-cron halt -v && \
-    tsp -m gnome-session-quit --logout >/dev/null
+  pause && tsp -m gnome-session-quit --logout >/dev/null
 }
 xhalt() {
-  sudo -v && \
-    run-parts-cron halt -v && \
-    tsp -m gnome-session-quit --power-off >/dev/null
+  pause && tsp -m gnome-session-quit --power-off >/dev/null
 }
 xreboot() {
-  sudo -v && \
-    run-parts-cron halt -v && \
-    tsp -m gnome-session-quit --reboot >/dev/null
+  pause && tsp -m gnome-session-quit --reboot >/dev/null
 }
 down() {
   yes "|" | head -$((LINES - 3)) && echo v
