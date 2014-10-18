@@ -211,6 +211,11 @@ xhalt() {
     run-parts-cron halt -v && \
     tsp -m gnome-session-quit --power-off >/dev/null
 }
+xreboot() {
+  sudo -v && \
+    run-parts-cron halt -v && \
+    tsp -m gnome-session-quit --reboot >/dev/null
+}
 down() {
   yes "|" | head -$((LINES - 3)) && echo v
 }
