@@ -177,6 +177,20 @@ alias alert='notify-send --urgency=low -i ~/usr/share/images/$([ $? = 0 ] && ech
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh /usr/bin/lesspipe)"
 
 # functions
+t() {
+  command task "$@"
+  local s=$?
+  (builtin cd ~ && {
+    git commit -m .task .task &>/dev/null
+  })
+  return $s
+}
+tt() {
+  local dir="$(basename "$PWD")"
+  if task _projects | grep -q "^$dir$"; then
+    task project:"$dir" next
+  fi
+}
 cd() {
   builtin cd "$@" && {
     local dir="$(basename "$PWD")"
@@ -184,9 +198,7 @@ cd() {
       screen -X title "$dir"
     fi
     if type task &>/dev/null; then
-      if task _projects | grep -q "$dir"; then
-        task project:"$dir" next
-      fi
+      tt
     fi
     true
   } 2>/dev/null
@@ -261,14 +273,6 @@ mutt() {
     for dir in var/mail var/spool; do
       git commit -m $dir $dir &>/dev/null
     done
-  })
-  return $s
-}
-t() {
-  command task "$@"
-  local s=$?
-  (builtin cd ~ && {
-    git commit -m .task .task &>/dev/null
   })
   return $s
 }
