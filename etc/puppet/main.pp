@@ -246,6 +246,7 @@ deb http://downloads.hipchat.com/linux/apt stable main
               'tagtool',
               'task-spooler',
               'telnet-ssl',
+              'tidy',
               'tig',
               'timelimit',
               'tinycdb',
