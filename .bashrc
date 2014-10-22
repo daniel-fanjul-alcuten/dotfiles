@@ -188,7 +188,7 @@ t() {
 tt() {
   local dir="$(basename "$PWD")"
   if task _projects | grep -q "^$dir$"; then
-    task project:"$dir" next
+    t project:"$dir" next
   fi
 }
 cd() {
