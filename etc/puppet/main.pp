@@ -234,6 +234,7 @@ deb http://downloads.hipchat.com/linux/apt stable main
               'sc',
               'schedtool',
               'screen',
+              'shellcheck',
               'simhash',
               'smem',
               'smplayer',
