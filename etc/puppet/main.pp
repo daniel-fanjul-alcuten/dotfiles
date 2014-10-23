@@ -199,6 +199,7 @@ deb http://downloads.hipchat.com/linux/apt stable main
               'netpipes',
               'network-manager',
               'network-manager-gnome',
+              'network-manager-vpnc',
               'nilfs-tools',
               'ntfs-3g',
               'ntp',
