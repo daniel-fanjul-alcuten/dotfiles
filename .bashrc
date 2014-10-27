@@ -401,6 +401,9 @@ cat > ~/.git/hooks/post-rewrite <<-EOF
 	true
 EOF
 chmod u+x ~/.git/hooks/post-{checkout,rewrite}
+if [ -f ~/usr/share/hub/etc/hub.bash_completion.sh ]; then
+  source ~/usr/share/hub/etc/hub.bash_completion.sh
+fi
 
 # vim configuration
 if type vim &>/dev/null; then
