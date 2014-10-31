@@ -31,7 +31,7 @@ add-to-glacier() {
     set +x
     return 5
   fi
-  if ! archiveId=$(command nice glacier multipart run eu-west-1 dfanjul "$file".gpg 64 "$sha"); then
+  if ! archiveId=$(command nice glacier multipart run eu-west-1 dfanjul "$file".gpg 16 "$sha"); then
     beep -f 300 -r 3 -l 150 -n -f 200 -l 400
     glacier multipart print "$file".gpg
     set +x
