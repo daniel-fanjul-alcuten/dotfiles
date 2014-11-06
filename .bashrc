@@ -410,14 +410,16 @@ if type vim &>/dev/null; then
 fi
 set -o vi
 
-# ruby configuration
-if [ -d ~/lib/ruby ]; then
-  export RUBYLIB=~/lib/ruby
-fi
-
 # go configuration
 # bash < <(curl -s https://raw.github.com/moovweb/gvm/master/binscripts/gvm-installer)
 [ -s ~/.gvm/scripts/gvm ] && source ~/.gvm/scripts/gvm
+if [ -d ~/lib/go ]; then
+  if [ "$GOPATH" ]; then
+    GOPATH=~/lib/go:"$GOPATH"
+  else
+    GOPATH=~/lib/go
+  fi
+fi
 if [ "$(uname)" = Darwin ]; then
   GOMAXPROCS=$(sysctl -n hw.ncpu)
 else
@@ -431,6 +433,11 @@ alias gb='go build ./...'
 alias gm='go build -gcflags -m ./...'
 alias gi='go install ./...'
 alias gti='gi && gt'
+
+# ruby configuration
+if [ -d ~/lib/ruby ]; then
+  export RUBYLIB=~/lib/ruby
+fi
 
 # wcd configuration
 if type wcd.exec &>/dev/null; then
@@ -572,12 +579,6 @@ down
 # pal
 if type pal &>/dev/null; then
   pal -r 7 -c 1
-fi
-
-# gvm
-if type gvm &>/dev/null; then
-  gvm use go1.3.3
-  GOPATH=~/lib/go:"$GOPATH"
 fi
 
 # fs
