@@ -58,6 +58,14 @@ com! -nargs=1 -complete=dir Cdgo :cd <args> | :args *.go
 com! -nargs=1 -complete=dir Lcdgo :lcd <args> | :argl *.go
 " }}}
 
+" ruby {{{
+aug ruby_filetype
+  au!
+  au Filetype ruby setl cc=80
+  au Filetype ruby setl fdm=syntax fdc=3
+aug end
+" }}}
+
 " json {{{
 aug json_filetype
   au!
@@ -91,8 +99,9 @@ set t_Co=16
 let g:syntastic_auto_jump=1
 let g:syntastic_auto_loc_list=1
 let g:syntastic_check_on_open=0
-let g:syntastic_python_checkers=['python', 'pep8', 'flake8']
 let g:syntastic_go_checkers=['go', 'govet']
+let g:syntastic_ruby_checkers=['mri', 'rubocop']
+let g:syntastic_python_checkers=['python', 'pep8', 'flake8']
 nnoremap <Leader>sc :SyntasticCheck<CR>
 nnoremap <Leader>st :SyntasticToggleMode<CR>
 nnoremap <Leader>sr :SyntasticReset<CR>
