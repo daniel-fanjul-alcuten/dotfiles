@@ -59,6 +59,7 @@
 	ff = merge --ff-only
 	fhardu = !git fa && git hardu
 	fixup = !f=\"$1\" && shift && git ci --fixup=\"$f\"
+	flow = !git-flow
 	freu = !git fa && git reu
 	freus = !git fa && git reus
 	fsb = !"git fa; git sb"
