@@ -299,12 +299,6 @@ if [ -d ~/bin ] ; then
   PATH=~/bin:"$PATH"
 fi
 
-# completions
-if type fs &>/dev/null; then
-  source <(fs --bash _fs_completion 2>/dev/null)
-  complete -F _fs_completion fs
-fi
-
 # set CDPATH
 export CDPATH=.:~:~/src:~/lib/go/src:~/lib/go/src/github.com/daniel-fanjul-alcuten
 
@@ -584,6 +578,12 @@ fi
 if type gvm &>/dev/null; then
   gvm use go1.3.3
   GOPATH=~/lib/go:"$GOPATH"
+fi
+
+# fs
+if type fs &>/dev/null; then
+  source <(fs --bash _fs_completion)
+  complete -F _fs_completion fs
 fi
 
 # cd .
