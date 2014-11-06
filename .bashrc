@@ -200,6 +200,11 @@ cd() {
     if type task &>/dev/null; then
       tt
     fi
+    if [ -f .git/config.sh ]; then
+      source .git/config.sh
+    elif [ -f .git/config.sh.gpg ]; then
+      source <(gpg --batch -d .git/config.sh.gpg)
+    fi
     true
   } 2>/dev/null
 }
