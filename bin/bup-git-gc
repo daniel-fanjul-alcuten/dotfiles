@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
 
+bup init
 flock -x ~/.bup flock -x ~/etc/backup.cfg git --git-dir ~/.bup gc --prune=now
 rm -rf ~/.bup/objects/pack/midx-*.midx
