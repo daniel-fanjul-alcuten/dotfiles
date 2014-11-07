@@ -113,7 +113,7 @@ _prompt_jobscount()
     _prompt_apply_color " [$count]" "jobscount" "yellow"
   fi
 }
-PS1='`_prompt_status``_prompt_date``_prompt__hostname``_prompt_git``_prompt_jobscount`\$ '
+PS1='`_prompt_status``_prompt_date``_prompt__hostname``_prompt_git``_prompt_jobscount`\n\$ '
 
 # aliases
 alias ls='ls -F'
