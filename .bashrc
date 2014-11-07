@@ -235,7 +235,7 @@ down() {
 down() {
   echo -e "\\033[6n"
   read -s -d R foo
-  lines=$((LINES - $(echo "$foo" | cut -d \[ -f 2 | cut -d \; -f 1) - 2))
+  lines=$((LINES - $(echo "$foo" | cut -d \[ -f 2 | cut -d \; -f 1) - 3))
   while [ $lines -gt 0 ]; do
     echo \|
     lines=$((lines - 1))
