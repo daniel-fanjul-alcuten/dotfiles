@@ -2,6 +2,5 @@
 set -e
 
 [ -s ~/.gvm/scripts/gvm ] && source ~/.gvm/scripts/gvm
-gvm use go1.3.3 >/dev/null
 GOPATH=~/lib/go:"$GOPATH"
 godoc -http=:6060 -analysis=type,pointer &
