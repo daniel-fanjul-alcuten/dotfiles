@@ -1,19 +1,27 @@
 #!/bin/bash
 set -e
 
-version="$1" && shift || exit 1
-
 sudo aptitude install vim curl bison
 [ -s ~/.gvm/scripts/gvm ] || bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
 source ~/.gvm/scripts/gvm
+
+version="$1" && shift || exit 1
+
 gvm install "$version"
 gvm use "$version"
+if [ -d ~/lib/go ]; then
+  if [ "$GOPATH" ]; then
+    GOPATH=~/lib/go:"$GOPATH"
+  else
+    GOPATH=~/lib/go
+  fi
+fi
 set -x
 
 git config --global --remove-section filter.gofmt
-go get -u code.google.com/p/go.tools/cmd/vet
-go get -u code.google.com/p/go.tools/cmd/cover
-go get -u code.google.com/p/go.tools/cmd/godoc
+go get -u golang.org/x/tools/cmd/vet
+go get -u golang.org/x/tools/cmd/cover
+go get -u golang.org/x/tools/cmd/godoc
 go get -u github.com/petar/GoLLRB/llrb
 go get -u github.com/ha/doozerd
 go get -u github.com/ha/doozer
