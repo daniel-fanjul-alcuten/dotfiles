@@ -49,8 +49,6 @@ aug go_filetype
   au Filetype go nnoremap <buffer> <Leader>f :GoFmt<CR>
   au Filetype go nnoremap <buffer> <Leader>t :GoTest<CR>
   au BufWrite *.go silent !~/lib/go/bin/gotags -L <(find . -type f -name \*.go) > tags
-  au BufWrite *.go :GoLint
-  au BufWrite *.go :GoVet
 aug end
 com! -nargs=1 -complete=dir Gar :args <args>/*.go
 com! -nargs=1 -complete=dir Gargl :argl <args>/*.go
