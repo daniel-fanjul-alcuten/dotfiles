@@ -3,4 +3,4 @@ set -e
 
 find ~ -type d -execdir git rev-parse --show-toplevel \; 2>/dev/null |\
   sort -u |\
-  xargs -rn 1 -I folder bash -c 'cd "folder" && tsp -m -L "folder" git-fsck-and-gc >/dev/null'
+  xargs -rn 1 -I folder bash -c 'cd "folder" && tsp -m -L "folder" ~/bin/git-fsck-and-gc >/dev/null'
