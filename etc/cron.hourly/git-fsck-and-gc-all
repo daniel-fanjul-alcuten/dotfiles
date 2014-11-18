@@ -1,0 +1,3 @@
+#!/bin/bash
+
+tsp -m ~/bin/git-fsck-and-gc-all >/dev/null

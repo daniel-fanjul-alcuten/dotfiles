@@ -1,43 +1,38 @@
 #!/bin/bash
 
-function red   { tput setaf 1; }
-function blue  { tput setaf 4; }
-function reset { tput sgr0;    }
+source ~/etc/colors.cfg
 
 function ok {
-	blue
-	echo "$@"
-	reset
+  blue "$@"
 }
 
 function ko {
-	red
-	echo "$@"
-	reset
-	exit 1
+  red "$@"
+  exit 1
 }
 
-dir=`git rev-parse --show-toplevel`
+dir=$(git rev-parse --show-toplevel)
 if [ -z "$dir" ]; then
-	dir=`git rev-parse --git-dir`
-	dir=`readlink -e "$dir"`
+  dir=$(git rev-parse --git-dir)
+  dir=$(readlink -e "$dir")
 fi
 
-if [ `git config gc.lastfsck || echo 0` -lt $((`date +%s` - $((7 * 24 * 3600)))) ]; then
-	if git fsck; then
-		ok "$dir: git fsck ok"
-		git config gc.lastfsck `date +%s`
-	else
-		ko "$dir: git fsck failed"
-	fi
+now="$(date +%s)"
+if [ "$(git config gc.lastfsck || echo 0)" -lt $((now - $((7 * 24 * 3600)))) ]; then
+  if git fsck; then
+    git config gc.lastfsck "$now"
+    ok "$dir: git fsck ok"
+  else
+    ko "$dir: git fsck failed"
+  fi
 fi
 
-if [ `git config gc.lastgc || echo 0` -lt $((`date +%s` - $((23 * 24 * 3600)))) ]; then
-	if git gc --auto; then
-		ok "$dir: git gc ok"
-		git config gc.lastgc `date +%s`
-	else
-		ko "$dir: git gc failed"
-	fi
+if [ "$(git config gc.lastgc || echo 0)" -lt $((now - $((23 * 24 * 3600)))) ]; then
+  if git gc --auto; then
+    git config gc.lastgc "$now"
+    ok "$dir: git gc ok"
+  else
+    ko "$dir: git gc failed"
+  fi
 fi
 
