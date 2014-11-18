@@ -18,7 +18,7 @@ if [ -z "$dir" ]; then
 fi
 
 now="$(date +%s)"
-if [ "$(git config gc.lastfsck || echo 0)" -lt $((now - $((7 * 24 * 3600)))) ]; then
+if [ "$(git config gc.lastfsck || echo 0)" -lt $((now - $((3 * 24 * 3600)))) ]; then
   if git fsck; then
     git config gc.lastfsck "$now"
     ok "$dir: git fsck ok"
@@ -27,7 +27,7 @@ if [ "$(git config gc.lastfsck || echo 0)" -lt $((now - $((7 * 24 * 3600)))) ]; 
   fi
 fi
 
-if [ "$(git config gc.lastgc || echo 0)" -lt $((now - $((23 * 24 * 3600)))) ]; then
+if [ "$(git config gc.lastgc || echo 0)" -lt $((now - $((5 * 24 * 3600)))) ]; then
   if git gc --auto; then
     git config gc.lastgc "$now"
     ok "$dir: git gc ok"
