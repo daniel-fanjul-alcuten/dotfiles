@@ -16,7 +16,10 @@ mailboxes ~/var/mail/offline
 mailboxes ~/var/mail/online
 mailboxes ~/var/mail/postponed
 mailboxes ~/var/mail/sent
-mailboxes imaps://daniel.fanjul.alcuten@gmail.com@imap.gmail.com:993/INBOX
+
+mailboxes 'imaps://imap.gmail.com:993/INBOX'
+set imap_user='daniel.fanjul.alcuten@gmail.com'
+set imap_pass=`gpg -d .muttrc.pass.gpg`
 set imap_check_subscribed=yes
 set imap_idle=yes
 
