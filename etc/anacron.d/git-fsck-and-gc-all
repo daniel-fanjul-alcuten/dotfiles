@@ -1,0 +1,2 @@
+1 0 git-fsck-and-gc-all cd ~ && tsp -m ~/bin/git-fsck-and-gc-all >/dev/null
+
