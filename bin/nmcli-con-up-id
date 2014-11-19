@@ -1,0 +1,7 @@
+#!/bin/bash
+
+id="$1" && shift || { echo id?; exit 1; }
+
+tsp -m fs -r -u
+tsp -m nmcli con up id "$id"
+gpg -d ~/usr/doc/vpn.gpg
