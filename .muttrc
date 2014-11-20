@@ -10,6 +10,8 @@ set certificate_file='~/.mutt/certificates'
 set delete=yes
 set quit=yes
 
+auto_view text/html
+
 mailboxes /var/spool/mail/dfanjul
 mailboxes ~/var/mail/dfanjul
 mailboxes ~/var/mail/offline
