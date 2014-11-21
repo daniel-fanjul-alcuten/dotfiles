@@ -24,6 +24,7 @@ fix:
 
 .PHONY: vet
 vet:
+	go get -v code.google.com/p/go.tools/cmd/vet
 	go vet github.com/daniel-fanjul-alcuten/...
 
 .PHONY: compile
