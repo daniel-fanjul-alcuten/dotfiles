@@ -28,7 +28,15 @@ vet:
 
 .PHONY: compile
 compile: fix vet
-	go install ./...
+	go get -v github.com/nsf/gocode
+	go get -v code.google.com/p/rog-go/exp/cmd/godef
+	go get -v golang.org/x/tools/cmd/goimports
+	go get -v golang.org/x/tools/cmd/oracle
+	go get -v golang.org/x/tools/cmd/gorename
+	go get -v github.com/golang/lint/golint
+	go get -v github.com/kisielk/errcheck
+	go get -v github.com/jstemmer/gotags
+	go install github.com/daniel-fanjul-alcuten/...
 
 .PHONY: install
 install: $(foreach filename,$(EXECUTABLES),~/usr/local/bin/$(filename))
@@ -42,3 +50,7 @@ install: $(foreach filename,$(EXECUTABLES),~/usr/local/bin/$(filename))
 .PHONY: test
 test:
 	go test github.com/daniel-fanjul-alcuten/...
+
+.PHONY: vim
+vim:
+	vim -c ':GoInstallBinaries' -c :q

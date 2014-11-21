@@ -411,7 +411,7 @@ fi
 set -o vi
 
 # go configuration
-# bash < <(curl -s https://raw.github.com/moovweb/gvm/master/binscripts/gvm-installer)
+[ -s ~/.gvm/scripts/gvm ] || bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
 [ -s ~/.gvm/scripts/gvm ] && source ~/.gvm/scripts/gvm
 if [ -d ~/lib/go ]; then
   if [ "$GOPATH" ]; then
