@@ -1,3 +1,0 @@
-#!/bin/bash
-
-tsp -m ~/bin/rsync-backup-home-all >/dev/null

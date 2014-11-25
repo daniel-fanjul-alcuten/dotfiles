@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+
+l="$1" && shift || l="$(tsp -S)"
+b="$1" && shift || b=1
+
+for i in $(seq $l); do
+  tsp tsp -S $b >/dev/null
+done
+tsp sleep 1 >/dev/null
