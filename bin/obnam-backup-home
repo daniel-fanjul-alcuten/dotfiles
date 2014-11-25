@@ -4,4 +4,4 @@ set -x
 
 source ~/etc/backup.cfg
 
-flock -x ~/etc/backup.cfg obnam --repository ~/.obnam backup $obnam_excludes --one-file-system $HOME
+obnam --repository ~/.obnam backup $obnam_excludes --one-file-system $HOME
