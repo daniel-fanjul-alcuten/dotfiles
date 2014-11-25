@@ -1,0 +1,5 @@
+#!/bin/bash
+
+for name in s3ql dfs3ql; do
+  tsp -m ~/bin/rsync-backup-home "$name" >/dev/null
+done

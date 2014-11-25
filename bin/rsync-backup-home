@@ -4,7 +4,7 @@ set -x
 
 source ~/etc/backup.cfg
 
-for name in s3ql dfs3ql; do
+for name in "$@"; do
 
   mountpoint="/media/$name"
   if ! sudo mountpoint -q "$mountpoint"; then
