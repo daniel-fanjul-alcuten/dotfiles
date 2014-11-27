@@ -1,3 +1,8 @@
 #!/bin/sh
 
+if [ -f ~/.gnupg/gpg-agent-info-"$(hostname)" ]; then
+  . ~/.gnupg/gpg-agent-info-"$(hostname)"
+  export GPG_AGENT_INFO
+  export SSH_AUTH_SOCK
+fi
 tsp -m ~/usr/local/bin/fs -u >/dev/null
