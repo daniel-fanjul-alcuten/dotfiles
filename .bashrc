@@ -499,6 +499,12 @@ ssh() {
   return $s
 }
 
+# aws configuration
+if [ -f ~/.local/lib/aws/bin/aws_completer ]; then
+  PATH=~/.local/lib/aws/bin:"$PATH"
+  complete -C ~/.local/lib/aws/bin/aws_completer aws
+fi
+
 # maven configuration
 export BOLD=`tput bold`
 export UNDERLINE_ON=`tput smul`
