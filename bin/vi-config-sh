@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+
+if [ -f .git/config.sh ]; then
+  vi .git/config.sh
+elif [ -f .git/config.sh.gpg ]; then
+  gpg .git/config.sh.gpg
+  vi .git/config.sh
+fi
+
+me=daniel.fanjul.alcuten@gmail.com
+gpg --batch --yes -es -u $me -r $me .git/config.sh
+shred -uv .git/config.sh
