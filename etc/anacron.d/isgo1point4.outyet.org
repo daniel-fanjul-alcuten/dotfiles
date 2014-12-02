@@ -1,0 +1,1 @@
+5 0 isgo1point4.outyet.org curl -s http://isgo1point4.outyet.org/ | mail --append="Content-type: text/html" -s 'is go1.4 out yet?' $(whoami)
