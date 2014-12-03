@@ -3,7 +3,7 @@ set -e
 set -x
 
 mkdir -p ~/tmp
-tmpfile="$(mktemp ~/tmp/$(whoami)@$(hostname)-XXXXXXXXXX.tmp)"
+tmpfile=$(mktemp ~/tmp/"$(whoami)@$(hostname)"-XXXXXXXXXX.tmp)
 now=$(date +%Y%m%d%H%M%S)
 
 cd ~
