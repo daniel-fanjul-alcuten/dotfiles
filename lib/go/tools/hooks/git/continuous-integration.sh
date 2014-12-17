@@ -87,9 +87,9 @@ run go install -v "$pkgspec"
 if [ -z "$notests" ]; then
   run go test -v -p 1 "$pkgspec"
 fi
-if run go get -v code.google.com/p/go.tools/cmd/vet; then
+if run go get -v golang.org/x/tools/cmd/vet; then
   if [ "$update" ]; then
-    run go get -v -u code.google.com/p/go.tools/cmd/vet
+    run go get -v -u golang.org/x/tools/cmd/vet
   fi
   run go vet "$pkgspec"
 fi
