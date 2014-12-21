@@ -5,5 +5,5 @@ mkdir -p ~/var/log
 
 [ -s ~/.gvm/scripts/gvm ] && source ~/.gvm/scripts/gvm
 GOPATH=~/lib/go:"$GOPATH"
-go get code.google.com/p/go.tools/cmd/godoc
+go get golang.org/x/tools/cmd/godoc
 godoc -http=:6060 -analysis=type,pointer &>~/var/log/godoc.log &
