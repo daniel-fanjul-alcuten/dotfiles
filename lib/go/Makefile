@@ -27,15 +27,13 @@ vet:
 	go get -v golang.org/x/tools/cmd/vet
 	go vet github.com/daniel-fanjul-alcuten/...
 
-.PHONY: compile
-compile: fix vet
-	go get -v github.com/nsf/gocode
-	go get -v code.google.com/p/rog-go/exp/cmd/godef
-	go get -v golang.org/x/tools/cmd/goimports
-	go get -v golang.org/x/tools/cmd/oracle
-	go get -v golang.org/x/tools/cmd/gorename
+.PHONY: lint
+lint:
 	go get -v github.com/golang/lint/golint
-	go get -v github.com/kisielk/errcheck
+	~/lib/go/bin/golint github.com/daniel-fanjul-alcuten/...
+
+.PHONY: compile
+compile: fix
 	go get -v github.com/jstemmer/gotags
 	go install github.com/daniel-fanjul-alcuten/...
 
