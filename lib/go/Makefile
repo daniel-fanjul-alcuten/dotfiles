@@ -35,6 +35,7 @@ lint:
 .PHONY: compile
 compile: fix
 	go get -v github.com/jstemmer/gotags
+	go get -v github.com/rdwilliamson/glacier
 	go install github.com/daniel-fanjul-alcuten/...
 
 .PHONY: install

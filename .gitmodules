@@ -55,12 +55,6 @@
 [submodule "lib/go/src/github.com/daniel-fanjul-alcuten/cookies-reset"]
 	path = lib/go/src/github.com/daniel-fanjul-alcuten/cookies-reset
 	url = git@github.com:daniel-fanjul-alcuten/cookies-reset.git
-[submodule "lib/go/src/github.com/rdwilliamson/aws"]
-	path = lib/go/src/github.com/rdwilliamson/aws
-	url = git@github.com:rdwilliamson/aws.git
-[submodule "lib/go/src/github.com/rdwilliamson/glacier"]
-	path = lib/go/src/github.com/rdwilliamson/glacier
-	url = git@github.com:rdwilliamson/glacier.git
 [submodule "lib/go/src/github.com/daniel-fanjul-alcuten/ts"]
 	path = lib/go/src/github.com/daniel-fanjul-alcuten/ts
 	url = git@github.com:daniel-fanjul-alcuten/ts.git
