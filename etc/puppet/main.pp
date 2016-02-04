@@ -246,6 +246,7 @@ deb http://downloads.hipchat.com/linux/apt stable main
               'subversion',
               'taggrepper',
               'tagtool',
+              'task',
               'task-spooler',
               'telnet-ssl',
               'tidy',
