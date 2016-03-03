@@ -24,7 +24,7 @@ set imap_user='daniel.fanjul.alcuten@gmail.com'
 set imap_pass=`gpg -d .muttrc.pass.gpg`
 set imap_check_subscribed=yes
 set imap_idle=yes
-set imap_passive=no
+set imap_passive=yes
 
 
 
