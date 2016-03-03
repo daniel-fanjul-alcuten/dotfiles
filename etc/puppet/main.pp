@@ -24,7 +24,6 @@ class root ($user = 'dfanjul') {
 deb file:///wdrive/downloads/software/apt/mirror/ftp.es.debian.org/debian/ wheezy main contrib non-free
 deb file:///wdrive/downloads/software/apt/mirror/ftp.es.debian.org/debian/ wheezy-proposed-updates main contrib non-free
 deb file:///wdrive/downloads/software/apt/mirror/security.debian.org/ wheezy/updates main contrib non-free
-deb file:///wdrive/downloads/software/apt/mirror/repository.spotify.com stable non-free
 ',
     }
 
@@ -35,20 +34,18 @@ deb file:///wdrive/downloads/software/apt/mirror/repository.spotify.com stable n
 deb file:///ldrive/downloads/software/apt/mirror/ftp.es.debian.org/debian/ wheezy main contrib non-free
 deb file:///ldrive/downloads/software/apt/mirror/ftp.es.debian.org/debian/ wheezy-proposed-updates main contrib non-free
 deb file:///ldrive/downloads/software/apt/mirror/security.debian.org/ wheezy/updates main contrib non-free
-deb file:///ldrive/downloads/software/apt/mirror/repository.spotify.com stable non-free
 ',
     }
   }
 
-  # spotify
-  file { '/etc/apt/sources.list.d/spotify.list':
-    tag     => 'apt-list',
-    content => '# spotify
-deb http://repository.spotify.com stable non-free
+  if $lsbdistcodename == 'trusty' {
+    file { '/etc/apt/sources.list.d/canonical.list':
+      tag     => 'apt-list',
+      content => '# canonical
+deb http://archive.canonical.com/ trusty partner
+deb-src http://archive.canonical.com/ trusty partner
 ',
-  }
-  exec { '/usr/bin/apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 94558F59':
-    tag     => 'apt-key',
+    }
   }
 
   # hipchat
@@ -62,6 +59,24 @@ deb http://downloads.hipchat.com/linux/apt stable main
     tag     => 'apt-key',
   }
 
+  # docker
+  package { 'apt-transport-https':
+    ensure => 'present',
+  }
+  package { 'ca-certificates':
+    ensure => 'present',
+  }
+  exec { '/usr/bin/apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D':
+    tag     => 'apt-key',
+    require => [ Package['apt-transport-https'], Package['ca-certificates'], ]
+  }
+  file { '/etc/apt/sources.list.d/docker.list':
+    tag     => 'apt-list',
+    content => '# docker
+deb https://apt.dockerproject.org/repo ubuntu-trusty main
+',
+  }
+
   # aptitude
   exec { '/usr/bin/aptitude update':
     refreshonly => true,
@@ -69,9 +84,12 @@ deb http://downloads.hipchat.com/linux/apt stable main
   }
   File<| tag == 'apt-list' |> ~> Exec['/usr/bin/aptitude update']
   Exec<| tag == 'apt-key' |>  ~> Exec['/usr/bin/aptitude update']
-  Exec['/usr/bin/aptitude update'] -> Package<| title != 'aptitude' |>
+  Exec['/usr/bin/aptitude update'] -> Package<| title != 'aptitude' and title != 'apt-transport-https' and title != 'ca-certificates' |>
 
   # packages
+  package { 'lxc-docker':
+    ensure => 'purged',
+  }
   package { [
               'abcde',
               'abook',
@@ -118,6 +136,7 @@ deb http://downloads.hipchat.com/linux/apt stable main
               'dict-jargon',
               'dictd',
               'disper',
+              'docker-engine',
               'dstat',
               'dvdisaster',
               'e2fsprogs',
@@ -191,7 +210,7 @@ deb http://downloads.hipchat.com/linux/apt stable main
               'mp3info',
               'mp3splt',
               'mpg321',
-              'mplayer',
+              'mplayer2',
               'mtools',
               'mtp-tools',
               'mtpfs',
@@ -239,7 +258,6 @@ deb http://downloads.hipchat.com/linux/apt stable main
               'simhash',
               'smem',
               'smplayer',
-              'spotify-client',
               'sshfs',
               'sshpass',
               'stgit',
