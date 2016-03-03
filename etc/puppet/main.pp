@@ -256,6 +256,7 @@ deb https://apt.dockerproject.org/repo ubuntu-trusty main
               'screen',
               'shellcheck',
               'simhash',
+              'skype',
               'smem',
               'smplayer',
               'sshfs',
