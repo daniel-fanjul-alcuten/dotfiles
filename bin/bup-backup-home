@@ -5,8 +5,8 @@ set -x
 source ~/etc/backup.cfg
 
 bup init
-bup index ~
-bup save -n $(whoami)@$(hostname) ~
+bup index $basic_excludes ~
+bup save -n "$(whoami)@$(hostname)" ~
 bup fsck -g
 
 exit 0
