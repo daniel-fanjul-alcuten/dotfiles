@@ -86,6 +86,12 @@ deb https://apt.dockerproject.org/repo ubuntu-trusty main
   Exec<| tag == 'apt-key' |>  ~> Exec['/usr/bin/aptitude update']
   Exec['/usr/bin/aptitude update'] -> Package<| title != 'aptitude' and title != 'apt-transport-https' and title != 'ca-certificates' |>
 
+  # docker
+  exec { '/usr/local/bin/docker-compose':
+    creates => '/usr/local/bin/docker-compose',
+    command => '/usr/bin/curl -L https://github.com/docker/compose/releases/download/1.6.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose && /bin/chmod +x /usr/local/bin/docker-compose',
+  }
+
   # packages
   package { 'lxc-docker':
     ensure => 'purged',
