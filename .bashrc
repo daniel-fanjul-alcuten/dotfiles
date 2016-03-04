@@ -158,6 +158,7 @@ _complete_command() {
 complete -F _complete_command co
 alias puppet-apply-main='sudo puppet apply ~/etc/puppet/main.pp'
 complete -o default -F _service puppet-apply-main
+alias battery='upower -i /org/freedesktop/UPower/devices/battery_BAT0| grep -E "state|to\ full|to\ empty|percentage"'
 
 # colored aliases
 if [ -x /usr/bin/dircolors ]; then
