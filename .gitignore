@@ -1,6 +1,6 @@
 /.ICEauthority
-/.aptitude
 /.Xauthority
+/.aptitude
 /.bash_history
 /.bup
 /.cache
@@ -16,6 +16,7 @@
 /.mysql_history
 /.obnam
 /.sc_history
+/.ssh/authorized_keys
 /.ssh/id_rsa
 /.ssh/id_rsa.pub
 /.ssh/known_hosts
