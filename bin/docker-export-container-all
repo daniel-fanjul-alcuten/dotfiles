@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+for container in $(sudo docker ps -f 'status=exited' -q); do
+  name=$(sudo docker inspect -f '{{.Name}}' "$container")
+  name=${name#/}
+  tsp -m -L "container-$name" ~/bin/docker-export-container "$container" "$name"
+done >/dev/null

@@ -100,6 +100,7 @@ deb https://apt.dockerproject.org/repo ubuntu-trusty main
               'aptitude',
               'apvlv',
               'aria2',
+              'at',
               'attr',
               'avfs',
               'awesome',

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+TS_MAXFINISHED=9 tsp >/dev/null

@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+set -x
+
+id="$1" && shift || { echo id?; exit 1; }
+name="$1" && shift || {
+  name=$(sudo docker inspect -f '{{.Name}}' "$id")
+  name=${name#/}
+  name=$(sed 's,/,-,g' <<< "$name")
+}
+
+file=~/var/backups/docker/containers/"$name-$id".tar
+mkdir -p "${file%/*}"
+sudo docker export -o "$file" "$id" || { rm -f "$file"; false; }

@@ -1,0 +1,15 @@
+#!/bin/bash
+set -e
+set -x
+
+id="$1" && shift || { echo id?; exit 1; }
+name="$1" && shift || {
+  name=$(sudo docker inspect -f '{{.RepoTags}}' "$id")
+  name=$(sed 's,/,-,g' <<< "$name")
+}
+
+file=~/var/backups/docker/images/"$name-$id".tar
+if ! [ -f "$file" ]; then
+  mkdir -p "${file%/*}"
+  sudo docker save -o "$file" "$id" || { rm -f "$file" && false; }
+fi

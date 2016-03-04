@@ -15,11 +15,13 @@
 /.gvm
 /.mysql_history
 /.obnam
+/.s3ql
 /.sc_history
 /.ssh/authorized_keys
 /.ssh/id_rsa
 /.ssh/id_rsa.pub
 /.ssh/known_hosts
+/.ssh/known_hosts.old
 /.stack.wcd
 /.treedata.wcd
 /.vim-go
@@ -27,4 +29,5 @@
 /.xsession-errors
 /.xsession-errors.old
 /tmp
+/var/backups/
 /var/wcd.go

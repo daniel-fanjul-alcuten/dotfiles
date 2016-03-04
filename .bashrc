@@ -189,7 +189,7 @@ t() {
 tt() {
   local dir="$(basename "$PWD")"
   if task _projects | grep -q "^$dir$"; then
-    t project:"$dir" next
+    t project:"$dir" "$@"
   fi
 }
 cd() {
@@ -308,6 +308,8 @@ for command in \
     apt-get \
     aptitude \
     debfoster \
+    docker \
+    docker-compose \
     fdisk \
     hibernate \
     iftop \

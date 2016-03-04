@@ -1,0 +1,6 @@
+#!/bin/bash
+set -e
+
+for image in $(sudo docker images -q); do
+  tsp -m -L "image-$image" ~/bin/docker-save-image "$image"
+done >/dev/null
