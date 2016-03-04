@@ -276,7 +276,7 @@ mutt() {
   local s=$?
   (builtin cd ~ && {
     for dir in var/mail var/spool; do
-      git commit -m $dir $dir &>/dev/null
+      git commit -m $(git symbolic-ref-head -q || hostname) $dir &>/dev/null
     done
   })
   return $s
