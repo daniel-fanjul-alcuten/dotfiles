@@ -3,4 +3,5 @@ set -e
 
 bup init
 git --git-dir ~/.bup gc --prune=now
-rm -rf ~/.bup/objects/pack/midx-*.midx
+rm -rf ~/.bup/objects/pack/*.midx
+rm -rf ~/.bup/objects/pack/*.par2
