@@ -1,0 +1,9 @@
+#!/bin/bash
+
+tsp -f "$@" >/dev/null &
+
+while [ "$(jobs -p | wc -l)" -gt 0 ]; do
+  tsp -t
+  sleep 1
+  jobs -n
+done
