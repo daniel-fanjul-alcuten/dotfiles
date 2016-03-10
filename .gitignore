@@ -13,6 +13,7 @@
 /.gnupg/sshcontrol
 /.gnupg/trustdb.gpg
 /.gvm
+/.mutt/
 /.mysql_history
 /.obnam
 /.s3ql
