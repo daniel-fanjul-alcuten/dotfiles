@@ -1,6 +1,10 @@
 #!/bin/bash
 
-tsp -f "$@" >/dev/null &
+if [ $# -eq 0 ]; then
+  tsp -f true >/dev/null &
+else
+  tsp -f "$@" >/dev/null &
+fi
 
 while [ "$(jobs -p | wc -l)" -gt 0 ]; do
   tsp -t
