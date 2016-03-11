@@ -1,8 +1,8 @@
 #!/bin/bash
 
-tsp tsp -S 3 >/dev/null
-tsp -m ~/bin/bundle-backup-home biabam >/dev/null
+tsp tsp -S 2 >/dev/null
+# tsp -m ~/bin/bundle-backup-home biabam >/dev/null
 for name in s3ql; do
   tsp -m ~/bin/bundle-backup-home "$name" >/dev/null
 done
-~/bin/tsp-update-limit 3
+~/bin/tsp-update-limit 2
