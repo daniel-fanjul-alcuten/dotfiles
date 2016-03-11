@@ -262,6 +262,7 @@ deb https://apt.dockerproject.org/repo ubuntu-trusty main
               'schedtool',
               'screen',
               'shellcheck',
+              'texlive-full',
               'simhash',
               'skype',
               'smem',
