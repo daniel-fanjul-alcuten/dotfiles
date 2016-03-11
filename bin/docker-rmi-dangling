@@ -1,0 +1,4 @@
+#!/bin/bash
+set -x
+
+exec sudo docker images -qf dangling=true | xargs -r sudo docker rmi
