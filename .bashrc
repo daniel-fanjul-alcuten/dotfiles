@@ -192,6 +192,10 @@ tt() {
     t +"$dir" "$@"
   fi
 }
+tta() {
+  local dir="$(basename "$PWD")"
+  t add +"$dir" "$@"
+}
 cd() {
   builtin cd "$@" && {
     local dir="$(basename "$PWD")"
