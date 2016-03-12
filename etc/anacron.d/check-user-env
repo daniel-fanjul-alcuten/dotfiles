@@ -1,1 +1,2 @@
 1 0 check-user-env [ "$USER" ] || echo '$USER is not set in anacron'
+# vi:noet:ts=3:sts=3

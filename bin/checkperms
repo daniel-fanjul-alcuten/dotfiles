@@ -1,7 +1,0 @@
-#!/bin/bash
-set -e
-
-sudo chown -R dfanjul.dfanjul "$@"
-
-find "$@" -type d \( -perm /077 -o \! -perm -700 \)
-find "$@" -type f \( -perm /377 -o \! -perm -400 \)

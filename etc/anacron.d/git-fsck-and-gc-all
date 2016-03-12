@@ -1,2 +1,2 @@
 1 0 git-fsck-and-gc-all TERM="" tsp -m ~/bin/git-fsck-and-gc-all >/dev/null
-
+# vi:noet:ts=3:sts=3
