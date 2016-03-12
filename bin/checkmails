@@ -1,5 +1,5 @@
 #!/bin/bash
 
 for i in $MAIL ~/var/mail/*; do
-	[ -s "$i" ] && mutt -f "$i"
+  [ -s "$i" ] && mutt -f "$i"
 done
