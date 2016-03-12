@@ -1,7 +1,0 @@
-#!/bin/bash
-
-tsp tsp -S 2 >/dev/null
-for name in s3ql; do
-  tsp -m ~/bin/rsync-backup-home "$name" >/dev/null
-done
-~/bin/tsp-update-limit 2

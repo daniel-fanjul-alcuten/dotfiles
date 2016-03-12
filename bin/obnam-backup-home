@@ -1,7 +1,0 @@
-#!/bin/bash
-set -e
-set -x
-
-source ~/etc/backup.cfg
-
-obnam --repository ~/.obnam backup $obnam_excludes --one-file-system $HOME

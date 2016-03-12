@@ -37,5 +37,6 @@ for name in "$@"; do
     ~/usr/local/bin/forget-backups |
     xargs -r -t -n 1 sudo s3qlrm
 
-  # sudo s3qlctrl upload-meta "$mountpoint"
+  sudo s3qlctrl upload-meta "$mountpoint"
+
 done

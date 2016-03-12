@@ -1,5 +1,0 @@
-#!/bin/bash
-set -e
-set -x
-
-obnam --repository ~/.obnam forget --keep 72h,7d,5w,12m
