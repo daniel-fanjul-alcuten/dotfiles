@@ -2,9 +2,9 @@
 
 bup init
 for file in "$@"; do
-	bup join "$file" | if size=`git --git-dir ~/.bup notes show "$file"`; then
-		pv -s "$size" > "$file"
-	else
-		pv > "$file"
-	fi
+  bup join "$file" | if size=`git --git-dir ~/.bup notes show "$file"`; then
+    pv -s "$size" > "$file"
+  else
+    pv > "$file"
+  fi
 done
