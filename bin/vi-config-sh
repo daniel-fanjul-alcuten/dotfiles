@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+set -x
 
 if [ -f .git/config.sh ]; then
   vi .git/config.sh
@@ -8,6 +9,6 @@ elif [ -f .git/config.sh.gpg ]; then
   vi .git/config.sh
 fi
 
-me=daniel.fanjul.alcuten@gmail.com
+me=$(whoami)@$(hostname)
 gpg --batch --yes -es -u $me -r $me .git/config.sh
 shred -uv .git/config.sh
