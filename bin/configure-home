@@ -1,0 +1,381 @@
+#!/bin/bash
+set -e
+set -x
+
+cd ~
+
+unset ubuntu
+if [ -f /etc/lsb-release ]; then
+  source /etc/lsb-release
+  [ "$DISTRIB_ID" = Ubuntu ] && ubuntu=true
+fi
+
+sudo -v
+sudo tee /etc/sudoers.d/"$(whoami)" >/dev/null <<EOF
+Defaults:$(whoami) !tty_tickets, timestamp_timeout=-1
+EOF
+sudo chmod 0440 /etc/sudoers.d/"$(whoami)"
+
+sudo apt-get install aptitude
+
+{
+  # etckeeper
+  sudo aptitude install etckeeper
+  if ! [ -d /etc/.git ]; then
+    sudo vi /etc/etckeeper/etckeeper.conf
+    sudo etckeeper init
+    sudo etckeeper commit init
+  fi
+}
+
+{
+  # google chrome
+  wget -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+  dpkg -p google-chrome-stable >&/dev/null || {
+    sudo aptitude install wget
+    # wget https://dl.google.com/linux/direct/google-chrome-stable_current_i386.deb
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    sudo dpkg -i google-chrome-stable_current_amd64.deb || true
+    rm google-chrome-stable_current_amd64.deb
+    sudo aptitude install
+    nohup google-chrome &
+    read -p "configure google chrome:"
+  }
+}
+
+{
+  # ssh
+  sudo aptitude install openssh-client
+  sudo aptitude install postfix biabam
+  if ! [ -f .ssh/id_rsa ]; then
+    chmod 700 .ssh
+    ssh-keygen
+    {
+      file="$(hostname)"-ssh.tar.bzip2
+      tar cfvj "$file" .ssh
+      bin/gpg-file "$file"
+      echo "$file" | biabam "$file".gpg -s "$file" daniel.fanjul.alcuten@gmail.com
+      rm "$file"{,.gpg}
+    }
+    nohup google-chrome https://github.com/settings/ssh &
+    read -p "add ssh key to github: $(cat .ssh/id_rsa.pub)"
+  fi
+}
+
+{
+  # gpg
+  sudo aptitude install gnupg gnupg-agent
+  if ! [ -f .gnupg/secring.gpg ]; then
+    gpg --gen-key
+    {
+      sudo aptitude install biabam
+      file="$(hostname)"-gnupg.tar.bzip2
+      tar cfvj "$file" .gnupg
+      bin/gpg-file "$file"
+      echo "$file" | biabam "$file".gpg -s "$file" daniel.fanjul.alcuten@gmail.com
+      rm "$file"{,.gpg}
+      gpg-agent --daemon ssh-add
+    }
+  fi
+}
+
+{
+  # home
+  sudo aptitude install vim git awesome
+  git config remote.github.url 'github.com:/daniel-fanjul-alcuten/dotfiles'
+  git config remote.github.fetch '+refs/heads/*:refs/remotes/github/*'
+  git config remote.private-github.url 'github.com:/daniel-fanjul-alcuten/private-dotfiles'
+  git config remote.private-github.fetch '+refs/heads/*:refs/remotes/private-github/*'
+  git submodule update --init --recursive
+  crontab <<EOF
+USER=dfanjul
+@hourly  ~/bin/run-parts-cron hourly
+@monthly ~/bin/run-parts-cron monthly
+@weekly  ~/bin/run-parts-cron weekly
+@yearly  ~/bin/run-parts-cron yearly
+@daily   ~/bin/run-parts-cron daily
+@reboot  ~/bin/run-parts-cron reboot
+EOF
+}
+
+{
+  # s3ql
+  sudo aptitude install s3ql
+  if ! [ -d /var/lib/s3ql ]; then
+    sudo mkdir -p /var/lib/s3ql
+    sudo mkfs.s3ql --plain local:///var/lib/s3ql
+  fi
+}
+
+{
+  # go
+  sudo aptitude install curl mercurial make binutils bison gcc build-essential
+  [ ! -s ~/.gvm/scripts/gvm ] && bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
+  source ~/.gvm/scripts/gvm
+  gvm install go1.4
+  gvm use go1.4
+  gvm install go1.6
+  gvm use go1.6 --default
+  if [ "$GOPATH" ]; then
+    GOPATH=~/lib/go:"$GOPATH"
+  else
+    GOPATH=~/lib/go
+  fi
+  make -C ~/lib/go default vim
+}
+
+{
+  # apt
+
+  if [ "$ubuntu" ] && [ "$DISTRIB_CODENAME" ]; then
+    sudo tee /etc/apt/sources.list.d/canonical.list >/dev/null <<EOF
+# canonical
+deb http://archive.canonical.com/ $DISTRIB_CODENAME partner
+deb-src http://archive.canonical.com/ trusty partner
+EOF
+  fi
+
+  wget -O - https://www.hipchat.com/keys/hipchat-linux.key | sudo apt-key add -
+  sudo tee /etc/apt/sources.list.d/atlassian-hipchat.list >/dev/null <<EOF
+# hipchat
+deb http://downloads.hipchat.com/linux/apt stable main
+EOF
+}
+
+{
+  # docker
+  if [ "$ubuntu" ] && [ "$DISTRIB_CODENAME" ]; then
+    sudo aptitude install apt-transport-https ca-certificates
+    sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+    sudo tee /etc/apt/sources.list.d/docker.list >/dev/null <<EOF
+# docker
+deb https://apt.dockerproject.org/repo ubuntu-trusty main
+EOF
+    sudo aptitude update
+    sudo aptitude purge docker lxc-docker
+    sudo aptitude install docker-engine
+    sudo curl -L -o /usr/local/bin/docker-compose.tmp \
+      https://github.com/docker/compose/releases/download/1.6.0/docker-compose-"$(uname -s)-$(uname -m)"
+    sudo chmod +x /usr/local/bin/docker-compose.tmp
+    sudo mv /usr/local/bin/docker-compose{.tmp,}
+fi
+}
+
+sudo aptitude update
+sudo aptitude install \
+  anacron \
+  at \
+  biabam \
+  cron \
+  gnome-terminal \
+  mailutils \
+  mutt \
+  obnam \
+  openssh-server \
+  pal
+echo test | mail "$(whoami)"
+sudo aptitude install \
+  azureus \
+  bc \
+  bup \
+  bzip2 \
+  dc \
+  gmrun \
+  htop \
+  iotop \
+  mail-notification \
+  moosic \
+  ranger \
+  sc \
+  schedtool \
+  screen \
+  task \
+  task-spooler \
+  tree \
+  vim-doc \
+  vim-gnome \
+  vim-puppet \
+  vim-syntax-go \
+  wcd
+sudo aptitude install \
+  abcde \
+  abook \
+  ack-grep \
+  aegis \
+  ant \
+  apvlv \
+  aria2 \
+  attr \
+  avfs \
+  bar \
+  beep \
+  blueman \
+  bsdiff \
+  buffer \
+  bugs-everywhere \
+  burn \
+  cadaver \
+  capistrano \
+  cfget \
+  cfv \
+  cifs-utils \
+  clusterssh \
+  cmatrix \
+  cmatrix-xfont \
+  crawl \
+  curl \
+  cwcp \
+  dctrl-tools \
+  debsums \
+  dict \
+  dict-freedict-eng-spa \
+  dict-freedict-spa-eng \
+  dict-jargon \
+  dictd \
+  disper \
+  dstat \
+  dvdisaster \
+  e2fsprogs \
+  evince \
+  fbreader \
+  feh \
+  flac \
+  fonts-inconsolata \
+  freecdb \
+  gawk \
+  genders \
+  genisoimage \
+  gimp \
+  git-doc \
+  git-flow \
+  git-svn \
+  git2cl \
+  gitstats \
+  gnupg \
+  gnupg-agent \
+  gource \
+  graphviz \
+  graphviz-doc \
+  hardinfo \
+  hgview \
+  hipchat \
+  httpcode \
+  hwdata \
+  id3 \
+  id3ren \
+  id3v2 \
+  iftop \
+  inotail \
+  inotify-tools \
+  ioping \
+  irssi \
+  ispanish \
+  ispell \
+  iwatch \
+  lftp \
+  libreoffice \
+  links \
+  lltag \
+  loadwatch \
+  lockout \
+  lrzip \
+  lsyncd \
+  lynx \
+  markdown \
+  maven \
+  mbuffer \
+  md5deep \
+  mdadm \
+  meld \
+  mercurial-git \
+  mlocate \
+  mp3gain \
+  mp3info \
+  mp3splt \
+  mpg321 \
+  mplayer2 \
+  mtools \
+  mtp-tools \
+  mtpfs \
+  netpipes \
+  network-manager \
+  network-manager-gnome \
+  network-manager-vpnc \
+  nilfs-tools \
+  ntfs-3g \
+  ntp \
+  openjdk-6-jdk \
+  openjdk-6-jre \
+  openjdk-6-jre-headless \
+  openjdk-6-jre-lib \
+  openjdk-6-source \
+  openjdk-7-jdk \
+  openjdk-7-jre \
+  openjdk-7-jre-headless \
+  openjdk-7-jre-lib \
+  openjdk-7-source \
+  orpie \
+  par2 \
+  parted \
+  pexec \
+  pinpoint \
+  pipebench \
+  postpone \
+  privbind \
+  pv \
+  pwgen \
+  pydf \
+  qdbm-util \
+  qiv \
+  reptyr \
+  rpl \
+  rsync \
+  s3cmd \
+  saidar \
+  shellcheck \
+  simhash \
+  skype \
+  smem \
+  smplayer \
+  sshfs \
+  sshpass \
+  stgit \
+  subversion \
+  taggrepper \
+  tagtool \
+  telnet-ssl \
+  tidy \
+  tig \
+  timelimit \
+  tinycdb \
+  tmux \
+  tor \
+  totem \
+  trend \
+  trickle \
+  ttyload \
+  ttyrec \
+  ucspi-proxy \
+  ucspi-tcp \
+  ucspi-unix \
+  udpcast \
+  unrar \
+  unrtf \
+  unzip \
+  uptimed \
+  uuid \
+  vdmfec \
+  w3m \
+  wamerican \
+  wbritish \
+  wipe \
+  wodim \
+  wspanish \
+  xclip \
+  xdu \
+  xsel \
+  zip
+sudo aptitude install \
+  texlive-full \
+  virtualbox
+sudo aptitude upgrade

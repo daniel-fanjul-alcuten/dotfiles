@@ -1,0 +1,20 @@
+#!/bin/bash
+set -e
+set -x
+
+branch="$1" && shift || branch=master
+
+cd ~
+
+sudo apt-get install aptitude
+
+sudo aptitude install git
+if ! [ -d .git ]; then
+  git init
+fi
+git checkout --detach || true
+git fetch http://github.com/daniel-fanjul-alcuten/dotfiles +"$branch:$(hostname)"
+git checkout -f "$(hostname)"
+
+sudo aptitude install vim screen
+screen -L ~/bin/configure-home

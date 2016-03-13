@@ -156,8 +156,6 @@ _complete_command() {
   _command
 }
 complete -F _complete_command co
-alias puppet-apply-main='sudo puppet apply ~/etc/puppet/main.pp'
-complete -o default -F _service puppet-apply-main
 alias battery='upower -i /org/freedesktop/UPower/devices/battery_BAT0| grep -E "state|to\ full|to\ empty|percentage"'
 
 # colored aliases
@@ -418,14 +416,11 @@ fi
 set -o vi
 
 # go configuration
-[ ! -s ~/.gvm/scripts/gvm ] && type curl &>/dev/null && bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
 [ -s ~/.gvm/scripts/gvm ] && source ~/.gvm/scripts/gvm
-if [ -d ~/lib/go ]; then
-  if [ "$GOPATH" ]; then
-    GOPATH=~/lib/go:"$GOPATH"
-  else
-    GOPATH=~/lib/go
-  fi
+if [ "$GOPATH" ]; then
+  GOPATH=~/lib/go:"$GOPATH"
+else
+  GOPATH=~/lib/go
 fi
 if [ "$(uname)" = Darwin ]; then
   GOMAXPROCS=$(sysctl -n hw.ncpu)

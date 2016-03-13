@@ -5,6 +5,7 @@
 /.bash_history
 /.bup
 /.cache
+/.config/VirtualBox
 /.gmrun_history
 /.gnupg/gpg-agent-info-*
 /.gnupg/private-keys-v1.d
@@ -14,9 +15,13 @@
 /.gnupg/sshcontrol
 /.gnupg/trustdb.gpg
 /.gvm
-/.mutt/
+/.java
+/.moosic/saved_state
+/.moosic/server_log
+/.mutt
 /.mysql_history
 /.obnam
+/.orpie
 /.s3ql
 /.sc_history
 /.ssh/authorized_keys
@@ -25,12 +30,20 @@
 /.ssh/known_hosts
 /.ssh/known_hosts.old
 /.stack.wcd
+/.steam
+/.steampath
+/.steampid
 /.treedata.wcd
 /.vim-go
 /.viminfo
 /.xsession-errors
 /.xsession-errors.old
+/Downloads
+/VirtualBox VMs
+/lib/go/src/github.com/jstemmer
+/lib/go/src/github.com/rdwilliamson
+/lib/go/src/golang.org
 /tmp
-/var/backups/
+/var/backups
+/var/log
 /var/wcd.go
-/.orpie/
