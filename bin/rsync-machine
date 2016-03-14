@@ -1,0 +1,39 @@
+#!/bin/bash
+set -e
+set -x
+
+source ~/etc/backup.cfg
+
+for name in "$@"; do
+
+  mountpoint="/media/$name"
+  if ! sudo mountpoint -q "$mountpoint"; then
+    continue
+  fi
+
+  dir="$mountpoint"
+  sudo mkdir -m 0775 -p "$dir"
+
+  dir="$mountpoint"/machines
+  sudo mkdir -m 0775 -p "$dir"
+
+  dir="$dir"/$(hostname)
+  sudo mkdir -m 0775 -p "$dir"
+
+  work="$dir"/work
+  sudo mkdir -m 0775 -p "$work"
+  sudo ~/bin/rsync-s3ql -v --delete --delete-excluded $machine_excludes --one-file-system / "$work"
+
+  file="$dir"/"$now"
+  sudo s3qlcp "$work" "$file".s3qlcp
+  sudo mv "$file".s3qlcp "$file".s3qllock
+  sudo s3qllock "$file".s3qllock
+  sudo mv "$file".s3qllock "$file"
+
+  find "$dir" -mindepth 1 -maxdepth 1 -type d |
+    ~/usr/local/bin/forget-backups |
+    xargs -r -t -n 1 sudo s3qlrm
+
+  sudo s3qlctrl upload-meta "$mountpoint"
+
+done

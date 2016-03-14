@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+source ~/etc/backup.cfg
+
+for name in $machine_mountpoints; do
+  tsp -m ~/bin/rsync-machine "$name" >/dev/null
+done

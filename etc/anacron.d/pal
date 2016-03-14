@@ -1,2 +1,2 @@
-1	0	pal	pal -r 11 --mail | /usr/sbin/sendmail dfanjul
+1 0 pal pal -r 11 --mail | /usr/sbin/sendmail dfanjul
 # vi:noet:ts=3:sts=3

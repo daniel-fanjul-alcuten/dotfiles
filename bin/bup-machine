@@ -1,0 +1,29 @@
+#!/bin/bash
+set -e
+set -x
+
+source ~/etc/backup.cfg
+
+for name in "$@"; do
+
+  mountpoint="/media/$name"
+  if ! sudo mountpoint -q "$mountpoint"; then
+    continue
+  fi
+
+  dir="$mountpoint"
+  sudo mkdir -m 0775 -p "$dir"
+
+  dir="$mountpoint"/machines
+  sudo mkdir -m 0775 -p "$dir"
+
+  dir="$dir"/$(hostname)
+  sudo mkdir -m 0775 -p "$dir"
+
+  sudo BUP_DIR="$dir"/bup bup init
+  sudo BUP_DIR="$dir"/bup bup index -x $machine_excludes /
+  sudo BUP_DIR="$dir"/bup bup save -n "$(whoami)@$(hostname)" /
+
+  sudo s3qlctrl upload-meta "$mountpoint"
+
+done

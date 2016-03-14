@@ -3,8 +3,6 @@ set -e
 
 source ~/etc/backup.cfg
 
-tsp tsp -S 2 >/dev/null
-for name in $backup_mountpoints; do
+for name in $home_mountpoints; do
   tsp -m ~/bin/rsync-home "$name" >/dev/null
 done
-~/bin/tsp-update-limit 2
