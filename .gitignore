@@ -40,10 +40,15 @@
 /.xsession-errors.old
 /Downloads
 /VirtualBox VMs
+/lib/go/src/github.com/golang
 /lib/go/src/github.com/jstemmer
+/lib/go/src/github.com/kisielk
+/lib/go/src/github.com/nsf
 /lib/go/src/github.com/rdwilliamson
 /lib/go/src/golang.org
 /tmp
 /var/backups
 /var/log
 /var/wcd.go
+/.config/smplayer
+/.mplayer
