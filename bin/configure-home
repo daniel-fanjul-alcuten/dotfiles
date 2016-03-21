@@ -172,7 +172,8 @@ sudo aptitude install \
   mutt \
   obnam \
   openssh-server \
-  pal
+  pal \
+  procmail
 echo test | mail "$(whoami)"
 sudo aptitude install \
   azureus \

@@ -1,0 +1,6 @@
+LOGFILE=var/log/procmail.log
+
+:0
+* ^From: Task Spooler <taskspooler@[^>]+>$
+* ^Subject: the task [0-9]+ finished with error 0\.
+/dev/null
