@@ -68,17 +68,19 @@
 	fsbs = !git fa && git sbs
 	fsbu = !git fa && git sbu
 	fsr = !"git fa; git sr"
-	g- = !"if b=$(git symbolic-ref --short GREB_HEAD); then ~/usr/local/bin/git-greb -l -C \"$b\"; else ~/usr/local/bin/git-greb; fi"
+	g- = !"if b=$(git symbolic-ref --short GREB_HEAD); then ~/usr/local/bin/git-greb -C \"$b\"; else ~/usr/local/bin/git-greb; fi"
+	g-l = !"if b=$(git symbolic-ref --short GREB_HEAD); then ~/usr/local/bin/git-greb -C \"$b\" -l; else ~/usr/local/bin/git-greb -l; fi"
 	ga = !~/usr/local/bin/git-greb -C a
+	gal = !~/usr/local/bin/git-greb -C a -l
 	gerrit = review
 	gerrit-hook = !"scp git.spotify.net:hooks/commit-msg $(git rev-parse --git-dir)/hooks/"
 	gerrit-hook-submodules = !"git submodule foreach --recursive 'scp git.spotify.net:hooks/commit-msg $(git rev-parse --git-dir)/hooks/'"
-	gl = !~/usr/local/bin/git-greb -l
-	gl- = !"if b=$(git symbolic-ref --short GREB_HEAD); then ~/usr/local/bin/git-greb -l -C \"$b\"; else ~/usr/local/bin/git-greb -l; fi"
-	gla = !~/usr/local/bin/git-greb -l -C a
-	gln = !~/usr/local/bin/git-greb -l -C n
+	gl = !~/usr/local/bin/git-greb -C l
+	gll = !~/usr/local/bin/git-greb -C l -l
 	gn = !~/usr/local/bin/git-greb -C n
+	gnl = !~/usr/local/bin/git-greb -C n -l
 	greb = !~/usr/local/bin/git-greb
+	grebl = !~/usr/local/bin/git-greb -l
 	hard = reset --hard
 	hardu = reset --hard @{u}
 	history-reset = !git reset `echo init | git commit-tree HEAD:`
