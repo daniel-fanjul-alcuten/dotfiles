@@ -6,6 +6,7 @@
 /.bup
 /.cache
 /.config/VirtualBox
+/.config/smplayer
 /.gmrun_history
 /.gnupg/gpg-agent-info-*
 /.gnupg/private-keys-v1.d
@@ -18,6 +19,7 @@
 /.java
 /.moosic/saved_state
 /.moosic/server_log
+/.mplayer
 /.mutt
 /.mysql_history
 /.obnam
@@ -33,6 +35,7 @@
 /.steam
 /.steampath
 /.steampid
+/.toprc
 /.treedata.wcd
 /.vim-go
 /.viminfo
@@ -50,5 +53,3 @@
 /var/backups
 /var/log
 /var/wcd.go
-/.config/smplayer
-/.mplayer
