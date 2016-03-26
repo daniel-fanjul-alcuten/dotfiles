@@ -25,7 +25,7 @@ for name in "$@"; do
 
   export BUP_DIR="$dir"/bup
   bup init
-  bup index -x $basic_excludes ~
+  bup index -x $home_excludes ~
   bup save -n "$(whoami)@$(hostname)" ~
 
   sudo s3qlctrl upload-meta "$mountpoint"

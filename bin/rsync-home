@@ -25,7 +25,7 @@ for name in "$@"; do
 
   work="$dir"/work
   mkdir -m 0775 -p "$work"
-  ~/bin/rsync-s3ql -v --delete --delete-excluded $basic_excludes --one-file-system ~/ "$work"
+  ~/bin/rsync-s3ql -v --delete --delete-excluded $home_excludes --one-file-system ~/ "$work"
 
   file="$dir"/"$now"
   sudo s3qlcp "$work" "$file".s3qlcp
