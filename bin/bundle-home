@@ -25,13 +25,16 @@ for name in "$@"; do
   dir="$mountpoint"
   mkdir -m 0775 -p "$dir"
 
-  dir="$dir"/homes
+  dir="$dir"/backups
   mkdir -m 0775 -p "$dir"
 
   dir="$dir"/$(hostname)
   mkdir -m 0775 -p "$dir"
 
   dir="$dir"/$(whoami)
+  mkdir -m 0775 -p "$dir"
+
+  dir="$dir"/git
   mkdir -m 0775 -p "$dir"
 
   file="$dir"/"$now".bundle.git
