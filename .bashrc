@@ -211,10 +211,10 @@ cd() {
   } 2>/dev/null
 }
 pause() {
-  sudo -v && run-parts-cron halt -v
+  run-parts-cron halt -v
 }
 unpause() {
-  sudo -v && tsp -m sudo service cron start
+  sudo service cron start
 }
 halt() {
   pause && tsp -m sudo shutdown -h now >/dev/null
