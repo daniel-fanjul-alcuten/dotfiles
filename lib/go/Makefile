@@ -8,7 +8,7 @@ EXECUTABLES=\
 						ts
 
 .PHONY: default
-default: clean list compile install test
+default: clean list compile install test vim
 
 .PHONY: clean
 clean:

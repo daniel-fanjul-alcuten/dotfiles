@@ -121,7 +121,7 @@ EOF
   else
     GOPATH=~/lib/go
   fi
-  make -C ~/lib/go default vim
+  make -C ~/lib/go
 }
 
 {
