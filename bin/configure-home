@@ -166,6 +166,7 @@ sudo aptitude install \
   anacron \
   at \
   biabam \
+  bup \
   cron \
   gnome-terminal \
   mailutils \
@@ -173,12 +174,12 @@ sudo aptitude install \
   obnam \
   openssh-server \
   pal \
-  procmail
+  procmail \
+  rsync
 echo test | mail "$(whoami)"
 sudo aptitude install \
   azureus \
   bc \
-  bup \
   bzip2 \
   dc \
   gmrun \
@@ -322,6 +323,7 @@ sudo aptitude install \
   pinpoint \
   pipebench \
   postpone \
+  powertop \
   privbind \
   pv \
   pwgen \
@@ -330,7 +332,6 @@ sudo aptitude install \
   qiv \
   reptyr \
   rpl \
-  rsync \
   s3cmd \
   saidar \
   shellcheck \
