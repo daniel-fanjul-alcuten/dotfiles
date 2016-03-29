@@ -25,7 +25,7 @@ for name in "$@"; do
 
   work="$dir"/work
   mkdir -m 0775 -p "$work"
-  ~/bin/rsync-s3ql -v --delete --delete-excluded $home_excludes --one-file-system ~/ "$work"
+  ~/bin/rsync-s3ql -v --delete --delete-excluded $home_excludes --one-file-system ~/ "$work" || true
 
   file="$dir"/"$now"
   sudo s3qlcp "$work" "$file".s3qlcp
@@ -33,8 +33,13 @@ for name in "$@"; do
   sudo s3qllock "$file".s3qllock
   mv "$file".s3qllock "$file"
 
+  unset forget
+  if [ "$name" = s3ql ]; then
+    forget='--minutes 120 --hours 12 --days 3'
+  fi
+
   find "$dir" -mindepth 1 -maxdepth 1 -type d |
-    ~/usr/local/bin/forget-backups |
+    ~/usr/local/bin/forget-backups $forget |
     xargs -r -t -n 1 sudo s3qlrm
 
   sudo s3qlctrl upload-meta "$mountpoint"

@@ -42,8 +42,13 @@ for name in "$@"; do
   sudo s3qllock "$file".tmp
   mv "$file"{.tmp,}
 
+  unset forget
+  if [ "$name" = s3ql ]; then
+    forget='--minutes 60 --hours 8 --days 2'
+  fi
+
   find "$dir" -type f |
-    ~/usr/local/bin/forget-backups |
+    ~/usr/local/bin/forget-backups $forget |
     xargs -r -t -n 1 sudo s3qlrm
 done
 
