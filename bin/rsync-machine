@@ -6,39 +6,41 @@ source ~/etc/backup.cfg
 
 for name in "$@"; do
 
-  mountpoint="/media/$name"
-  if ! sudo mountpoint -q "$mountpoint"; then
+  mountpoint="$name"
+  if ! mountpoint -q "$mountpoint"; then
     continue
   fi
 
   dir="$mountpoint"
-  sudo mkdir -m 0775 -p "$dir"
+  mkdir -m 0775 -p "$dir"
 
-  dir="$mountpoint"/backups
-  sudo mkdir -m 0775 -p "$dir"
+  dir="$dir"/backups
+  mkdir -m 0775 -p "$dir"
 
   dir="$dir"/$(hostname)
-  sudo mkdir -m 0775 -p "$dir"
+  mkdir -m 0775 -p "$dir"
 
   work="$dir"/work
-  sudo mkdir -m 0775 -p "$work"
-  sudo ~/bin/rsync-s3ql -v --delete --delete-excluded $machine_excludes --one-file-system / "$work" || true
+  mkdir -m 0775 -p "$work"
+  eval sudo -H SSH_AUTH_SOCK="$SSH_AUTH_SOCK" ~/bin/rsync-s3ql -v \
+    --delete --delete-excluded $machine_rsync_excludes --one-file-system \
+    / dfanjul@localhost:"$work"
 
   file="$dir"/"$now"
-  sudo s3qlcp "$work" "$file".s3qlcp
-  sudo mv "$file".s3qlcp "$file".s3qllock
-  sudo s3qllock "$file".s3qllock
-  sudo mv "$file".s3qllock "$file"
+  s3qlcp "$work" "$file".s3qlcp
+  mv "$file".s3qlcp "$file".s3qllock
+  s3qllock "$file".s3qllock
+  mv "$file".s3qllock "$file"
 
   unset forget
-  if [ "$name" = s3ql ]; then
+  if [ "$name" = /mnt/s3ql ]; then
     forget='--minutes 60 --hours 6 --days 1'
   fi
 
   find "$dir" -mindepth 1 -maxdepth 1 -type d |
     ~/usr/local/bin/forget-backups $forget |
-    xargs -r -t -n 1 sudo s3qlrm
+    xargs -r -t -n 1 s3qlrm
 
-  sudo s3qlctrl upload-meta "$mountpoint"
+  s3qlctrl upload-meta "$mountpoint"
 
 done

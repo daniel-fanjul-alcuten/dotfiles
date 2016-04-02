@@ -3,6 +3,8 @@ set -e
 
 source ~/etc/backup.cfg
 
-for name in $home_mountpoints; do
-  tsp -m ~/bin/rsync-home "$name" >/dev/null
+mkdir -p ~/var/lock
+for name in ~/mnt/s3ql ~/mnt/dts-server/s3ql; do
+  lock=rsync-home-$(md5sum <<< "$name" | cut -f 1 -d ' ')
+  postpone --lock ~/var/lock/"$lock" tsp -fm ~/bin/rsync-home "$name" >/dev/null &
 done

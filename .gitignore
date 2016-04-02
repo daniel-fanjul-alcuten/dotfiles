@@ -49,7 +49,10 @@
 /lib/go/src/github.com/nsf
 /lib/go/src/github.com/rdwilliamson
 /lib/go/src/golang.org
+/mnt
 /tmp
 /var/backups
+/var/lib/s3ql
+/var/lock
 /var/log
 /var/wcd.go

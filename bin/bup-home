@@ -6,15 +6,15 @@ source ~/etc/backup.cfg
 
 for name in "$@"; do
 
-  mountpoint="/media/$name"
-  if ! sudo mountpoint -q "$mountpoint"; then
+  mountpoint="$name"
+  if ! mountpoint -q "$mountpoint"; then
     continue
   fi
 
   dir="$mountpoint"
   mkdir -m 0775 -p "$dir"
 
-  dir="$mountpoint"/backups
+  dir="$dir"/backups
   mkdir -m 0775 -p "$dir"
 
   dir="$dir"/$(hostname)
@@ -25,9 +25,9 @@ for name in "$@"; do
 
   export BUP_DIR="$dir"/bup
   bup init
-  bup index -x $home_excludes ~
+  eval bup index -x $home_excludes ~
   bup save -n "$(whoami)@$(hostname)" ~
 
-  sudo s3qlctrl upload-meta "$mountpoint"
+  s3qlctrl upload-meta "$mountpoint"
 
 done
