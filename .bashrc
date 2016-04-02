@@ -217,19 +217,19 @@ unpause() {
   sudo service cron start
 }
 halt() {
-  pause && tsp -m sudo shutdown -h now >/dev/null
+  pause && tsp -dm sudo shutdown -h now >/dev/null
 }
 reboot() {
-  pause && tsp -m sudo shutdown -r now >/dev/null
+  pause && tsp -dm sudo shutdown -r now >/dev/null
 }
 xlogout() {
-  pause && tsp -m gnome-session-quit --logout >/dev/null
+  pause && tsp -dm gnome-session-quit --logout >/dev/null
 }
 xhalt() {
-  pause && tsp -m gnome-session-quit --power-off >/dev/null
+  pause && tsp -dm gnome-session-quit --power-off >/dev/null
 }
 xreboot() {
-  pause && tsp -m gnome-session-quit --reboot >/dev/null
+  pause && tsp -dm gnome-session-quit --reboot >/dev/null
 }
 down() {
   yes "|" | head -$((LINES - 3)) && echo v
