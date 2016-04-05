@@ -30,9 +30,18 @@ fi
 if [ "$(git config gc.lastgc || echo 0)" -lt $((now - $((5 * 24 * 3600)))) ]; then
   if git gc --auto; then
     git config gc.lastgc "$now"
-    ok "$dir: git gc ok"
+    ok "$dir: git gc --auto ok"
   else
-    ko "$dir: git gc failed"
+    ko "$dir: git gc --auto failed"
+  fi
+fi
+
+if [ "$(git config gc.lastgcaggressive || echo 0)" -lt $((now - $((31 * 24 * 3600)))) ]; then
+  if git gc --aggressive; then
+    git config gc.lastgcaggressive "$now"
+    ok "$dir: git gc --aggressive ok"
+  else
+    ko "$dir: git gc --aggressive failed"
   fi
 fi
 
