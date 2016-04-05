@@ -3,4 +3,4 @@
 id="$1" && shift || { echo id?; exit 1; }
 
 tsp -m fs -r -u >/dev/null
-tsp -m nmcli con up id "$id" >/dev/null
+tsp -m -d nmcli con up id "$id" >/dev/null

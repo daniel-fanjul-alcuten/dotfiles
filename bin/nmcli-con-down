@@ -2,4 +2,4 @@
 
 id="$1" && shift || { echo id?; exit 1; }
 
-tsp -m nmcli con down id "$id" >/dev/null
+nmcli con down id "$id" >/dev/null
