@@ -22,6 +22,10 @@
 /.mplayer
 /.mutt
 /.mysql_history
+/.newsbeuter/cache.db
+/.newsbeuter/cache.db.lock
+/.newsbeuter/history.cmdline
+/.newsbeuter/history.search
 /.obnam
 /.orpie
 /.s3ql

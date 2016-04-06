@@ -175,6 +175,7 @@ sudo aptitude install \
   pal \
   procmail \
   rsync
+
 echo test | mail "$(whoami)"
 sudo aptitude install \
   azureus \
@@ -186,6 +187,8 @@ sudo aptitude install \
   iotop \
   mail-notification \
   moosic \
+  newsbeuter \
+  orpie \
   ranger \
   sc \
   schedtool \
@@ -198,6 +201,7 @@ sudo aptitude install \
   vim-puppet \
   vim-syntax-go \
   wcd
+
 sudo aptitude install \
   abcde \
   abook \
@@ -316,7 +320,6 @@ sudo aptitude install \
   openjdk-7-jre-headless \
   openjdk-7-jre-lib \
   openjdk-7-source \
-  orpie \
   par2 \
   parted \
   pexec \
@@ -377,7 +380,9 @@ sudo aptitude install \
   xdu \
   xsel \
   zip
+
 sudo aptitude install \
   texlive-full \
   virtualbox
+
 sudo aptitude upgrade

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+tsp -m newsbeuter -x reload >/dev/null
