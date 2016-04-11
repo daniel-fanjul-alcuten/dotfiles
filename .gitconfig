@@ -72,13 +72,16 @@
 	g-l = !"if b=$(git symbolic-ref --short GREB_HEAD); then ~/usr/local/bin/git-greb -C \"$b\" -l; else ~/usr/local/bin/git-greb -l; fi"
 	ga = !~/usr/local/bin/git-greb -C a
 	gal = !~/usr/local/bin/git-greb -C a -l
+	gald = !~/usr/local/bin/git-greb -C a -l -d
 	gerrit = review
 	gerrit-hook = !"scp git.spotify.net:hooks/commit-msg $(git rev-parse --git-dir)/hooks/"
 	gerrit-hook-submodules = !"git submodule foreach --recursive 'scp git.spotify.net:hooks/commit-msg $(git rev-parse --git-dir)/hooks/'"
 	gl = !~/usr/local/bin/git-greb -C l
 	gll = !~/usr/local/bin/git-greb -C l -l
+	glld = !~/usr/local/bin/git-greb -C l -l -d
 	gn = !~/usr/local/bin/git-greb -C n
 	gnl = !~/usr/local/bin/git-greb -C n -l
+	gnld = !~/usr/local/bin/git-greb -C n -l -d
 	greb = !~/usr/local/bin/git-greb
 	grebl = !~/usr/local/bin/git-greb -l
 	hard = reset --hard
