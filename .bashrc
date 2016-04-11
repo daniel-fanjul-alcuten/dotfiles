@@ -293,7 +293,7 @@ ts() {
   return $s
 }
 
-# set PATH for private bin folders
+# set PATH
 if [ -d ~/usr/local/bin ]; then
   PATH=~/usr/local/bin:"$PATH"
 fi

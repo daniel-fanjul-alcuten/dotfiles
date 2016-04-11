@@ -19,5 +19,16 @@ gnome-volume-manager &
 mail-notification &
 nm-applet &
 
+# set PATH
+if [ -d ~/usr/local/bin ]; then
+  PATH=~/usr/local/bin:"$PATH"
+fi
+if [ -d ~/bin/games ] ; then
+  PATH=~/bin/games:"$PATH"
+fi
+if [ -d ~/bin ] ; then
+  PATH=~/bin:"$PATH"
+fi
+
 # awesome
 exec awesome
