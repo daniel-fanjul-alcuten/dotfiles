@@ -21,10 +21,10 @@ for name in "$@"; do
   mkdir -m 0775 -p "$dir"
 
   sudo -H bup init
-  eval sudo -H bup index -x $machine_excludes /
+  eval sudo -H bup index -v -x $machine_excludes /
 
   sudo -H SSH_AUTH_SOCK="$SSH_AUTH_SOCK" bup init -r dfanjul@localhost:"$dir"/bup
-  sudo -H SSH_AUTH_SOCK="$SSH_AUTH_SOCK" bup save -r dfanjul@localhost:"$dir"/bup -n "$(whoami)@$(hostname)" /
+  sudo -H SSH_AUTH_SOCK="$SSH_AUTH_SOCK" bup save -v -r dfanjul@localhost:"$dir"/bup -n "$(whoami)@$(hostname)" /
 
   s3qlctrl upload-meta "$mountpoint"
 
