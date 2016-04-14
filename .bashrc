@@ -214,7 +214,7 @@ pause() {
   run-parts-cron halt -v
 }
 unpause() {
-  sudo service cron start
+  tsp -m fs -m -l && tsp -m sudo service cron start
 }
 halt() {
   pause && tsp -dm sudo shutdown -h now >/dev/null
