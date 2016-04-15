@@ -255,7 +255,7 @@ globalkeys = awful.util.table.join(
               end),
 
     -- dfanjul
-    awful.key({ "Mod1", "Control" }, "l", function () awful.util.spawn_with_shell("gnome-screensaver-command --activate") end),
+    awful.key({ "Mod1", "Control" }, "l", function () awful.util.spawn_with_shell("gnome-screensaver-command --lock") end),
     awful.key({ "Mod1", "Control" }, "n", function () awful.util.spawn_with_shell("moosic next") end),
     awful.key({ "Mod1", "Control" }, "p", function () awful.util.spawn_with_shell("moosic prev") end),
     awful.key({ "Mod1", "Control" }, "s", function () awful.util.spawn_with_shell(terminal .. " -t alsamixer -e alsamixer") end),
