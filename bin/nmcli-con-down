@@ -2,4 +2,9 @@
 
 id="$1" && shift || { echo id?; exit 1; }
 
-nmcli con down id "$id" >/dev/null
+tsp -fD "$(tsp fs -r -u)" nmcli con down id "$id" >/dev/null &
+while [ "$(jobs -p | wc -l)" -gt 0 ]; do
+  tsp -t
+  sleep 1
+  jobs -n
+done
