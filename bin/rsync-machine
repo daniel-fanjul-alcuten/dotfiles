@@ -32,13 +32,8 @@ for name in "$@"; do
   s3qllock "$file".s3qllock
   mv "$file".s3qllock "$file"
 
-  unset forget
-  if [ "$name" = /mnt/s3ql ]; then
-    forget='--minutes 60 --hours 6 --days 1'
-  fi
-
   find "$dir" -mindepth 1 -maxdepth 1 -type d |
-    ~/usr/local/bin/forget-backups $forget |
+    ~/usr/local/bin/forget-backups --minutes 180 --hours 48 --days 5 --weeks 2 --months 1 --years 1 |
     xargs -r -t -n 1 s3qlrm
 
   s3qlctrl upload-meta "$mountpoint"
