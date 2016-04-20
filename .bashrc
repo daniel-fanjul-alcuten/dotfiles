@@ -213,8 +213,12 @@ cd() {
 pause() {
   run-parts-cron halt -v
 }
+pause-ts-f() {
+  pause && tsp -m ts -f
+}
 unpause() {
-  tsp -m fs -m -l && tsp -m sudo service cron start
+  tsp -fn fs -m -l
+  sudo service cron start
 }
 halt() {
   pause && tsp -dm sudo shutdown -h now >/dev/null
