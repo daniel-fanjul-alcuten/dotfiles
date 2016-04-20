@@ -12,3 +12,4 @@ name="$1" && shift || {
 file=~/var/backups/docker/containers/"$name-$id".tar
 mkdir -p "${file%/*}"
 sudo docker export -o "$file" "$id" || { rm -f "$file"; false; }
+sudo chown $(whoami):$(whoami) "$file"

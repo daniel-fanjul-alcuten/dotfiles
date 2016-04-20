@@ -12,4 +12,5 @@ file=~/var/backups/docker/images/"$name-$id".tar
 if ! [ -f "$file" ]; then
   mkdir -p "${file%/*}"
   sudo docker save -o "$file" "$id" || { rm -f "$file" && false; }
+  sudo chown $(whoami):$(whoami) "$file"
 fi
