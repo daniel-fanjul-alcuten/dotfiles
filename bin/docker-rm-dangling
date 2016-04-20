@@ -2,4 +2,6 @@
 set -e
 set -x
 
-sudo docker ps -qf status=exited | xargs -r sudo docker rm
+for s in exited created; do
+  sudo docker ps -qf status=$s | xargs -r sudo docker rm
+done
