@@ -211,29 +211,71 @@ cd() {
   } 2>/dev/null
 }
 pause() {
-  run-parts-cron halt -v
-}
-pause-ts-f() {
-  pause && tsp -m ts -f
+  sudo service cron stop
+  ~/bin/tsp-fg fs -u
 }
 unpause() {
-  tsp -fn fs -m -l
+  ~/bin/tsp-fg fs -m -l
   sudo service cron start
 }
+pmsuspend() {
+  run-parts-cron halt -v &&
+    tsp -dm ts -f >/dev/null &&
+    if sudo pm-is-supported --suspend-hybrid; then
+      tsp -dm sudo pm-suspend-hybrid >/dev/null
+    elif sudo pm-is-supported --suspend; then
+      tsp -dm sudo pm-suspend >/dev/null
+    else
+      echo not supported
+      return 1
+    fi
+}
+pmhibernate() {
+  run-parts-cron halt -v &&
+    tsp -dm ts -f >/dev/null &&
+    if sudo pm-is-supported --hibernate; then
+      tsp -dm sudo pm-hibernate >/dev/null
+    else
+      echo not supported
+      return 1
+    fi
+}
+upsuspend() {
+  run-parts-cron halt -v &&
+    tsp -dm gnome-screensaver-command --lock >/dev/null &&
+    tsp -dm ts -f >/dev/null &&
+    tsp -dm dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend >/dev/null
+}
+uphibernate() {
+  run-parts-cron halt -v &&
+    tsp -dm gnome-screensaver-command --lock >/dev/null &&
+    tsp -dm ts -f >/dev/null &&
+    tsp -dm dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Hibernate >/dev/null
+}
 halt() {
-  pause && tsp -dm sudo shutdown -h now >/dev/null
+  run-parts-cron halt -v &&
+    tsp -dm ts -f >/dev/null &&
+    tsp -dm sudo shutdown -h now >/dev/null
 }
 reboot() {
-  pause && tsp -dm sudo shutdown -r now >/dev/null
+  run-parts-cron halt -v &&
+    tsp -dm ts -f >/dev/null &&
+    tsp -dm sudo shutdown -r now >/dev/null
 }
 xlogout() {
-  pause && tsp -dm gnome-session-quit --logout >/dev/null
+  run-parts-cron halt -v && \
+    tsp -dm ts -f >/dev/null
+    tsp -dm gnome-session-quit --logout >/dev/null
 }
 xhalt() {
-  pause && tsp -dm gnome-session-quit --power-off >/dev/null
+  run-parts-cron halt -v && \
+    tsp -dm ts -f >/dev/null
+    tsp -dm gnome-session-quit --power-off >/dev/null
 }
 xreboot() {
-  pause && tsp -dm gnome-session-quit --reboot >/dev/null
+  run-parts-cron halt -v && \
+    tsp -dm ts -f >/dev/null
+    tsp -dm gnome-session-quit --reboot >/dev/null
 }
 down() {
   yes "|" | head -$((LINES - 3)) && echo v
