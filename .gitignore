@@ -56,7 +56,7 @@
 /lib/go/src/golang.org
 /mnt
 /tmp
-/var/backups
+/var/backups/docker
 /var/lib/s3ql
 /var/lock
 /var/log
