@@ -3,5 +3,6 @@
 *.sw?
 *.test
 *~
+.~lock.*#
 Session.vim
 tags
