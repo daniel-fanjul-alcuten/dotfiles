@@ -184,13 +184,13 @@ t() {
   return $s
 }
 tt() {
-  local dir="$(basename "$PWD")"
+  local dir="$(basename "$PWD" | sed s/-//g)"
   if task _tags | grep -q "^$dir$"; then
     t +"$dir" "$@"
   fi
 }
 tta() {
-  local dir="$(basename "$PWD")"
+  local dir="$(basename "$PWD" | sed s/-//g)"
   t add +"$dir" "$@"
 }
 cd() {
