@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
 
-find ~ -type d -xdev -execdir git rev-parse --show-toplevel \; 2>/dev/null |\
+find ~ -type d -xdev -execdir git rev-parse --git-dir \; 2>/dev/null |\
   sort -u |\
-  xargs -rn 1 -I folder bash -c 'cd "folder" && tsp -m -L "folder" ~/bin/git-fsck-and-gc >/dev/null'
+  xargs -rn 1 -I folder bash -c 'cd "folder" >&/dev/null && tsp -m -L "folder" ~/bin/git-fsck-and-gc >/dev/null'
