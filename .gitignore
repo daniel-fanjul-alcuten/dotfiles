@@ -47,13 +47,6 @@
 /.xsession-errors.old
 /Downloads
 /VirtualBox VMs
-/lib/go/src/github.com/go-sql-driver
-/lib/go/src/github.com/golang
-/lib/go/src/github.com/jstemmer
-/lib/go/src/github.com/kisielk
-/lib/go/src/github.com/nsf
-/lib/go/src/github.com/rdwilliamson
-/lib/go/src/golang.org
 /mnt
 /tmp
 /var/backups/docker
