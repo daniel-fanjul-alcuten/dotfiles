@@ -58,6 +58,3 @@
 [submodule "lib/go/src/github.com/daniel-fanjul-alcuten/ts"]
 	path = lib/go/src/github.com/daniel-fanjul-alcuten/ts
 	url = http://github.com/daniel-fanjul-alcuten/ts.git
-[submodule "usr/share/hub"]
-	path = usr/share/hub
-	url = http://github.com/github/hub.git
