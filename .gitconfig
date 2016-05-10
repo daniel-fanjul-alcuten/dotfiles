@@ -71,6 +71,7 @@
 	g- = !"if b=$(git symbolic-ref --short GREB_HEAD); then ~/usr/local/bin/git-greb -C \"$b\"; else ~/usr/local/bin/git-greb; fi"
 	g-l = !"if b=$(git symbolic-ref --short GREB_HEAD); then ~/usr/local/bin/git-greb -C \"$b\" -l; else ~/usr/local/bin/git-greb -l; fi"
 	ga = !~/usr/local/bin/git-greb -C a
+	gad = !~/usr/local/bin/git-greb -C a -d
 	gal = !~/usr/local/bin/git-greb -C a -l
 	gald = !~/usr/local/bin/git-greb -C a -l -d
 	gerrit = review
