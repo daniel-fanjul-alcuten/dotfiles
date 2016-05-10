@@ -194,7 +194,6 @@ sudo aptitude install \
   schedtool \
   screen \
   task \
-  task-spooler \
   tree \
   vim-doc \
   vim-gnome \

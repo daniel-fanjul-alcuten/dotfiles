@@ -1,3 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
-tsp -m newsbeuter -x reload >/dev/null
+lock=newsbeuter-reload
+nohup postpone -l ~/var/lock/lock-"$lock" newsbeuter -x reload &>> ~/var/log/"$lock".log &

@@ -1,3 +1,4 @@
 #!/bin/sh
 
-tsp -m ~/usr/local/bin/fs -u >/dev/null
+~/bin/flock-wait ~/var/lock/lock-bup-* ~/var/lock/lock-rsync-*
+~/usr/local/bin/fs -u

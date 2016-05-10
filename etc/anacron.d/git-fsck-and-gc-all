@@ -1,2 +1,2 @@
-1 0 git-fsck-and-gc-all TERM="" ~/bin/git-fsck-and-gc-all >/dev/null
+1 0 git-fsck-and-gc-all TERM="" ~/bin/git-fsck-and-gc-all
 # vi:noet:ts=3:sts=3

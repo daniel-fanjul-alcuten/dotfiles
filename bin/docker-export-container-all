@@ -1,10 +1,6 @@
 #!/bin/bash
 set -e
 
-mkdir -p ~/var/lock
 for container in $(sudo docker ps -f 'status=exited' -q); do
-  name=$(sudo docker inspect -f '{{.Name}}' "$container")
-  name=${name#/}
-  lock=docker-export-container-$(md5sum <<< "$container-$name" | cut -f 1 -d ' ')
-  postpone --lock ~/var/lock/"$lock" tsp -fm -L "container-$name" ~/bin/docker-export-container "$container" "$name" &
-done >/dev/null
+  ~/bin/docker-export-container "$container"
+done

@@ -1,10 +1,6 @@
 #!/bin/bash
 set -e
 
-source ~/etc/backup.cfg
-
-mkdir -p ~/var/lock
-for name in ~/mnt/s3ql ~/mnt/dts-server/s3ql; do
-  lock=rsync-home-$(md5sum <<< "$name" | cut -f 1 -d ' ')
-  postpone --lock ~/var/lock/"$lock" tsp -fm ~/bin/rsync-home "$name" >/dev/null &
+for name in ~/mnt/s3ql; do
+  ~/bin/rsync-home "$name"
 done

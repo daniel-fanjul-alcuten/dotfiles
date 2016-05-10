@@ -1,6 +1,26 @@
 #!/bin/bash
 set -e
+
+unset postponed
+while getopts 'p' opt; do
+  case $opt in
+    p) postponed=true;;
+    *) exit 1
+  esac
+done
+shift $((OPTIND - 1))
+
+if [ -z "$postponed" ]; then
+  mkdir -p ~/var/{lock,log}
+  for name in "$@"; do
+    lock=bup-machine-$(md5sum <<< "$name" | cut -f 1 -d ' ')
+    nohup postpone -l ~/var/lock/lock-"$lock" "$0" -p "$name" &>> ~/var/log/"$lock".log &
+  done
+  exit 0
+fi
 set -x
+
+~/bin/flock-wait ~/var/lock/lock-docker-save-image-* ~/var/lock/lock-docker-export-container-*
 
 source ~/etc/backup.cfg
 
@@ -21,7 +41,7 @@ for name in "$@"; do
   mkdir -m 0775 -p "$dir"
 
   sudo -H bup init
-  eval sudo -H bup index -v -x $machine_excludes /
+  eval sudo -H bup index -v -x "$machine_excludes" /
 
   sudo -H SSH_AUTH_SOCK="$SSH_AUTH_SOCK" bup init -r dfanjul@localhost:"$dir"/bup
   sudo -H SSH_AUTH_SOCK="$SSH_AUTH_SOCK" bup save -v -r dfanjul@localhost:"$dir"/bup -n "$(whoami)@$(hostname)" /

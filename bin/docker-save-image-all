@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
 
-mkdir -p ~/var/lock
 for image in $(sudo docker images -q); do
-  lock=docker-save-image-$(md5sum <<< "$image" | cut -f 1 -d ' ')
-  postpone --lock ~/var/lock/"$lock" tsp -fm -L "image-$image" ~/bin/docker-save-image "$image" &
-done >/dev/null
+  ~/bin/docker-save-image "$image"
+done

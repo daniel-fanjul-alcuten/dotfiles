@@ -1,4 +1,28 @@
 #!/bin/bash
+set -e
+
+unset postponed
+while getopts 'p' opt; do
+  case $opt in
+    p) postponed=true;;
+    *) exit 1
+  esac
+done
+shift $((OPTIND - 1))
+
+dir=$(git rev-parse --show-toplevel)
+if [ -z "$dir" ]; then
+  dir=$(git rev-parse --git-dir)
+  dir=$(readlink -e "$dir")
+fi
+
+if [ -z "$postponed" ]; then
+  mkdir -p ~/var/{lock,log}
+  lock=git-fsck-and-gc-$(md5sum <<< "$dir" | cut -f 1 -d ' ')
+  nohup postpone -l ~/var/lock/lock-"$lock" -L ~/var/lock/git-fsck-and-gc.lock "$0" -p &>> ~/var/log/"$lock".log &
+  exit 0
+fi
+set -x
 
 source ~/etc/colors.cfg
 
@@ -10,12 +34,6 @@ function ko {
   red "$@"
   exit 1
 }
-
-dir=$(git rev-parse --show-toplevel)
-if [ -z "$dir" ]; then
-  dir=$(git rev-parse --git-dir)
-  dir=$(readlink -e "$dir")
-fi
 
 now="$(date +%s)"
 if [ "$(git config gc.lastfsck || echo 0)" -lt $((now - $((3 * 24 * 3600)))) ]; then

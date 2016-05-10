@@ -1,10 +1,7 @@
 #!/bin/bash
+set -e
 
 id="$1" && shift || { echo id?; exit 1; }
 
-tsp -fD "$(tsp fs -r -u)" nmcli con down id "$id" >/dev/null &
-while [ "$(jobs -p | wc -l)" -gt 0 ]; do
-  tsp -t
-  sleep 1
-  jobs -n
-done
+fs -r -u
+exec nmcli con down id "$id"

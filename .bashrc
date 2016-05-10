@@ -212,19 +212,20 @@ cd() {
 }
 pause() {
   sudo service cron stop
-  ~/bin/tsp-fg fs -u
+  ~/etc/cron.halt/99-umount-all
 }
 unpause() {
-  ~/bin/tsp-fg fs -m -l
+  fs -m -l
   sudo service cron start
 }
 pmsuspend() {
   run-parts-cron halt -v &&
-    tsp -dm ts -f >/dev/null &&
+    ~/bin/flock-wait ~/var/lock/lock-* &&
+    ts -f &&
     if sudo pm-is-supported --suspend-hybrid; then
-      tsp -dm sudo pm-suspend-hybrid >/dev/null
+      sudo pm-suspend-hybrid >/dev/null
     elif sudo pm-is-supported --suspend; then
-      tsp -dm sudo pm-suspend >/dev/null
+      sudo pm-suspend >/dev/null
     else
       echo not supported
       return 1
@@ -232,9 +233,10 @@ pmsuspend() {
 }
 pmhibernate() {
   run-parts-cron halt -v &&
-    tsp -dm ts -f >/dev/null &&
+    ~/bin/flock-wait ~/var/lock/lock-* &&
+    ts -f &&
     if sudo pm-is-supported --hibernate; then
-      tsp -dm sudo pm-hibernate >/dev/null
+      sudo pm-hibernate >/dev/null
     else
       echo not supported
       return 1
@@ -242,40 +244,47 @@ pmhibernate() {
 }
 upsuspend() {
   run-parts-cron halt -v &&
-    tsp -dm gnome-screensaver-command --lock >/dev/null &&
-    tsp -dm ts -f >/dev/null &&
-    tsp -dm dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend >/dev/null
+    ~/bin/flock-wait ~/var/lock/lock-* &&
+    ts -f &&
+    gnome-screensaver-command --lock &&
+    dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend
 }
 uphibernate() {
   run-parts-cron halt -v &&
-    tsp -dm gnome-screensaver-command --lock >/dev/null &&
-    tsp -dm ts -f >/dev/null &&
-    tsp -dm dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Hibernate >/dev/null
+    ~/bin/flock-wait ~/var/lock/lock-* &&
+    ts -f &&
+    gnome-screensaver-command --lock &&
+    dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Hibernate
 }
 halt() {
   run-parts-cron halt -v &&
-    tsp -dm ts -f >/dev/null &&
-    tsp -dm sudo shutdown -h now >/dev/null
+    ~/bin/flock-wait ~/var/lock/lock-* &&
+    ts -f &&
+    sudo shutdown -h now
 }
 reboot() {
   run-parts-cron halt -v &&
-    tsp -dm ts -f >/dev/null &&
-    tsp -dm sudo shutdown -r now >/dev/null
+    ~/bin/flock-wait ~/var/lock/lock-* &&
+    ts -f &&
+    sudo shutdown -r now
 }
 xlogout() {
   run-parts-cron halt -v && \
-    tsp -dm ts -f >/dev/null
-    tsp -dm gnome-session-quit --logout >/dev/null
+    ~/bin/flock-wait ~/var/lock/lock-* &&
+    ts -f &&
+    gnome-session-quit --logout
 }
 xhalt() {
   run-parts-cron halt -v && \
-    tsp -dm ts -f >/dev/null
-    tsp -dm gnome-session-quit --power-off >/dev/null
+    ~/bin/flock-wait ~/var/lock/lock-* &&
+    ts -f &&
+    gnome-session-quit --power-off
 }
 xreboot() {
   run-parts-cron halt -v && \
-    tsp -dm ts -f >/dev/null
-    tsp -dm gnome-session-quit --reboot >/dev/null
+    ~/bin/flock-wait ~/var/lock/lock-* &&
+    ts -f &&
+    gnome-session-quit --reboot
 }
 down() {
   yes "|" | head -$((LINES - 3)) && echo v
