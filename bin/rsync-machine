@@ -45,7 +45,7 @@ for name in "$@"; do
   eval sudo -H SSH_AUTH_SOCK="$SSH_AUTH_SOCK" ~/bin/rsync-s3ql -v \
     --delete --delete-excluded "$machine_rsync_excludes" --one-file-system \
     / dfanjul@localhost:"$work" && st=$? || st=$?
-  [ $st -eq 0 ] || [ $st -eq 24 ] || [ $st -eq 24 ]
+  [ $st -eq 0 ] || [ $st -eq 23 ] || [ $st -eq 24 ]
 
   file="$dir"/"$now"
   s3qlcp "$work" "$file".s3qlcp
