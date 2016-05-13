@@ -4,4 +4,4 @@ set -e
 id="$1" && shift || { echo id?; exit 1; }
 
 fs -r -u
-nmcli con up id "$id"
+exec nmcli con up id "$id"
