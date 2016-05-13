@@ -1,0 +1,16 @@
+#!/bin/bash
+
+for file in ~/var/lock/lock-*; do
+
+  name="${file#~/var/lock/lock-}"
+  file=~/var/log/"${name}"
+  if [ -f "$file" ]; then
+    screen -t "$name" tail -f "$file"
+  fi
+
+  name="${name}".log
+  file=~/var/log/"${name}"
+  if [ -f "$file" ]; then
+    screen -t "$name" tail -f "$file"
+  fi
+done
