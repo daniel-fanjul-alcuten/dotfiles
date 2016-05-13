@@ -19,7 +19,7 @@ fi
 if [ -z "$postponed" ]; then
   mkdir -p ~/var/{lock,log}
   lock=git-fsck-and-gc-$(md5sum <<< "$dir" | cut -f 1 -d ' ')
-  nohup postpone -l ~/var/lock/lock-"$lock" -L ~/var/lock/git-fsck-and-gc.lock "$0" -p &>> ~/var/log/"$lock".log &
+  nohup postpone -l ~/var/lock/lock-"$lock" -L ~/var/lock/elock-git-fsck-and-gc "$0" -p &>> ~/var/log/"$lock".log &
   exit 0
 fi
 set -x

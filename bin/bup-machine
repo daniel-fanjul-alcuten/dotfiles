@@ -14,7 +14,7 @@ if [ -z "$postponed" ]; then
   mkdir -p ~/var/{lock,log}
   for name in "$@"; do
     lock=bup-machine-$(md5sum <<< "$name" | cut -f 1 -d ' ')
-    nohup postpone -l ~/var/lock/lock-"$lock" "$0" -p "$name" &>> ~/var/log/"$lock".log &
+    nohup postpone -l ~/var/lock/lock-"$lock" -L ~/var/lock/elock-root-bup "$0" -p "$name" &>> ~/var/log/"$lock".log &
   done
   exit 0
 fi
