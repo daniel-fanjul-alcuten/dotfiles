@@ -50,6 +50,7 @@
 /mnt
 /tmp
 /var/backups/docker
+/var/backups/rdup
 /var/lib/s3ql
 /var/lock
 /var/log

@@ -1,0 +1,22 @@
+/.*/.aptitude/.*
+/.*/.cache/.*
+/.*/.config/google-chrome/.*/Application Cache/Cache/.*
+/.*/.config/google-chrome/.*/Cache/.*
+/.*/.config/google-chrome/.*/Media Cache/.*
+/.*/.config/google-chrome/Cache/.*
+/.*/.local/share/Steam/.*
+/.*/.mutt/cache/.*
+/.*/.s3ql/.*
+/.*/.ssh/master-.*
+/.*/.steam/.*
+/.*/.steampath
+/.*/.steampid
+/.*/mnt/.*
+/.*/tmp/.*
+/.*/var/backups/rdup/.*
+/.*/var/lib/s3ql/.*
+/.*/var/log/.*
+/mnt
+/tmp/.*
+/var/lib/s3ql/.*
+/var/tmp/.*

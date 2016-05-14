@@ -1,0 +1,45 @@
+#!/bin/bash
+set -e
+
+unset postponed
+while getopts 'p' opt; do
+  case $opt in
+    p) postponed=true;;
+    *) exit 1
+  esac
+done
+shift $((OPTIND - 1))
+
+if [ -z "$postponed" ]; then
+  mkdir -p ~/var/{lock,log}
+  for dir in "$@"; do
+    lock=rdup-home-$(md5sum <<< "$dir" | cut -f 1 -d ' ')
+    nohup postpone -l ~/var/lock/lock-"$lock" "$0" -p "$dir" &>> ~/var/log/"$lock".log &
+  done
+  exit 0
+fi
+set -x
+
+~/bin/flock-wait ~/var/lock/lock-docker-save-image-* ~/var/lock/lock-docker-export-container-*
+
+for dir in "$@"; do
+  if ! [ -d "$dir" ]; then
+    continue
+  fi
+
+  now=$(date +%Y%m%d%H%M%S)
+  timestamp="$dir"/timestamp
+  filelist="$dir"/filelist
+  work="$dir"/"$now".rdup.bzip2
+  if [ -f "$filelist" ]; then
+    cp -p "$timestamp" "$timestamp-$now"
+    cp -p "$filelist" "$filelist-$now"
+  fi
+  set -o pipefail
+  rdup -v -x -E ~/etc/exclude.pcre.list -M "$timestamp-$now" "$filelist-$now" ~ |
+    bzip2 | buffer -S 1m > "$work".tmp
+  mv "$work".tmp "$work"
+  mv "$timestamp-$now" "$timestamp"
+  mv "$filelist-$now" "$filelist"
+
+done

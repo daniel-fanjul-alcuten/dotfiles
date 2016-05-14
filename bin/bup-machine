@@ -34,7 +34,7 @@ for name in "$@"; do
   dir="$mountpoint"
   mkdir -m 0775 -p "$dir"
 
-  dir="$mountpoint"/backups
+  dir="$dir"/backups
   mkdir -m 0775 -p "$dir"
 
   dir="$dir"/$(hostname)
