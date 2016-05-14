@@ -1,0 +1,19 @@
+#!/bin/bash
+set -e
+set -x
+
+if [ -f ~/.fs.json ]; then
+  vi ~/.fs.json
+elif [ -f ~/.fs.json.gpg ]; then
+  gpg ~/.fs.json.gpg
+  vi ~/.fs.json
+else
+  vi ~/.fs.json
+fi
+
+me=$(whoami)@$(hostname)
+gpg --batch --yes -es -u "$me" -r "$me" ~/.fs.json
+shred -uv ~/.fs.json
+
+cd ~
+git commit -m .fs.json.gpg .fs.json.gpg
