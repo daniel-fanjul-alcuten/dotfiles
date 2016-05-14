@@ -308,7 +308,6 @@ sudo aptitude install \
   nilfs-tools \
   ntfs-3g \
   ntp \
-  obnam \
   openjdk-6-jdk \
   openjdk-6-jre \
   openjdk-6-jre-headless \
