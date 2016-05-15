@@ -8,6 +8,7 @@
 /.config/VirtualBox
 /.config/smplayer
 /.gmrun_history
+/.gnupg/.#*
 /.gnupg/gpg-agent-info-*
 /.gnupg/private-keys-v1.d
 /.gnupg/pubring.gpg
