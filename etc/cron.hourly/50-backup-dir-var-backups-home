@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+[ -d /home/dfanjul/var/backups/home ] || exit 0
+~/bin/backup-dir-postpone \
+  ~ file:///home/dfanjul/var/backups/home \
+  --exclude-globbing-filelist ~/etc/exclude.home.list \
+  2>/dev/null &

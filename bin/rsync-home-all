@@ -1,6 +1,0 @@
-#!/bin/bash
-set -e
-
-for name in ~/mnt/s3ql; do
-  ~/bin/rsync-home "$name"
-done

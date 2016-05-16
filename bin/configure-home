@@ -99,15 +99,6 @@ EOF
 }
 
 {
-  # s3ql
-  sudo aptitude install s3ql
-  if ! [ -d ~/var/lib/s3ql ]; then
-    mkdir -p ~/var/lib/s3ql
-    mkfs.s3ql local://"$HOME"/var/lib/s3ql
-  fi
-}
-
-{
   # go
   sudo aptitude install curl mercurial make binutils bison gcc build-essential
   [ ! -s ~/.gvm/scripts/gvm ] && bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
@@ -334,6 +325,7 @@ sudo aptitude install \
   reptyr \
   rpl \
   s3cmd \
+  s3ql \
   saidar \
   shellcheck \
   simhash \

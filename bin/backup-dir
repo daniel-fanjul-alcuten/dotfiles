@@ -1,0 +1,46 @@
+#!/bin/bash
+set -x
+set -e
+set -o pipefail
+
+unset s
+unset e
+while getopts 'se' opt; do
+  case $opt in
+    s)
+      s=true;;
+    e)
+      e=true;;
+    *)
+      exit 1;;
+  esac
+done
+shift $((OPTIND - 1))
+
+origin="$1" && shift
+target="$1" && shift
+
+whoami=$(whoami)
+hostname=$(hostname)
+
+cmd='duplicity -vi --exclude-other-filesystems --asynchronous-upload'
+if [ "$s" ]; then
+  cmd="sudo SSH_AUTH_SOCK=\"$SSH_AUTH_SOCK\" GPG_AGENT_INFO=\"$GPG_AGENT_INFO\" $cmd"
+fi
+if [ "$e" ]; then
+  cmd="$cmd --use-agent --encrypt-key \"<$whoami@$hostname>\" --sign-key \"<$whoami@$hostname>\""
+else
+  cmd="$cmd --no-encryption"
+fi
+eval "$cmd" "$@" \""$origin"\" \""$target"\"
+
+cmd='duplicity cleanup -vi --force'
+if [ "$s" ]; then
+  cmd="sudo SSH_AUTH_SOCK=\"$SSH_AUTH_SOCK\" GPG_AGENT_INFO=\"$GPG_AGENT_INFO\" $cmd"
+fi
+if [ "$e" ]; then
+  cmd="$cmd --use-agent --encrypt-key \"<$whoami@$hostname>\" --sign-key \"<$whoami@$hostname>\""
+else
+  cmd="$cmd --no-encryption"
+fi
+eval "$cmd" "$target"

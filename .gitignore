@@ -51,8 +51,8 @@
 /mnt
 /tmp
 /var/backups/docker
-/var/backups/rdup
-/var/lib/s3ql
+/var/backups/home
+/var/git-fsck-and-gc.list
 /var/lock
 /var/log
 /var/wcd.go

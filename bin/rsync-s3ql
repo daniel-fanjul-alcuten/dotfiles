@@ -1,4 +1,0 @@
-#!/bin/bash
-set -e
-
-exec rsync --archive --human-readable --xattrs --hard-links --whole-file --inplace "$@"

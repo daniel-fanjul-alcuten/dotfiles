@@ -220,83 +220,56 @@ unpause() {
 }
 pmsuspend() {
   run-parts-cron halt -v &&
-    (
-      ~/bin/flock-wait ~/var/lock/lock-* &&
-      ts -f &&
-      if sudo pm-is-supported --suspend-hybrid; then
-        sudo pm-suspend-hybrid >/dev/null
-      elif sudo pm-is-supported --suspend; then
-        sudo pm-suspend >/dev/null
-      fi
-    ) &
+    ts -f &&
+    if sudo pm-is-supported --suspend-hybrid; then
+      sudo pm-suspend-hybrid >/dev/null
+    elif sudo pm-is-supported --suspend; then
+      sudo pm-suspend >/dev/null
+    fi &
 }
 pmhibernate() {
   run-parts-cron halt -v &&
-    (
-      ~/bin/flock-wait ~/var/lock/lock-* &&
-      ts -f &&
-      if sudo pm-is-supported --hibernate; then
-        sudo pm-hibernate >/dev/null
-      fi
-    ) &
+    ts -f &&
+    if sudo pm-is-supported --hibernate; then
+      sudo pm-hibernate >/dev/null
+    fi &
 }
 upsuspend() {
   run-parts-cron halt -v &&
-    (
-      ~/bin/flock-wait ~/var/lock/lock-* &&
-      ts -f &&
-      gnome-screensaver-command --lock &&
-      dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend
-    ) &
+    ts -f &&
+    gnome-screensaver-command --lock &&
+    dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend &
 }
 uphibernate() {
   run-parts-cron halt -v &&
-    (
-      ~/bin/flock-wait ~/var/lock/lock-* &&
-      ts -f &&
-      gnome-screensaver-command --lock &&
-      dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Hibernate
-    ) &
+    ts -f &&
+    gnome-screensaver-command --lock &&
+    dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Hibernate &
 }
 halt() {
   run-parts-cron halt -v &&
-    (
-      ~/bin/flock-wait ~/var/lock/lock-* &&
-      ts -f &&
-      sudo shutdown -h now
-    ) &
+    ts -f &&
+    sudo shutdown -h now &
 }
 reboot() {
   run-parts-cron halt -v &&
-    (
-      ~/bin/flock-wait ~/var/lock/lock-* &&
-      ts -f &&
-      sudo shutdown -r now
-    ) &
+    ts -f &&
+    sudo shutdown -r now &
 }
 xlogout() {
   run-parts-cron halt -v && \
-    (
-      ~/bin/flock-wait ~/var/lock/lock-* &&
-      ts -f &&
-      gnome-session-quit --logout
-    ) &
+    ts -f &&
+    gnome-session-quit --logout
 }
 xhalt() {
   run-parts-cron halt -v && \
-    (
-      ~/bin/flock-wait ~/var/lock/lock-* &&
-      ts -f &&
-      gnome-session-quit --power-off
-    ) &
+    ts -f &&
+    gnome-session-quit --power-off &
 }
 xreboot() {
   run-parts-cron halt -v && \
-    (
-      ~/bin/flock-wait ~/var/lock/lock-* &&
-      ts -f &&
-      gnome-session-quit --reboot
-    ) &
+    ts -f &&
+    gnome-session-quit --reboot &
 }
 down() {
   yes "|" | head -$((LINES - 3)) && echo v

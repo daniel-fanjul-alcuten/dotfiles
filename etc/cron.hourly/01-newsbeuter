@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
 
+mkdir -p ~/var/{lock,log}
 lock=newsbeuter-reload
-nohup postpone -l ~/var/lock/lock-"$lock" newsbeuter -x reload &>> ~/var/log/"$lock".log &
+nohup postpone -L ~/var/lock/elock-"$lock" newsbeuter -x reload &>> ~/var/log/"$lock".log &

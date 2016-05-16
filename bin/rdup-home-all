@@ -1,6 +1,0 @@
-#!/bin/bash
-set -e
-
-for dir in ~/var/backups/rdup/$(hostname)/$(whoami); do
-  ~/bin/rdup-home "$dir"
-done

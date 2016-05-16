@@ -1,6 +1,0 @@
-#!/bin/bash
-set -e
-
-for container in $(sudo docker ps -f 'status=exited' -q); do
-  ~/bin/docker-export-container "$container"
-done

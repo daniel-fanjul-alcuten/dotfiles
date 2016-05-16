@@ -1,0 +1,2 @@
+1 1 git-fsck-and-gc find ~ -type d -xdev 2>/dev/null | xargs -rn 1 -I folder bash -c 'cd "folder" >/dev/null && dir=$(git rev-parse --git-dir) && readlink -e "$dir"' 2>/dev/null | sort -u > ~/var/git-fsck-and-gc.list
+# vi:noet:ts=3:sts=3

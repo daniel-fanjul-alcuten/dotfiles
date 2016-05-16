@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+
+for id in $(sudo docker images -q); do
+  name=$(sudo docker inspect -f '{{.RepoTags}}' "$id")
+  name=$(sed 's,/,-,g' <<< "$name")
+  file=~/var/backups/docker/images/"$name-$id".tar
+  if ! [ -f "$file" ]; then
+    mkdir -p "${file%/*}"
+    sudo docker save "$id" > "$file" || rm -f "$file"
+  fi
+done
+
+for id in $(sudo docker ps -f 'status=exited' -q); do
+  name=$(sudo docker inspect -f '{{.Name}}' "$id")
+  name=${name#/}
+  name=$(sed 's,/,-,g' <<< "$name")
+  file=~/var/backups/docker/containers/"$name-$id".tar
+  mkdir -p "${file%/*}"
+  sudo docker export "$id" > "$file" || rm -f "$file"
+done

@@ -1,14 +1,6 @@
 #!/bin/bash
 set -e
-
-unset postponed
-while getopts 'p' opt; do
-  case $opt in
-    p) postponed=true;;
-    *) exit 1
-  esac
-done
-shift $((OPTIND - 1))
+set -o pipefail
 
 dir=$(git rev-parse --show-toplevel)
 if [ -z "$dir" ]; then
@@ -16,15 +8,7 @@ if [ -z "$dir" ]; then
   dir=$(readlink -e "$dir")
 fi
 
-if [ -z "$postponed" ]; then
-  mkdir -p ~/var/{lock,log}
-  lock=git-fsck-and-gc-$(md5sum <<< "$dir" | cut -f 1 -d ' ')
-  nohup postpone -l ~/var/lock/lock-"$lock" -L ~/var/lock/elock-git-fsck-and-gc "$0" -p &>> ~/var/log/"$lock".log &
-  exit 0
-fi
-set -x
-
-source ~/etc/colors.cfg
+source ~/etc/colors.sh
 
 function ok {
   blue "$@"
@@ -35,9 +19,12 @@ function ko {
   exit 1
 }
 
+mkdir -p ~/var/{lock,log}
+
 now="$(date +%s)"
 if [ "$(git config gc.lastfsck || echo 0)" -lt $((now - $((3 * 24 * 3600)))) ]; then
-  if git fsck; then
+  lock=git-$(md5sum <<< "$dir" | cut -f 1 -d ' ')
+  if postpone -f -L ~/var/lock/elock-"$lock" -L ~/var/lock/elock-git git fsck; then
     git config gc.lastfsck "$now"
     ok "$dir: git fsck ok"
   else
@@ -46,7 +33,8 @@ if [ "$(git config gc.lastfsck || echo 0)" -lt $((now - $((3 * 24 * 3600)))) ]; 
 fi
 
 if [ "$(git config gc.lastgc || echo 0)" -lt $((now - $((5 * 24 * 3600)))) ]; then
-  if git gc --auto; then
+  lock=git-$(md5sum <<< "$dir" | cut -f 1 -d ' ')
+  if postpone -f -L ~/var/lock/elock-"$lock" -L ~/var/lock/elock-git git gc --auto; then
     git config gc.lastgc "$now"
     ok "$dir: git gc --auto ok"
   else
@@ -55,7 +43,8 @@ if [ "$(git config gc.lastgc || echo 0)" -lt $((now - $((5 * 24 * 3600)))) ]; th
 fi
 
 if [ "$(git config gc.lastgcaggressive || echo 0)" -lt $((now - $((31 * 24 * 3600)))) ]; then
-  if git gc --aggressive; then
+  lock=git-$(md5sum <<< "$dir" | cut -f 1 -d ' ')
+  if postpone -f -L ~/var/lock/elock-"$lock" -L ~/var/lock/elock-git git gc --aggressive; then
     git config gc.lastgcaggressive "$now"
     ok "$dir: git gc --aggressive ok"
   else

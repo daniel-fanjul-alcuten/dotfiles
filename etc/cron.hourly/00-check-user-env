@@ -1,3 +1,4 @@
-#!/bin/sh
+#!/bin/bash
+set -e
 
 [ "$USER" ] || echo '$USER is not set in cron'
