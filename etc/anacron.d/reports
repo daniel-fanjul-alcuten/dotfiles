@@ -1,3 +1,2 @@
 1 0 pal       pal -r 11 --mail | /usr/sbin/sendmail $(whoami)
-1 0 uprecords uprecords -M | mail -s uprecords $(whoami)
 # vi:noet:ts=3:sts=3
