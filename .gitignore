@@ -55,4 +55,5 @@
 /var/git-fsck-and-gc.list
 /var/lock
 /var/log
+/var/mail/log
 /var/wcd.go

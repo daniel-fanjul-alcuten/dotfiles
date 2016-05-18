@@ -14,10 +14,9 @@ auto_view text/html
 
 mailboxes /var/spool/mail/dfanjul
 mailboxes ~/var/mail/dfanjul
-mailboxes ~/var/mail/offline
-mailboxes ~/var/mail/online
-mailboxes ~/var/mail/postponed
 mailboxes ~/var/mail/sent
+mailboxes ~/var/mail/postponed
+mailboxes ~/var/mail/log
 
 mailboxes 'imaps://imap.gmail.com:993/INBOX'
 set imap_user='daniel.fanjul.alcuten@gmail.com'
