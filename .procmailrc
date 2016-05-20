@@ -2,5 +2,5 @@ LOGFILE=var/log/procmail.log
 
 :0
 * ^From: dfanjul@
-* ^Subject: backup-dir .*: 0$
+* ^Subject: \[exec\]
 $HOME/var/mail/log

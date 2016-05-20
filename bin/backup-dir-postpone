@@ -23,9 +23,6 @@ mkdir -p ~/var/{lock,log}
 lock=backup-dir-$(md5sum <<< "$options $origin $target $*" | cut -f 1 -d ' ')
 elock=backup-dir-$(md5sum <<< "$target" | cut -f 1 -d ' ')
 log="$lock-$RANDOM".log
-eval nohup postpone -f -l ~/var/lock/lock-"$lock" -L ~/var/lock/elock-"$elock" \
-  ~/bin/backup-dir "$options" "$origin" "$target" "$@" '&>' ~/var/log/"$log" && st=$? || st=$?
-if [ -f ~/var/log/"$log" ]; then
-  mail -s "backup-dir $target: $st" "$(whoami)" < ~/var/log/"$log"
-  rm ~/var/log/"$log"
-fi
+eval ~/bin/mail-exec ~/var/log/"$log" \""backup $target"\" \
+  postpone -f -l ~/var/lock/lock-"$lock" -L ~/var/lock/elock-"$elock" \
+  ~/bin/backup-dir "$options" "$origin" "$target" "$@"

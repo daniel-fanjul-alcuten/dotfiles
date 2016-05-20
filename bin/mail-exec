@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+
+log="$1" && shift
+subject="$1" && shift
+
+nohup "$@" </dev/null &> "$log" && st=$? || st=$?
+if [ -f "$log" ]; then
+  {
+    echo "\$ $@"
+    cat "$log"
+  } | mail -s "[exec] $subject: $st" "$(whoami)"
+  rm "$log"
+fi
