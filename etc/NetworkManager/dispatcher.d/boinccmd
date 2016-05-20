@@ -1,0 +1,23 @@
+#!/bin/bash
+set -e
+set -x
+
+{
+
+  iface="$1"  && shift || { echo "$0: interface?" 1>&2; exit 1; }
+  action="$1" && shift || { echo "$0: action?"    1>&2; exit 1; }
+
+  uuid="$CONNECTION_UUID"
+
+  # Run the right scripts
+  case "$action" in
+    up|vpn-up)
+      case "$uuid" in
+        *)
+          boinccmd --set_network_mode never;;
+      esac;;
+    down|vpn-down)
+      boinccmd --set_network_mode never;;
+  esac
+
+} &>>/home/dfanjul/var/log/nm-dispatcher.log
