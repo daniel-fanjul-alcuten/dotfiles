@@ -50,33 +50,28 @@ sudo apt-get install aptitude
   if ! [ -f .ssh/id_rsa ]; then
     chmod 700 .ssh
     ssh-keygen
-    {
-      file="$(hostname)"-ssh.tar.bzip2
-      tar cfvj "$file" .ssh
-      bin/gpg-file "$file"
-      echo "$file" | biabam "$file".gpg -s "$file" daniel.fanjul.alcuten@gmail.com
-      rm "$file"{,.gpg}
-    }
     nohup google-chrome https://github.com/settings/ssh &
     read -p "add ssh key to github: $(cat .ssh/id_rsa.pub)"
   fi
+  file="$(hostname)"-ssh.tar.bzip2
+  tar cfvj "$file" .ssh
+  bin/gpg-file "$file"
+  echo "$file" | biabam "$file".gpg -s "$file" daniel.fanjul.alcuten@gmail.com
+  rm "$file"{,.gpg}
 }
 
 {
   # gpg
-  sudo aptitude install gnupg gnupg-agent
+  sudo aptitude install gnupg gnupg-agent biabam
   if ! [ -f .gnupg/secring.gpg ]; then
     gpg --gen-key
-    {
-      sudo aptitude install biabam
-      file="$(hostname)"-gnupg.tar.bzip2
-      tar cfvj "$file" .gnupg
-      bin/gpg-file "$file"
-      echo "$file" | biabam "$file".gpg -s "$file" daniel.fanjul.alcuten@gmail.com
-      rm "$file"{,.gpg}
-      gpg-agent --daemon ssh-add
-    }
+    gpg-agent --daemon ssh-add
   fi
+  file="$(hostname)"-gnupg.tar.bzip2
+  tar cfvj "$file" .gnupg
+  bin/gpg-file "$file"
+  echo "$file" | biabam "$file".gpg -s "$file" daniel.fanjul.alcuten@gmail.com
+  rm "$file"{,.gpg}
 }
 
 {
@@ -171,6 +166,8 @@ echo test | mail "$(whoami)"
 sudo aptitude install \
   azureus \
   bc \
+  boincmgr \
+  boinctui \
   bzip2 \
   dc \
   gmrun \
@@ -191,6 +188,7 @@ sudo aptitude install \
   vim-puppet \
   vim-syntax-go \
   wcd
+sudo cp ~/etc/NetworkManager/dispatcher.d/boinccmd /etc/NetworkManager/dispatcher.d/99boinccmd
 
 sudo aptitude install \
   abcde \
@@ -376,3 +374,5 @@ sudo aptitude install \
   virtualbox
 
 sudo aptitude upgrade
+
+sudo aptitude clean
