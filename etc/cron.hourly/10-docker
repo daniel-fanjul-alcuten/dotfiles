@@ -6,8 +6,13 @@ for id in $(sudo docker images -q); do
   name=$(sed 's,/,-,g' <<< "$name")
   file=~/var/backups/docker/images/"$name-$id".tar
   if ! [ -f "$file" ]; then
-    mkdir -p "${file%/*}"
-    sudo docker save "$id" > "$file" || rm -f "$file"
+    mkdir -p ~/var/{lock,log} "${file%/*}"
+    lock=docker-save-"$id"
+    log="$lock-$name-$RANDOM".log
+    postpone -f -L ~/var/lock/elock-"$lock" \
+      ~/bin/mail-exec ~/var/log/"$log" "docker-save $name" \
+      bash -c "sudo docker save \"$id\" > \"$file\"" \
+      &>/dev/null || rm -f "$file"
   fi
 done
 
@@ -16,6 +21,11 @@ for id in $(sudo docker ps -f 'status=exited' -q); do
   name=${name#/}
   name=$(sed 's,/,-,g' <<< "$name")
   file=~/var/backups/docker/containers/"$name-$id".tar
-  mkdir -p "${file%/*}"
-  sudo docker export "$id" > "$file" || rm -f "$file"
+  mkdir -p ~/var/{lock,log} "${file%/*}"
+  lock=docker-export-"$id"
+  log="$lock-$name-$RANDOM".log
+  postpone -f -L ~/var/lock/elock-"$lock" \
+    ~/bin/mail-exec ~/var/log/"$log" "docker-export $name" \
+    bash -c "sudo docker export \"$id\" > \"$file\"" \
+    &>/dev/null || rm -f "$file"
 done
