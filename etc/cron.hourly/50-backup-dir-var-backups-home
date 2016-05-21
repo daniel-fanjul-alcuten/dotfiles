@@ -5,4 +5,4 @@ set -e
 ~/bin/backup-dir-postpone \
   ~ file:///home/dfanjul/var/backups/home \
   --volsize 64 --full-if-older-than 13D --exclude-globbing-filelist ~/etc/exclude.home.list \
-  2>/dev/null &
+  &>/dev/null &

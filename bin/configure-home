@@ -159,6 +159,7 @@ sudo aptitude install \
   mutt \
   openssh-server \
   pal \
+  postpone \
   procmail \
   rsync
 
@@ -312,7 +313,6 @@ sudo aptitude install \
   pexec \
   pinpoint \
   pipebench \
-  postpone \
   powertop \
   privbind \
   pv \

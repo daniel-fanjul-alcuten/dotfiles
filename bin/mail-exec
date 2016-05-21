@@ -1,10 +1,11 @@
 #!/bin/bash
 set -e
+set -o pipefail
 
 log="$1" && shift
 subject="$1" && shift
 
-nohup "$@" </dev/null &> "$log" && st=$? || st=$?
+nohup "$@" </dev/null |& tee "$log" && st=$? || st=$?
 if [ -f "$log" ]; then
   {
     echo "\$ $@"
@@ -12,3 +13,4 @@ if [ -f "$log" ]; then
   } | mail -s "[exec] $subject: $st" "$(whoami)"
   rm "$log"
 fi
+exit "$st"

@@ -8,47 +8,30 @@ if [ -z "$dir" ]; then
   dir=$(readlink -e "$dir")
 fi
 
-source ~/etc/colors.sh
-
-function ok {
-  blue "$@"
-}
-
-function ko {
-  red "$@"
-  exit 1
-}
-
 mkdir -p ~/var/{lock,log}
 
 now="$(date +%s)"
 if [ "$(git config gc.lastfsck || echo 0)" -lt $((now - $((3 * 24 * 3600)))) ]; then
   lock=git-$(md5sum <<< "$dir" | cut -f 1 -d ' ')
-  if postpone -f -L ~/var/lock/elock-"$lock" -L ~/var/lock/elock-git git fsck; then
+  log="$lock-$RANDOM".log
+  if postpone -f -L ~/var/lock/elock-"$lock" -L ~/var/lock/elock-git ~/bin/mail-exec ~/var/log/"$log" "git-fsck $dir" git fsck; then
     git config gc.lastfsck "$now"
-    ok "$dir: git fsck ok"
-  else
-    ko "$dir: git fsck failed"
   fi
 fi
 
 if [ "$(git config gc.lastgc || echo 0)" -lt $((now - $((5 * 24 * 3600)))) ]; then
   lock=git-$(md5sum <<< "$dir" | cut -f 1 -d ' ')
-  if postpone -f -L ~/var/lock/elock-"$lock" -L ~/var/lock/elock-git git gc --auto; then
+  log="$lock-$RANDOM".log
+  if postpone -f -L ~/var/lock/elock-"$lock" -L ~/var/lock/elock-git ~/bin/mail-exec ~/var/log/"$log" "git-gc-auto $dir" git gc --auto; then
     git config gc.lastgc "$now"
-    ok "$dir: git gc --auto ok"
-  else
-    ko "$dir: git gc --auto failed"
   fi
 fi
 
 if [ "$(git config gc.lastgcaggressive || echo 0)" -lt $((now - $((31 * 24 * 3600)))) ]; then
   lock=git-$(md5sum <<< "$dir" | cut -f 1 -d ' ')
-  if postpone -f -L ~/var/lock/elock-"$lock" -L ~/var/lock/elock-git git gc --aggressive; then
+  log="$lock-$RANDOM".log
+  if postpone -f -L ~/var/lock/elock-"$lock" -L ~/var/lock/elock-git ~/bin/mail-exec ~/var/log/"$log" "git-gc-aggressive $dir" git gc --aggressive; then
     git config gc.lastgcaggressive "$now"
-    ok "$dir: git gc --aggressive ok"
-  else
-    ko "$dir: git gc --aggressive failed"
   fi
 fi
 
