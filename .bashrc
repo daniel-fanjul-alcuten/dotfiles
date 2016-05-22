@@ -135,6 +135,10 @@ alias mu='mutt -f ~/var/mail/dfanjul'
 complete -o default -F _mutt mu
 alias emu='exec mutt -f ~/var/mail/dfanjul'
 complete -o default -F _mutt emu
+alias mulog='mutt -f ~/var/mail/log'
+complete -o default -F _mutt mulog
+alias emulog='exec mutt -f ~/var/mail/log'
+complete -o default -F _mutt mulog
 alias iocp='ionice -n 7 cp'
 complete -o default -F _longopt iocp
 alias iomv='ionice -n 7 mv'
