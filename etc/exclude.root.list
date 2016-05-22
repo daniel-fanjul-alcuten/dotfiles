@@ -17,4 +17,6 @@
 /home/*/var/log
 /mnt
 /tmp
+/var/lib/boinc-client
+/var/lib/plexmediaserver
 /var/tmp
