@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e
+
+export TERM=
+xargs -rn 1 -I folder bash -c \
+  'cd "folder" &>/dev/null && ~/bin/git-fsck-and-gc' \
+  <~/var/git-fsck-and-gc.list &>/dev/null
