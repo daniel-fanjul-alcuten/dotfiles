@@ -228,6 +228,7 @@ pmsuspend() {
     elif sudo pm-is-supported --suspend; then
       sudo pm-suspend >/dev/null
     fi &
+  exit
 }
 pmhibernate() {
   run-parts-cron halt -v &&
@@ -235,43 +236,51 @@ pmhibernate() {
     if sudo pm-is-supported --hibernate; then
       sudo pm-hibernate >/dev/null
     fi &
+  exit
 }
 upsuspend() {
   run-parts-cron halt -v &&
     ts -f &&
     gnome-screensaver-command --lock &&
     dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend &
+  exit
 }
 uphibernate() {
   run-parts-cron halt -v &&
     ts -f &&
     gnome-screensaver-command --lock &&
     dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Hibernate &
+  exit
 }
 halt() {
   run-parts-cron halt -v &&
     ts -f &&
     sudo shutdown -h now &
+  exit
 }
 reboot() {
   run-parts-cron halt -v &&
     ts -f &&
     sudo shutdown -r now &
+  exit
 }
 xlogout() {
   run-parts-cron halt -v && \
     ts -f &&
     gnome-session-quit --logout
+  exit
 }
 xhalt() {
   run-parts-cron halt -v && \
     ts -f &&
     gnome-session-quit --power-off &
+  exit
 }
 xreboot() {
   run-parts-cron halt -v && \
     ts -f &&
     gnome-session-quit --reboot &
+  exit
 }
 down() {
   yes "|" | head -$((LINES - 3)) && echo v
