@@ -20,4 +20,4 @@ set -x
       boinccmd --set_network_mode never;;
   esac
 
-} &>>/home/dfanjul/var/log/nm-dispatcher.log
+} |& sudo -u dfanjul tee -a ~dfanjul/var/log/nm-dispatcher.log
