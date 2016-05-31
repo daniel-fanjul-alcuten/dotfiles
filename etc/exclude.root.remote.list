@@ -1,0 +1,24 @@
+/home/**/.cache
+/home/**/Application Cache
+/home/**/Cache
+/home/**/CacheStorage
+/home/**/Media Cache
+/home/**/cache
+/home/*/.aptitude
+/home/*/.local/share/Steam
+/home/*/.s3ql
+/home/*/.ssh/master-*
+/home/*/.steam
+/home/*/.steampath
+/home/*/.steampid
+/home/*/Downloads
+/home/*/mnt
+/home/*/tmp
+/home/*/var/backups/home
+/home/*/var/log
+/mnt
+/tmp
+/var/lib/boinc-client
+/var/lib/docker
+/var/lib/plexmediaserver
+/var/tmp
