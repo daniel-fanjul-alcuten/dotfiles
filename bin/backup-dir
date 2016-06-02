@@ -44,3 +44,14 @@ else
   cmd="$cmd --no-encryption"
 fi
 eval "$cmd" "$target"
+
+cmd='duplicity remove-older-than -vi 13W'
+if [ "$s" ]; then
+  cmd="sudo SSH_AUTH_SOCK=\"$SSH_AUTH_SOCK\" GPG_AGENT_INFO=\"$GPG_AGENT_INFO\" $cmd"
+fi
+if [ "$e" ]; then
+  cmd="$cmd --use-agent --encrypt-key \"<$whoami@$hostname>\" --sign-key \"<$whoami@$hostname>\""
+else
+  cmd="$cmd --no-encryption"
+fi
+eval "$cmd" "$target"
