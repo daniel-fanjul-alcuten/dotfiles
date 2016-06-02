@@ -19,8 +19,8 @@ mailboxes ~/var/mail/postponed
 mailboxes ~/var/mail/log
 
 mailboxes 'imaps://imap.gmail.com:993/INBOX'
-set imap_user='daniel.fanjul.alcuten@gmail.com'
-set imap_pass=`gpg -d ~/.muttrc.pass.gpg`
+account-hook gmail.com 'set imap_user=daniel.fanjul.alcuten@gmail.com'
+account-hook gmail.com 'set imap_pass='`gpg -d ~/.mutt.gmail.pass.gpg`
 set imap_check_subscribed=yes
 set imap_idle=yes
 set imap_passive=yes
