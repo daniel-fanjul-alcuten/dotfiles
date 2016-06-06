@@ -56,4 +56,5 @@
 /var/lock
 /var/log
 /var/mail
+/var/spool/anacron
 /var/wcd.go
