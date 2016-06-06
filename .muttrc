@@ -18,12 +18,13 @@ mailboxes ~/var/mail/sent
 mailboxes ~/var/mail/postponed
 mailboxes ~/var/mail/log
 
-mailboxes 'imaps://imap.gmail.com:993/INBOX'
-account-hook gmail.com 'set imap_user=daniel.fanjul.alcuten@gmail.com'
-account-hook gmail.com 'set imap_pass='`gpg -d ~/.mutt.gmail.pass.gpg`
+mailboxes 'imaps://daniel.fanjul.alcuten@gmail.com@imap.gmail.com:993/INBOX'
+account-hook daniel.fanjul.alcuten@gmail.com@imap.gmail.com 'set imap_pass='`gpg -d ~/.mutt.gmail.pass.gpg`
 set imap_check_subscribed=yes
 set imap_idle=yes
 set imap_passive=yes
+
+bind index <esc>\. next-unread-mailbox
 
 
 
