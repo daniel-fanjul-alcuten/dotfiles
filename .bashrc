@@ -324,16 +324,6 @@ maillater() {
   minutes="$1" && shift || minutes=1
   echo echo \""$*"\" \| mail -s \""$*"\" $(whoami) | at now + "$minutes" minute
 }
-mutt() {
-  command mutt "$@"
-  local s=$?
-  (builtin cd ~ && {
-    for dir in var/mail var/spool; do
-      git commit -m $(git symbolic-ref-head -q || hostname) $dir &>/dev/null
-    done
-  })
-  return $s
-}
 complete -o nospace -F _task t
 ts() {
   command ts "$@"
