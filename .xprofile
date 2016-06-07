@@ -1,7 +1,8 @@
 #!/bin/sh
 
-# no bell
+# quick
 xset -b
+xsetroot -bg black
 
 # agents
 gpg-agent --daemon --sh --write-env-file ~/.gnupg/gpg-agent-info-"$(hostname)"
