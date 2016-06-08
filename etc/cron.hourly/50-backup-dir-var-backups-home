@@ -3,6 +3,7 @@ set -e
 
 [ -d /home/dfanjul/var/backups/home ] || exit 0
 ~/bin/backup-dir-postpone \
-  ~ file:///home/dfanjul/var/backups/home \
-  --volsize 64 --full-if-older-than 13D --exclude-globbing-filelist ~/etc/exclude.home.list \
+  ~ par2+file:///home/dfanjul/var/backups/home \
+  --par2-redundancy 5 --volsize 64 \
+  --full-if-older-than 13D --exclude-globbing-filelist ~/etc/exclude.home.list \
   &>/dev/null &
