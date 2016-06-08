@@ -220,67 +220,50 @@ unpause() {
   fs -m -l
   sudo service cron start
 }
-pmsuspend() {
+syshalt() {
   run-parts-cron halt -v &&
     ts -f &&
-    if sudo pm-is-supported --suspend-hybrid; then
-      sudo pm-suspend-hybrid >/dev/null
-    elif sudo pm-is-supported --suspend; then
-      sudo pm-suspend >/dev/null
-    fi &
-  exit
+    systemctl halt -i
 }
-pmhibernate() {
+syspoweroff() {
   run-parts-cron halt -v &&
     ts -f &&
-    if sudo pm-is-supported --hibernate; then
-      sudo pm-hibernate >/dev/null
-    fi &
-  exit
+    systemctl poweroff -i
 }
-upsuspend() {
+sysreboot() {
   run-parts-cron halt -v &&
     ts -f &&
-    gnome-screensaver-command --lock &&
-    dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend &
-  exit
+    systemctl reboot -i
 }
-uphibernate() {
+syssuspend() {
   run-parts-cron halt -v &&
     ts -f &&
-    gnome-screensaver-command --lock &&
-    dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Hibernate &
-  exit
+    systemctl suspend -i
 }
-halt() {
+syshibernate() {
   run-parts-cron halt -v &&
     ts -f &&
-    sudo shutdown -h now &
-  exit
+    systemctl hibernate -i
 }
-reboot() {
+syshybridsleep() {
   run-parts-cron halt -v &&
     ts -f &&
-    sudo shutdown -r now &
-  exit
+    systemctl hybrid-sleep -i
 }
 xlogout() {
   run-parts-cron halt -v && \
     ts -f &&
     gnome-session-quit --logout
-  exit
 }
-xhalt() {
+xpoweroff() {
   run-parts-cron halt -v && \
     ts -f &&
-    gnome-session-quit --power-off &
-  exit
+    gnome-session-quit --power-off
 }
 xreboot() {
   run-parts-cron halt -v && \
     ts -f &&
-    gnome-session-quit --reboot &
-  exit
+    gnome-session-quit --reboot
 }
 down() {
   yes "|" | head -$((LINES - 3)) && echo v
@@ -368,7 +351,6 @@ for command in \
     docker \
     docker-compose \
     fdisk \
-    hibernate \
     iftop \
     iotop \
     service \
@@ -533,8 +515,6 @@ fi
 
 # ssh configuration
 ssh() {
-  echo gpg-connect-agent updatestartuptty /bye
-  gpg-connect-agent updatestartuptty /bye
   if [ "$STY" ]; then
     local skip=
     for arg in "$@"; do
@@ -637,6 +617,9 @@ mcij() {
 
 # gpg
 export GPG_TTY=$(tty)
+gpg-connect-agent-updatestartuptty() {
+  gpg-connect-agent updatestartuptty /bye
+}
 
 # crawl
 export CRAWL_DIR=~/.crawl
