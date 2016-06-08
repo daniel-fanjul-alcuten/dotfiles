@@ -62,9 +62,9 @@ sudo apt-get install aptitude
 
 {
   # gpg
-  sudo aptitude install gnupg gnupg-agent biabam
+  sudo aptitude install gnupg2 gnupg-agent biabam
   if ! [ -f .gnupg/secring.gpg ]; then
-    gpg --gen-key
+    gpg2 --gen-key
     gpg-agent --daemon ssh-add
   fi
   file="$(hostname)"-gnupg.tar.bzip2
@@ -84,6 +84,7 @@ sudo apt-get install aptitude
   git submodule update --init --recursive
   crontab <<EOF
 USER=dfanjul
+SSH_AUTH_SOCK=~/.gnupg/S.gpg-agent.ssh
 @hourly  ~/bin/run-parts-cron hourly
 @monthly ~/bin/run-parts-cron monthly
 @weekly  ~/bin/run-parts-cron weekly

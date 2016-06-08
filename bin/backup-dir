@@ -23,9 +23,9 @@ target="$1" && shift
 whoami=$(whoami)
 hostname=$(hostname)
 
-cmd='duplicity -vi --exclude-other-filesystems --asynchronous-upload'
+cmd="duplicity -vi --gpg-binary $(which gpg2) --exclude-other-filesystems --asynchronous-upload"
 if [ "$s" ]; then
-  cmd="sudo SSH_AUTH_SOCK=\"$SSH_AUTH_SOCK\" GPG_AGENT_INFO=\"$GPG_AGENT_INFO\" $cmd"
+  cmd="sudo SSH_AUTH_SOCK=\"$SSH_AUTH_SOCK\" GPG_AGENT_INFO=\"~/.gnupg/S.gpg-agent:$(pgrep -u $(whoami) gpg-agent):1\" $cmd"
 fi
 if [ "$e" ]; then
   cmd="$cmd --use-agent --encrypt-key \"<$whoami@$hostname>\" --sign-key \"<$whoami@$hostname>\""
@@ -34,9 +34,9 @@ else
 fi
 eval "$cmd" "$@" \""$origin"\" \""$target"\"
 
-cmd='duplicity cleanup -vi --force'
+cmd="duplicity cleanup -vi --gpg-binary $(which gpg2) --force"
 if [ "$s" ]; then
-  cmd="sudo SSH_AUTH_SOCK=\"$SSH_AUTH_SOCK\" GPG_AGENT_INFO=\"$GPG_AGENT_INFO\" $cmd"
+  cmd="sudo SSH_AUTH_SOCK=\"$SSH_AUTH_SOCK\" GPG_AGENT_INFO=\"~/.gnupg/S.gpg-agent:$(pgrep -u $(whoami) gpg-agent):1\" $cmd"
 fi
 if [ "$e" ]; then
   cmd="$cmd --use-agent --encrypt-key \"<$whoami@$hostname>\" --sign-key \"<$whoami@$hostname>\""
@@ -45,9 +45,9 @@ else
 fi
 eval "$cmd" "$target"
 
-cmd='duplicity remove-older-than -vi 13W'
+cmd="duplicity remove-older-than -vi --gpg-binary $(which gpg2) 13W"
 if [ "$s" ]; then
-  cmd="sudo SSH_AUTH_SOCK=\"$SSH_AUTH_SOCK\" GPG_AGENT_INFO=\"$GPG_AGENT_INFO\" $cmd"
+  cmd="sudo SSH_AUTH_SOCK=\"$SSH_AUTH_SOCK\" GPG_AGENT_INFO=\"~/.gnupg/S.gpg-agent:$(pgrep -u $(whoami) gpg-agent):1\" $cmd"
 fi
 if [ "$e" ]; then
   cmd="$cmd --use-agent --encrypt-key \"<$whoami@$hostname>\" --sign-key \"<$whoami@$hostname>\""

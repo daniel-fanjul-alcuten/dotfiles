@@ -207,7 +207,7 @@ cd() {
     if [ -f .git/config.sh ]; then
       source .git/config.sh
     elif [ -f .git/config.sh.gpg ]; then
-      source <(gpg --batch -d .git/config.sh.gpg)
+      source <(gpg2 --batch -d .git/config.sh.gpg)
     fi
     true
   } 2>/dev/null
@@ -533,6 +533,8 @@ fi
 
 # ssh configuration
 ssh() {
+  echo gpg-connect-agent updatestartuptty /bye
+  gpg-connect-agent updatestartuptty /bye
   if [ "$STY" ]; then
     local skip=
     for arg in "$@"; do
@@ -632,6 +634,9 @@ mij() {
 mcij() {
   mvn clean install jetty:run -DskipTests=true "$@"
 }
+
+# gpg
+export GPG_TTY=$(tty)
 
 # crawl
 export CRAWL_DIR=~/.crawl

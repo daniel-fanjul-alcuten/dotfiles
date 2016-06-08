@@ -5,12 +5,8 @@ xset -b
 xsetroot -bg black
 
 # agents
-gpg-agent --daemon --sh --write-env-file ~/.gnupg/gpg-agent-info-"$(hostname)"
-if [ -f ~/.gnupg/gpg-agent-info-"$(hostname)" ]; then
-  . ~/.gnupg/gpg-agent-info-"$(hostname)"
-  export GPG_AGENT_INFO
-  export SSH_AUTH_SOCK
-fi
+gpg-connect-agent /bye
+export SSH_AUTH_SOCK=~/.gnupg/S.gpg-agent.ssh
 
 # gnome
 gnome-power-manager &
