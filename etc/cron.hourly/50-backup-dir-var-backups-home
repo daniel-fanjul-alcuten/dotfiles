@@ -5,5 +5,5 @@ set -e
 ~/bin/backup-dir-postpone \
   ~ par2+file:///home/dfanjul/var/backups/home \
   --par2-redundancy 5 --volsize 64 \
-  --full-if-older-than 13D --exclude-globbing-filelist ~/etc/exclude.home.list \
+  --full-if-older-than 23D --exclude-globbing-filelist ~/etc/exclude.home.list \
   &>/dev/null &

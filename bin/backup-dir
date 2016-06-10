@@ -32,7 +32,7 @@ if [ "$e" ]; then
 else
   cmd="$cmd --no-encryption"
 fi
-eval "$cmd" "$@" \""$origin"\" \""$target"\"
+eval nice ionice -c 3 "$cmd" "$@" \""$origin"\" \""$target"\"
 
 cmd="duplicity cleanup -vi --gpg-binary $(which gpg2) --force"
 if [ "$s" ]; then
@@ -43,9 +43,9 @@ if [ "$e" ]; then
 else
   cmd="$cmd --no-encryption"
 fi
-eval "$cmd" "$target"
+eval nice ionice -c 3 "$cmd" "$target"
 
-cmd="duplicity remove-older-than -vi --gpg-binary $(which gpg2) 13W"
+cmd="duplicity remove-older-than 13W -vi --gpg-binary $(which gpg2)"
 if [ "$s" ]; then
   cmd="sudo SSH_AUTH_SOCK=\"$SSH_AUTH_SOCK\" GPG_AGENT_INFO=\"~/.gnupg/S.gpg-agent:$(pgrep -u $(whoami) gpg-agent):1\" $cmd"
 fi
@@ -54,4 +54,4 @@ if [ "$e" ]; then
 else
   cmd="$cmd --no-encryption"
 fi
-eval "$cmd" "$target"
+eval nice ionice -c 3 "$cmd" "$target"
