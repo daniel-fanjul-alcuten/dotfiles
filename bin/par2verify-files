@@ -1,0 +1,5 @@
+#!/bin/bash
+set -x
+set -e
+
+nice ionice -c 3 par2verify "$@"
