@@ -29,9 +29,8 @@ set imap_idle=yes
 set imap_passive=yes
 
 # smtp
-macro index "\\f" "<change-folder>imaps://daniel.fanjul.alcuten@gmail.com@imap.gmail.com:993/INBOX<Enter>"
+macro index,compose "\\f" ":set smtp_url=smtps://daniel.fanjul.alcuten@gmail.com@smtp.gmail.com:465<Enter>:set smtp_pass=$my_daniel_fanjul_alcuten_gmail_com_pass<Enter><change-folder>imaps://daniel.fanjul.alcuten@gmail.com@imap.gmail.com:993/INBOX<Enter>"
 macro index "\\l" "<change-folder>=log<Enter>"
-macro index,compose "\\F" ":set smtp_url=smtps://daniel.fanjul.alcuten@gmail.com@smtp.gmail.com:465<Enter>:set smtp_pass=$my_daniel_fanjul_alcuten_gmail_com_pass<Enter>\\f"
 set smtp_url="smtps://daniel.fanjul.alcuten@gmail.com@smtp.gmail.com:465"
 set smtp_pass=$my_daniel_fanjul_alcuten_gmail_com_pass
 
