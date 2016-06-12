@@ -11,6 +11,7 @@
 /home/*/.steam
 /home/*/.steampath
 /home/*/.steampid
+/home/*/Downloads/Done
 /home/*/Downloads/Temp
 /home/*/mnt
 /home/*/tmp
