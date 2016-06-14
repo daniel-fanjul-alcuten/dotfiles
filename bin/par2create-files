@@ -4,7 +4,7 @@ set -e
 set -o pipefail
 
 unset options
-while [[ "$1" =~ -.* ]]; do
+while [[ "$1" =~ ^-.* ]]; do
   options="$options $1"
   shift
 done
