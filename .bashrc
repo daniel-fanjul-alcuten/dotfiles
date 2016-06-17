@@ -158,6 +158,7 @@ _complete_command() {
   _command
 }
 complete -F _complete_command co
+alias alert='notify-send --urgency=low -i ~/usr/share/images/$([ $? = 0 ] && echo blue || echo red).gif "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # colored aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -169,181 +170,7 @@ if [ -x /usr/bin/dircolors ]; then
   alias egrep='egrep --color=auto'
 fi
 
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i ~/usr/share/images/$([ $? = 0 ] && echo blue || echo red).gif "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-# make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh /usr/bin/lesspipe)"
-
-# functions
-t() {
-  command task "$@"
-  local s=$?
-  (builtin cd ~ && {
-    git commit -m .task .task &>/dev/null
-  })
-  return $s
-}
-tt() {
-  local dir="$(basename "$PWD" | sed s/-//g)"
-  if task _tags | grep -q "^$dir$"; then
-    t +"$dir" "$@"
-  fi
-}
-tta() {
-  local dir="$(basename "$PWD" | sed s/-//g)"
-  t add +"$dir" "$@"
-}
-cd() {
-  builtin cd "$@" && {
-    local dir="$(basename "$PWD")"
-    if [ "$STY" ]; then
-      screen -X title "$dir"
-    fi
-    if type task &>/dev/null; then
-      tt
-    fi
-    if [ -f .git/config.sh ]; then
-      source .git/config.sh
-    elif [ -f .git/config.sh.gpg ]; then
-      source <(gpg2 --batch -d .git/config.sh.gpg)
-    fi
-    true
-  } 2>/dev/null
-}
-pause() {
-  sudo service cron stop
-  ~/etc/cron.halt/99-umount-all
-}
-unpause() {
-  fs -m -l
-  sudo service cron start
-}
-syshalt() {
-  run-parts-cron halt -v &&
-    ts -f &&
-    systemctl halt -i
-}
-syspoweroff() {
-  run-parts-cron halt -v &&
-    ts -f &&
-    systemctl poweroff -i
-}
-sysreboot() {
-  run-parts-cron halt -v &&
-    ts -f &&
-    systemctl reboot -i
-}
-syssuspend() {
-  run-parts-cron halt -v &&
-    ts -f &&
-    systemctl suspend -i
-}
-syshibernate() {
-  run-parts-cron halt -v &&
-    ts -f &&
-    systemctl hibernate -i
-}
-syshybridsleep() {
-  run-parts-cron halt -v &&
-    ts -f &&
-    systemctl hybrid-sleep -i
-}
-xlogout() {
-  run-parts-cron halt -v && \
-    ts -f &&
-    gnome-session-quit --logout
-}
-xpoweroff() {
-  run-parts-cron halt -v && \
-    ts -f &&
-    gnome-session-quit --power-off
-}
-xreboot() {
-  run-parts-cron halt -v && \
-    ts -f &&
-    gnome-session-quit --reboot
-}
-down() {
-  yes "|" | head -$((LINES - 3)) && echo v
-}
-down() {
-  echo -e "\\033[6n"
-  read -s -d R foo
-  lines=$((LINES - $(echo "$foo" | cut -d \[ -f 2 | cut -d \; -f 1) - 3))
-  while [ $lines -gt 0 ]; do
-    echo \|
-    lines=$((lines - 1))
-  done
-  echo v
-}
-clear() {
-  command clear
-  down
-}
-reuntil() {
-  seconds="$1" && shift || seconds=5
-  until $(history -p !!); do
-    sleep "$seconds"
-  done
-}
-rewhile() {
-  seconds="$1" && shift || seconds=5
-  while $(history -p !!); do
-    sleep "$seconds"
-  done
-}
-iwhile() {
-  while echo && inotifywait -q -e create -e modify -e move -e delete -r . --exclude ".*\\.sw.$"; do
-    eval "$*"
-    sleep 1
-  done
-}
-mailnow() {
-  echo "$*" | mail -s "$*" $(whoami)
-}
-maillater() {
-  minutes="$1" && shift || minutes=1
-  echo echo \""$*"\" \| mail -s \""$*"\" $(whoami) | at now + "$minutes" minute
-}
-complete -o nospace -F _task t
-ts() {
-  command ts "$@"
-  local s=$?
-  (builtin cd ~ && {
-    git commit -m .ts.json .ts.json &>/dev/null
-  })
-  return $s
-}
-countdown(){
-  date1=$((`date +%s` + $1));
-  while [ "$date1" -ge `date +%s` ]; do
-    echo -ne "$(date -u --date @$(($date1 - `date +%s`)) +%H:%M:%S)\r";
-    sleep 0.1
-  done
-  notify-send "$@"
-}
-stopwatch(){
-  date1=`date +%s`;
-  while true; do
-    echo -ne "$(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)\r";
-    sleep 0.1
-  done
-}
-
-# set PATH
-if [ -d ~/usr/local/bin ]; then
-  PATH=~/usr/local/bin:"$PATH"
-fi
-if [ -d ~/bin ] ; then
-  PATH=~/bin:"$PATH"
-fi
-
-# set CDPATH
-export CDPATH=.:~:~/src:~/lib/go/src:~/lib/go/src/github.com/daniel-fanjul-alcuten
-
-# sudo configuration
+# sudo aliases
 for command in \
     apt-get \
     aptitude \
@@ -359,7 +186,7 @@ for command in \
   alias $command="sudo $command"
 done
 
-# git configuration
+# git aliases
 if type git &>/dev/null; then
   _complete_git_aliases() {
     COMP_CWORD=$((COMP_CWORD+1))
@@ -445,6 +272,179 @@ chmod u+x ~/.git/hooks/post-{checkout,rewrite}
 if [ -f ~/usr/share/hub/etc/hub.bash_completion.sh ]; then
   source ~/usr/share/hub/etc/hub.bash_completion.sh
 fi
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh /usr/bin/lesspipe)"
+
+# functions
+cd() {
+  builtin cd "$@" && {
+    local dir="$(basename "$PWD")"
+    if [ "$STY" ]; then
+      screen -X title "$dir"
+    fi
+    if type task &>/dev/null; then
+      tt
+    fi
+    if [ -f .git/config.sh ]; then
+      source .git/config.sh
+    elif [ -f .git/config.sh.gpg ]; then
+      source <(gpg2 --batch -d .git/config.sh.gpg)
+    fi
+    true
+  } 2>/dev/null
+}
+clear() {
+  command clear
+  down
+}
+t() {
+  command task "$@"
+  local s=$?
+  (builtin cd ~ && {
+    git commit -m .task .task &>/dev/null
+  })
+  return $s
+}
+tt() {
+  local dir="$(basename "$PWD" | sed s/-//g)"
+  if task _tags | grep -q "^$dir$"; then
+    t +"$dir" "$@"
+  fi
+}
+tta() {
+  local dir="$(basename "$PWD" | sed s/-//g)"
+  t add +"$dir" "$@"
+}
+pause() {
+  sudo service cron stop
+  ~/etc/cron.halt/99-umount-all
+}
+unpause() {
+  fs -m -l
+  sudo service cron start
+}
+syshalt() {
+  run-parts-cron halt -v &&
+    ts -f &&
+    sudo systemctl halt -i
+}
+syspoweroff() {
+  run-parts-cron halt -v &&
+    ts -f &&
+    sudo systemctl poweroff -i
+}
+sysreboot() {
+  run-parts-cron halt -v &&
+    ts -f &&
+    sudo systemctl reboot -i
+}
+syssuspend() {
+  run-parts-cron halt -v &&
+    ts -f &&
+    sudo systemctl suspend -i
+}
+syshibernate() {
+  run-parts-cron halt -v &&
+    ts -f &&
+    sudo systemctl hibernate -i
+}
+syshybridsleep() {
+  run-parts-cron halt -v &&
+    ts -f &&
+    sudo systemctl hybrid-sleep -i
+}
+xlogout() {
+  run-parts-cron halt -v && \
+    ts -f &&
+    gnome-session-quit --logout
+}
+xpoweroff() {
+  run-parts-cron halt -v && \
+    ts -f &&
+    gnome-session-quit --power-off
+}
+xreboot() {
+  run-parts-cron halt -v && \
+    ts -f &&
+    gnome-session-quit --reboot
+}
+down() {
+  yes "|" | head -$((LINES - 3)) && echo v
+}
+down() {
+  echo -e "\\033[6n"
+  read -s -d R foo
+  lines=$((LINES - $(echo "$foo" | cut -d \[ -f 2 | cut -d \; -f 1) - 3))
+  while [ $lines -gt 0 ]; do
+    echo \|
+    lines=$((lines - 1))
+  done
+  echo v
+}
+reuntil() {
+  seconds="$1" && shift || seconds=5
+  until $(history -p !!); do
+    sleep "$seconds"
+  done
+}
+rewhile() {
+  seconds="$1" && shift || seconds=5
+  while $(history -p !!); do
+    sleep "$seconds"
+  done
+}
+iwhile() {
+  while echo && inotifywait -q -e create -e modify -e move -e delete -r . --exclude ".*\\.sw.$"; do
+    eval "$*"
+    sleep 1
+  done
+}
+mailnow() {
+  echo "$*" | mail -s "$*" $(whoami)
+}
+maillater() {
+  minutes="$1" && shift || minutes=1
+  echo echo \""$*"\" \| mail -s \""$*"\" $(whoami) | at now + "$minutes" minute
+}
+complete -o nospace -F _task t
+ts() {
+  command ts "$@"
+  local s=$?
+  (builtin cd ~ && {
+    git commit -m .ts.json .ts.json &>/dev/null
+  })
+  return $s
+}
+countdown(){
+  date1=$((`date +%s` + $1));
+  while [ "$date1" -ge `date +%s` ]; do
+    echo -ne "$(date -u --date @$(($date1 - `date +%s`)) +%H:%M:%S)\r";
+    sleep 0.1
+  done
+  notify-send "$@"
+}
+stopwatch(){
+  date1=`date +%s`;
+  while true; do
+    echo -ne "$(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)\r";
+    sleep 0.1
+  done
+}
+
+# set PATH
+if [ -d ~/usr/local/bin ]; then
+  PATH=~/usr/local/bin:"$PATH"
+fi
+if [ -d ~/bin/games ] ; then
+  PATH=~/bin/games:"$PATH"
+fi
+if [ -d ~/bin ] ; then
+  PATH=~/bin:"$PATH"
+fi
+
+# set CDPATH
+export CDPATH=.:~:~/src:~/lib/go/src:~/lib/go/src/github.com/daniel-fanjul-alcuten
 
 # vim configuration
 if type vim &>/dev/null; then
@@ -624,6 +624,15 @@ gpg-connect-agent-updatestartuptty() {
 # crawl
 export CRAWL_DIR=~/.crawl
 
+# sudo
+sudo -v
+
+# fs
+if type fs &>/dev/null; then
+  source <(fs --bash _fs_completion)
+  complete -F _fs_completion fs
+fi
+
 # down
 down
 
@@ -632,16 +641,10 @@ if type pal &>/dev/null; then
   pal -r 7 -c 1
 fi
 
-# fs
-if type fs &>/dev/null; then
-  source <(fs --bash _fs_completion)
-  complete -F _fs_completion fs
-fi
-
-# cd .
-cd .
-
 # from
 if type from &>/dev/null; then
   from -c
 fi
+
+# cd .
+cd .
