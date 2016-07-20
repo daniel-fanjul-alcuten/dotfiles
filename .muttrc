@@ -14,7 +14,7 @@ set pgp_use_gpg_agent = yes
 auto_view text/html
 
 # local
-mailboxes /var/spool/mail/dfanjul
+mailboxes /var/mail/dfanjul
 mailboxes ~/var/mail/dfanjul
 mailboxes ~/var/mail/sent
 mailboxes ~/var/mail/postponed
