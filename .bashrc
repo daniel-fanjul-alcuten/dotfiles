@@ -624,6 +624,9 @@ gpg-connect-agent-updatestartuptty() {
 # crawl
 export CRAWL_DIR=~/.crawl
 
+# down
+down
+
 # sudo
 sudo -v
 
@@ -632,9 +635,6 @@ if type fs &>/dev/null; then
   source <(fs --bash _fs_completion)
   complete -F _fs_completion fs
 fi
-
-# down
-down
 
 # pal
 if type pal &>/dev/null; then
