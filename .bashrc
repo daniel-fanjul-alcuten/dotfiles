@@ -10,7 +10,7 @@ export HISTCONTROL=ignorespace:ignoredups:erasedups
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 export HISTFILESIZE=999999
 export HISTSIZE=999999
-export HISTTIMEFORMAT='%F:%T '
+# export HISTTIMEFORMAT='%F:%T '
 
 # append to the history file, don't overwrite it
 shopt -s histappend
