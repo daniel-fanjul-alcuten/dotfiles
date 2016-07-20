@@ -182,6 +182,7 @@ for command in \
     iotop \
     service \
     shutdown \
+    systemctl \
     ; do
   alias $command="sudo $command"
 done
@@ -327,32 +328,32 @@ unpause() {
 syshalt() {
   run-parts-cron halt -v &&
     ts -f &&
-    sudo systemctl halt -i
+    systemctl halt -i
 }
 syspoweroff() {
   run-parts-cron halt -v &&
     ts -f &&
-    sudo systemctl poweroff -i
+    systemctl poweroff -i
 }
 sysreboot() {
   run-parts-cron halt -v &&
     ts -f &&
-    sudo systemctl reboot -i
+    systemctl reboot -i
 }
 syssuspend() {
   run-parts-cron halt -v &&
     ts -f &&
-    sudo systemctl suspend -i
+    systemctl suspend -i
 }
 syshibernate() {
   run-parts-cron halt -v &&
     ts -f &&
-    sudo systemctl hibernate -i
+    systemctl hibernate -i
 }
 syshybridsleep() {
   run-parts-cron halt -v &&
     ts -f &&
-    sudo systemctl hybrid-sleep -i
+    systemctl hybrid-sleep -i
 }
 xlogout() {
   run-parts-cron halt -v && \
