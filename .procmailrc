@@ -3,4 +3,4 @@ LOGFILE=var/log/procmail.log
 :0
 * ^From: dfanjul@
 * ^Subject: \[exec\]
-$HOME/var/mail/log
+$HOME/var/mail/dfanjul
