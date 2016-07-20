@@ -4,7 +4,7 @@ set -e
 for id in $(sudo docker images -q); do
   name=$(sudo docker inspect -f '{{.RepoTags}}' "$id")
   name=$(sed 's,/,-,g' <<< "$name")
-  file=~/var/backups/docker/images/"$name-$id".tar
+  file=~/var/backups/docker/image-"$name-$id".tar
   if ! [ -f "$file" ]; then
     mkdir -p ~/var/{lock,log} "${file%/*}"
     lock=docker-save-"$id"
@@ -20,7 +20,7 @@ for id in $(sudo docker ps -f 'status=exited' -q); do
   name=$(sudo docker inspect -f '{{.Name}}' "$id")
   name=${name#/}
   name=$(sed 's,/,-,g' <<< "$name")
-  file=~/var/backups/docker/containers/"$name-$id".tar
+  file=~/var/backups/docker/container-"$name-$id".tar
   mkdir -p ~/var/{lock,log} "${file%/*}"
   lock=docker-export-"$id"
   log="$lock-$name-$RANDOM".log
