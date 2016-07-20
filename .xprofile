@@ -28,4 +28,4 @@ if [ -d ~/bin ] ; then
 fi
 
 # awesome
-exec awesome
+awesome
