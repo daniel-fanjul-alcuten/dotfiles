@@ -87,6 +87,7 @@
 	gnld = !~/usr/local/bin/git-greb -C n -l -d
 	greb = !~/usr/local/bin/git-greb
 	grebl = !~/usr/local/bin/git-greb -l
+	gsd = !~/usr/local/bin/git-greb -s -d
 	hard = reset --hard
 	hardu = reset --hard @{u}
 	history-reset = !git reset `echo init | git commit-tree HEAD:`
