@@ -83,7 +83,7 @@ sudo apt-get install aptitude
   git submodule update --init --recursive
   crontab <<EOF
 USER=$(whoami)
-SSH_AUTH_SOCK=~/.gnupg/S.gpg-agent.ssh
+SSH_AUTH_SOCK=$HOME/.gnupg/S.gpg-agent.ssh
 @hourly  ~/bin/run-parts-cron hourly
 @monthly ~/bin/run-parts-cron monthly
 @weekly  ~/bin/run-parts-cron weekly
