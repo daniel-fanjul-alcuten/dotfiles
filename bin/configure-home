@@ -45,8 +45,7 @@ sudo apt-get install aptitude
 
 {
   # ssh
-  sudo aptitude install openssh-client
-  sudo aptitude install postfix biabam
+  sudo aptitude install openssh-client install postfix biabam
   if ! [ -f .ssh/id_rsa ]; then
     chmod 700 .ssh
     ssh-keygen
@@ -83,7 +82,7 @@ sudo apt-get install aptitude
   git config remote.private-github.fetch '+refs/heads/*:refs/remotes/private-github/*'
   git submodule update --init --recursive
   crontab <<EOF
-USER=dfanjul
+USER=$(whoami)
 SSH_AUTH_SOCK=~/.gnupg/S.gpg-agent.ssh
 @hourly  ~/bin/run-parts-cron hourly
 @monthly ~/bin/run-parts-cron monthly
@@ -101,8 +100,8 @@ EOF
   source ~/.gvm/scripts/gvm
   gvm install go1.4
   gvm use go1.4
-  gvm install go1.6.1
-  gvm use go1.6.1 --default
+  gvm install go1.6.3
+  gvm use go1.6.3 --default
   if [ "$GOPATH" ]; then
     GOPATH=~/lib/go:"$GOPATH"
   else
@@ -115,13 +114,23 @@ EOF
   # apt
 
   if [ "$ubuntu" ] && [ "$DISTRIB_CODENAME" ]; then
+    # canonical
     sudo tee /etc/apt/sources.list.d/canonical.list >/dev/null <<EOF
 # canonical
 deb http://archive.canonical.com/ $DISTRIB_CODENAME partner
 deb-src http://archive.canonical.com/ trusty partner
 EOF
+
+    # ring
+    sudo tee /etc/apt/sources.list.d/ring-nightly-man.list >/dev/null <<EOF
+# ring
+deb https://dl.ring.cx/ring-nightly/ubuntu_$DISTRIB_RELEASE/ ring main
+EOF
+    sudo apt-key adv --keyserver pgp.mit.edu --recv-keys A295D773307D25A33AE72F2F64CD5FA175348F84
+    sudo add-apt-repository universe
   fi
 
+    # hipchat
   wget -O - https://www.hipchat.com/keys/hipchat-linux.key | sudo apt-key add -
   sudo tee /etc/apt/sources.list.d/atlassian-hipchat.list >/dev/null <<EOF
 # hipchat
@@ -322,6 +331,7 @@ sudo aptitude install \
   qdbm-util \
   qiv \
   reptyr \
+  ring-gnome \
   rpl \
   s3cmd \
   s3ql \
