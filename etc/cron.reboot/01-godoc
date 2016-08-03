@@ -1,8 +1,0 @@
-#!/bin/bash
-set -e
-
-mkdir -p ~/var/log
-
-[ -s ~/.gvm/scripts/gvm ] && source ~/.gvm/scripts/gvm
-GOPATH=~/lib/go:"$GOPATH"
-godoc -http=:6060 -analysis=type,pointer &>~/var/log/godoc.log &
