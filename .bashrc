@@ -248,6 +248,7 @@ if type git &>/dev/null; then
       submodule \
       tag \
       whatchanged \
+      worktree \
       ; do
     alias $command="git $command"
     complete -o bashdefault -o default -o nospace -F _complete_git_aliases $command
@@ -287,10 +288,11 @@ cd() {
     if type task &>/dev/null; then
       tt
     fi
-    if [ -f .git/config.sh ]; then
-      source .git/config.sh
-    elif [ -f .git/config.sh.gpg ]; then
-      source <(gpg2 --batch -d .git/config.sh.gpg)
+    local dir=$(git rev-parse --git-dir)
+    if [ -f "$dir"/config.sh ]; then
+      source "$dir"/config.sh
+    elif [ -f "$dir"/config.sh.gpg ]; then
+      source <(gpg2 --batch -d "$dir"/config.sh.gpg)
     fi
     true
   } 2>/dev/null
