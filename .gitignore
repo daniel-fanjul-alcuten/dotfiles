@@ -18,6 +18,7 @@
 /.gnupg/trustdb.gpg
 /.gvm
 /.java
+/.moosic/player_log
 /.moosic/saved_state
 /.moosic/server_log
 /.mplayer
@@ -49,6 +50,7 @@
 /Downloads
 /VirtualBox VMs
 /mnt
+/music/
 /tmp
 /var/backups/docker
 /var/backups/home

@@ -57,6 +57,7 @@
 	empty = commit --allow-empty -m empty
 	f = fetch
 	fa = fetch --prune --all
+	fag = !"gpg-connect-agent updatestartuptty /bye && git fetch --prune --all"
 	ff = merge --ff-only
 	fhardu = !git fa && git hardu
 	fixup = !f=\"$1\" && shift && git ci --fixup=\"$f\"
