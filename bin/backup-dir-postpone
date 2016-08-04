@@ -4,12 +4,14 @@ set -e
 set -o pipefail
 
 unset options
-while getopts 'se' opt; do
+while getopts 'sem:' opt; do
   case $opt in
     s)
       options="$options -s";;
     e)
       options="$options -e";;
+    m)
+      options="$options -m $OPTARG";;
     *)
       exit 1;;
   esac

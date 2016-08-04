@@ -5,12 +5,15 @@ set -o pipefail
 
 unset s
 unset e
-while getopts 'se' opt; do
+unset m
+while getopts 'sem:' opt; do
   case $opt in
     s)
       s=true;;
     e)
       e=true;;
+    m)
+      m="$OPTARG";;
     *)
       exit 1;;
   esac
@@ -23,6 +26,9 @@ target="$1" && shift
 whoami=$(whoami)
 hostname=$(hostname)
 
+if [ "$m" ]; then
+  mountpoint -q "$m"
+fi
 cmd="duplicity -vi --gpg-binary $(which gpg2) --exclude-other-filesystems --asynchronous-upload"
 if [ "$s" ]; then
   cmd="sudo SSH_AUTH_SOCK=\"$SSH_AUTH_SOCK\" GPG_AGENT_INFO=\"~/.gnupg/S.gpg-agent\" $cmd"
@@ -34,6 +40,9 @@ else
 fi
 eval nice ionice -c 3 "$cmd" "$@" \""$origin"\" \""$target"\"
 
+if [ "$m" ]; then
+  mountpoint -q "$m"
+fi
 cmd="duplicity cleanup -vi --gpg-binary $(which gpg2) --force"
 if [ "$s" ]; then
   cmd="sudo SSH_AUTH_SOCK=\"$SSH_AUTH_SOCK\" GPG_AGENT_INFO=\"~/.gnupg/S.gpg-agent\" $cmd"
@@ -45,6 +54,9 @@ else
 fi
 eval nice ionice -c 3 "$cmd" "$target"
 
+if [ "$m" ]; then
+  mountpoint -q "$m"
+fi
 cmd="duplicity remove-older-than 13W -vi --gpg-binary $(which gpg2)"
 if [ "$s" ]; then
   cmd="sudo SSH_AUTH_SOCK=\"$SSH_AUTH_SOCK\" GPG_AGENT_INFO=\"~/.gnupg/S.gpg-agent\" $cmd"
