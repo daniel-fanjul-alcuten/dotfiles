@@ -1,0 +1,3 @@
+#!/bin/bash
+
+pal -r 11 --mail | /usr/sbin/sendmail $(whoami)

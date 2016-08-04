@@ -1,9 +1,18 @@
 #!/bin/bash
 set -e
 
-for anacrontab in ~/etc/anacron.d/*
-do
-  [ -f "$anacrontab" ] || continue
-  mkdir -p ~/var/spool/anacron
-  /usr/sbin/anacron -t "$anacrontab" -S ~/var/spool/anacron
+mkdir -p ~/var/spool/anacron
+/usr/sbin/anacron -t <(
+
+for dir1 in ~/etc/anacron.d/*; do
+  i=$(basename "$dir1")
+  for dir2 in "$dir1"/*; do
+    j=$(basename "$dir2")
+    for script in "$dir2"/*; do
+      s=$(basename "$script")
+      echo "$i $j $i-$j-$s $script"
+    done
+  done
 done
+
+) -S ~/var/spool/anacron

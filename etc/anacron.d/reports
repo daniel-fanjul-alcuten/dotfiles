@@ -1,2 +1,0 @@
-1 0 pal       pal -r 11 --mail | /usr/sbin/sendmail $(whoami)
-# vi:noet:ts=3:sts=3
