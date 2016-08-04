@@ -330,32 +330,32 @@ unpause() {
 syshalt() {
   run-parts-cron halt -v &&
     ts -f &&
-    systemctl halt -i
+    sudo systemctl halt "$@"
 }
 syspoweroff() {
   run-parts-cron halt -v &&
     ts -f &&
-    systemctl poweroff -i
+    sudo systemctl poweroff "$@"
 }
 sysreboot() {
   run-parts-cron halt -v &&
     ts -f &&
-    systemctl reboot -i
+    sudo systemctl reboot "$@"
 }
 syssuspend() {
   run-parts-cron halt -v &&
     ts -f &&
-    systemctl suspend -i
+    sudo systemctl suspend "$@"
 }
 syshibernate() {
   run-parts-cron halt -v &&
     ts -f &&
-    systemctl hibernate -i
+    sudo systemctl hibernate "$@"
 }
 syshybridsleep() {
   run-parts-cron halt -v &&
     ts -f &&
-    systemctl hybrid-sleep -i
+    sudo systemctl hybrid-sleep "$@"
 }
 xlogout() {
   run-parts-cron halt -v && \
@@ -626,6 +626,21 @@ gpg-connect-agent-updatestartuptty() {
 
 # crawl
 export CRAWL_DIR=~/.crawl
+
+# systemctl
+for file in ~/.config/systemd/{user,system}/*; do
+  target=$(basename "$file")
+  if [ -f ~/.config/systemd/user/"$target" ]; then
+    if [ -f ~/.config/systemd/system/"$target" ]; then
+      eval "$target()" \{ sudo systemctl start "$target"\; systemctl --user start "$target"\; \}
+    else
+      eval "$target()" \{ systemctl --user start "$target"\; \}
+    fi
+  elif [ -f ~/.config/systemd/system/"$target" ]; then
+    eval "$target()" \{ sudo systemctl start "$target"\; \}
+  fi
+done
+unset target
 
 # down
 down
