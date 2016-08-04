@@ -1,3 +1,0 @@
-#!/bin/sh
-
-exec gnome-terminal -t dstat --window-with-profile=Default -x dstat -lcgmsdn "$@" 11
