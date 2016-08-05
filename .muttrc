@@ -23,6 +23,7 @@ mailboxes ~/var/mail/postponed
 folder-hook . "unset smtp_url"
 folder-hook . "unset smtp_pass"
 macro index "\\l" ":set folder=~/var/mail<Enter>"
+macro compose "\\l" ":unset smtp_url<Enter>:unset smtp_pass<Enter>"
 
 # imap
 set imap_idle=yes
