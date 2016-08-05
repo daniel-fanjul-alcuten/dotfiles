@@ -74,6 +74,16 @@ _prompt_date() {
 _prompt__hostname() {
   _prompt_apply_color " $(whoami)@$(hostname)" "hostname" "blue"
 }
+_prompt_systemd() {
+  local target=$(sudo systemctl --type target | grep dfanjul | cut -d ' ' -f 1)
+  if [ "$target" ]; then
+    _prompt_apply_color " [$target]" "target" "cyan"
+  fi
+  local target=$(systemctl --user --type target | grep dfanjul | cut -d ' ' -f 1)
+  if [ "$target" ]; then
+    _prompt_apply_color " {$target}" "target" "cyan"
+  fi
+}
 _prompt_git() {
   local subdir
   if ! subdir=$(git rev-parse --show-prefix 2>/dev/null); then
@@ -113,7 +123,7 @@ _prompt_jobscount()
     _prompt_apply_color " [$count]" "jobscount" "yellow"
   fi
 }
-PS1='`_prompt_status``_prompt_date``_prompt__hostname``_prompt_git``_prompt_jobscount`\n\$ '
+PS1='`_prompt_status``_prompt_date``_prompt__hostname``_prompt_systemd``_prompt_git``_prompt_jobscount`\n\$ '
 
 # aliases
 alias ls='ls -F'
@@ -632,7 +642,7 @@ for file in ~/.config/systemd/{user,system}/*; do
   target=$(basename "$file")
   if [ -f ~/.config/systemd/user/"$target" ]; then
     if [ -f ~/.config/systemd/system/"$target" ]; then
-      eval "$target()" \{ sudo systemctl start "$target"\; systemctl --user start "$target"\; \}
+      eval "$target()" \{ sudo systemctl start "$target" '&&' systemctl --user start "$target"\; \}
     else
       eval "$target()" \{ systemctl --user start "$target"\; \}
     fi
