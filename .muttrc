@@ -11,7 +11,9 @@ set move=yes
 set delete=yes
 set quit=yes
 set confirmappend=no
-set pgp_use_gpg_agent = yes
+set pgp_use_gpg_agent=yes
+set crypt_autoencrypt=yes
+set crypt_autosign=yes
 auto_view text/html
 bind index "\\n" next-unread-mailbox
 
