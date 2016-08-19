@@ -19,6 +19,7 @@
 /mnt
 /tmp
 /var/lib/boinc-client
+/var/lib/deluged/Downloads
 /var/lib/docker
 /var/lib/plexmediaserver
 /var/tmp
