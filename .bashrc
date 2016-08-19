@@ -75,11 +75,11 @@ _prompt__hostname() {
   _prompt_apply_color " $(whoami)@$(hostname)" "hostname" "blue"
 }
 _prompt_systemd() {
-  local target=$(sudo systemctl --type target | grep dfanjul | cut -d ' ' -f 1)
+  local target=$(sudo systemctl --type target | grep dfanjul | cut -d ' ' -f 1 | tr '\n' ' ' | sed 's/ $//')
   if [ "$target" ]; then
     _prompt_apply_color " [$target]" "target" "cyan"
   fi
-  local target=$(systemctl --user --type target | grep dfanjul | cut -d ' ' -f 1)
+  local target=$(systemctl --user --type target | grep dfanjul | cut -d ' ' -f 1 | tr '\n' ' ' | sed 's/ $//')
   if [ "$target" ]; then
     _prompt_apply_color " {$target}" "target" "cyan"
   fi
