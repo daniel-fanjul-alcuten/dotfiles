@@ -19,9 +19,7 @@ bind index "\\n" next-unread-mailbox
 
 # local
 mailboxes /var/mail/dfanjul
-mailboxes ~/var/mail/dfanjul
-mailboxes ~/var/mail/sent
-mailboxes ~/var/mail/postponed
+mailboxes ~/var/mail/log
 folder-hook . "unset smtp_url"
 folder-hook . "unset smtp_pass"
 macro index "\\l" ":set folder=~/var/mail<Enter>"
