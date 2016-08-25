@@ -29,7 +29,7 @@ hostname=$(hostname)
 if [ "$m" ]; then
   mountpoint -q "$m"
 fi
-cmd="duplicity -vi --gpg-binary $(which gpg2) --exclude-other-filesystems --asynchronous-upload"
+cmd="duplicity -vi --gpg-binary $(which gpg2) --ssh-options=\"-oControlPath=none\" --rsync-options=\"-e 'ssh -oControlPath=none'\" --exclude-other-filesystems --asynchronous-upload"
 if [ "$s" ]; then
   cmd="sudo SSH_AUTH_SOCK=\"$SSH_AUTH_SOCK\" GPG_AGENT_INFO=\"~/.gnupg/S.gpg-agent\" $cmd"
 fi
@@ -43,7 +43,7 @@ eval nice ionice -c 3 "$cmd" "$@" \""$origin"\" \""$target"\"
 if [ "$m" ]; then
   mountpoint -q "$m"
 fi
-cmd="duplicity cleanup -vi --gpg-binary $(which gpg2) --force"
+cmd="duplicity cleanup -vi --gpg-binary $(which gpg2) --ssh-options=\"-oControlPath=none\" --rsync-options=\"-e 'ssh -oControlPath=none'\" --force"
 if [ "$s" ]; then
   cmd="sudo SSH_AUTH_SOCK=\"$SSH_AUTH_SOCK\" GPG_AGENT_INFO=\"~/.gnupg/S.gpg-agent\" $cmd"
 fi
@@ -57,7 +57,7 @@ eval nice ionice -c 3 "$cmd" "$target"
 if [ "$m" ]; then
   mountpoint -q "$m"
 fi
-cmd="duplicity remove-older-than 13W -vi --gpg-binary $(which gpg2)"
+cmd="duplicity remove-older-than 13W -vi --gpg-binary $(which gpg2) --ssh-options=\"-oControlPath=none\" --rsync-options=\"-e 'ssh -oControlPath=none'\""
 if [ "$s" ]; then
   cmd="sudo SSH_AUTH_SOCK=\"$SSH_AUTH_SOCK\" GPG_AGENT_INFO=\"~/.gnupg/S.gpg-agent\" $cmd"
 fi
