@@ -199,7 +199,6 @@ sudo aptitude install \
   vim-puppet \
   vim-syntax-go \
   wcd
-sudo cp ~/etc/NetworkManager/dispatcher.d/boinccmd /etc/NetworkManager/dispatcher.d/99boinccmd
 
 sudo aptitude install \
   abcde \
