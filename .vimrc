@@ -5,6 +5,7 @@ se sm nu rnu
 se hid aw
 se is ic scs hls
 se list lcs=tab:→\ ,trail:·
+se ml mls=5
 sy on
 filet plugin indent on
 " }}}
