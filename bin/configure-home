@@ -100,8 +100,8 @@ EOF
   source ~/.gvm/scripts/gvm
   gvm install go1.4
   gvm use go1.4
-  gvm install go1.6.3
-  gvm use go1.6.3 --default
+  gvm install go1.7
+  gvm use go1.7 --default
   if [ "$GOPATH" ]; then
     GOPATH=~/lib/go:"$GOPATH"
   else
@@ -175,13 +175,13 @@ sudo aptitude install \
 
 echo test | mail "$(whoami)"
 sudo aptitude install \
-  azureus \
   bc \
   boincmgr \
   boinctui \
   bzip2 \
   dc \
   gmrun \
+  golang-petname \
   htop \
   iotop \
   mail-notification \
@@ -204,7 +204,6 @@ sudo aptitude install \
   abcde \
   abook \
   ack-grep \
-  aegis \
   ant \
   apvlv \
   aria2 \
@@ -321,6 +320,11 @@ sudo aptitude install \
   openjdk-7-jre-headless \
   openjdk-7-jre-lib \
   openjdk-7-source \
+  openjdk-8-jdk \
+  openjdk-8-jre \
+  openjdk-8-jre-headless \
+  openjdk-8-jre-lib \
+  openjdk-8-source \
   par2 \
   parted \
   pexec \
