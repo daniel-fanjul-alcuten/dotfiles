@@ -72,7 +72,7 @@ _prompt_date() {
   _prompt_apply_color "$(date +%T)" "date" "white"
 }
 _prompt__hostname() {
-  _prompt_apply_color " $(whoami)@$(hostname)" "hostname" "blue"
+  _prompt_apply_color " $(whoami)@$(hostname)" "hostname" "magenta"
 }
 _prompt_systemd() {
   local target=$(sudo systemctl --type target | grep dfanjul | cut -d ' ' -f 1 | tr '\n' ' ' | sed 's/ $//')
@@ -82,6 +82,12 @@ _prompt_systemd() {
   local target=$(systemctl --user --type target | grep dfanjul | cut -d ' ' -f 1 | tr '\n' ' ' | sed 's/ $//')
   if [ "$target" ]; then
     _prompt_apply_color " {$target}" "target" "cyan"
+  fi
+}
+_prompt_nmcli() {
+  local nmcli=$(nmcli connection show --active 2>/dev/null | tail -n +2 | grep -v 'docker0 *$' | grep -v 'tun0 *$' | cut -f 1 -d ' ' | sort | tr \\n ' ' | sed 's/ $//')
+  if [ "$nmcli" ]; then
+    _prompt_apply_color " <$nmcli>" "nmcli" "blue"
   fi
 }
 _prompt_git() {
@@ -123,7 +129,7 @@ _prompt_jobscount()
     _prompt_apply_color " [$count]" "jobscount" "yellow"
   fi
 }
-PS1='`_prompt_status``_prompt_date``_prompt__hostname``_prompt_systemd``_prompt_git``_prompt_jobscount`\n\$ '
+PS1='`_prompt_status``_prompt_date``_prompt__hostname``_prompt_systemd``_prompt_nmcli``_prompt_git``_prompt_jobscount`\n\$ '
 
 # aliases
 alias ls='ls -F'
