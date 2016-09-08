@@ -295,7 +295,7 @@ fi
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh /usr/bin/lesspipe)"
 
 # functions
-cd() {
+scd() {
   builtin cd "$@" && {
     local dir="$(basename "$PWD")"
     if [ "$STY" ]; then
@@ -312,6 +312,14 @@ cd() {
     fi
     true
   } 2>/dev/null
+}
+complete -o nospace -F _cd scd
+cd() {
+  scd "$@"
+  cd() {
+    echo false
+    false
+  }
 }
 clear() {
   command clear
@@ -553,7 +561,10 @@ ssh() {
   fi
   command ssh "$@"
   local s=$?
-  cd .
+  local dir="$(basename "$PWD")"
+  if [ "$STY" ]; then
+    screen -X title "$dir"
+  fi
   return $s
 }
 
@@ -680,5 +691,5 @@ if type from &>/dev/null; then
   from -c
 fi
 
-# cd .
-cd .
+# scd .
+scd .
