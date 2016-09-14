@@ -27,6 +27,12 @@ shopt -s globstar
 shopt -s mailwarn
 MAIL=/var/mail/"$USER"
 MAILCHECK=30
+MAILPATH="$MAIL"
+for i in ~/var/mail/*; do
+  if [ -f "$i" ]; then
+    MAILPATH="$MAILPATH:$i"
+  fi
+done
 
 # bindings
 bind -m vi-insert "\C-p":dynamic-complete-history
@@ -649,6 +655,9 @@ mcij() {
 export GPG_TTY=$(tty)
 gpg-connect-agent-updatestartuptty() {
   gpg-connect-agent updatestartuptty /bye
+}
+gpg-connect-agent-reloadagent() {
+  gpg-connect-agent reloadagent /bye
 }
 
 # crawl
