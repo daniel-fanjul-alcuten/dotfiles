@@ -15,7 +15,6 @@ gnome-screensaver &
 gnome-settings-daemon &
 gnome-volume-manager &
 gnome-control-center sound &
-mail-notification &
 nm-applet &
 
 # set PATH
