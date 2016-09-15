@@ -1,3 +1,3 @@
 #!/bin/bash
 
-exec google-chrome --profile-directory=Default --app='https://inbox.google.com/'
+exec google-chrome --profile-directory=daniel.fanjul.alcuten@gmail.com --app='https://inbox.google.com/'
