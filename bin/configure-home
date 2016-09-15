@@ -31,7 +31,7 @@ sudo apt-get install aptitude
 {
   # google chrome
   wget -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-  dpkg -p google-chrome-stable >&/dev/null || {
+  which google-chrome-stable >&/dev/null || {
     sudo aptitude install wget
     # wget https://dl.google.com/linux/direct/google-chrome-stable_current_i386.deb
     wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -45,13 +45,14 @@ sudo apt-get install aptitude
 
 {
   # ssh
-  sudo aptitude install openssh-client install postfix biabam
+  sudo aptitude install openssh-client
   if ! [ -f .ssh/id_rsa ]; then
     chmod 700 .ssh
     ssh-keygen
     nohup google-chrome https://github.com/settings/ssh &
     read -p "add ssh key to github: $(cat .ssh/id_rsa.pub)"
   fi
+  sudo aptitude install gnupg2 gnupg-agent pinentry-{curses,gtk2} postfix biabam
   file="$(hostname)"-ssh.tar.bzip2
   tar cfvj "$file" .ssh
   bin/gpg-file "$file"
@@ -61,10 +62,10 @@ sudo apt-get install aptitude
 
 {
   # gpg
-  sudo aptitude install gnupg2 gnupg-agent biabam
-  if ! [ -f .gnupg/secring.gpg ]; then
+  sudo aptitude install biabam
+  if ! gpg2 --list-secret-keys | grep "$(whoami)@$(hostname)"; then
     gpg2 --gen-key
-    gpg-agent --daemon ssh-add
+    SSH_AUTH_SOCK=~/.gnupg/S.gpg-agent.ssh ssh-add
   fi
   file="$(hostname)"-gnupg.tar.bzip2
   tar cfvj "$file" .gnupg
@@ -98,16 +99,17 @@ EOF
   sudo aptitude install curl mercurial make binutils bison gcc build-essential
   [ ! -s ~/.gvm/scripts/gvm ] && bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
   source ~/.gvm/scripts/gvm
-  gvm install go1.4
-  gvm use go1.4
+  gvm install go1.4.3
+  gvm use go1.4.3
   gvm install go1.7
   gvm use go1.7 --default
   if [ "$GOPATH" ]; then
-    GOPATH=~/lib/go:"$GOPATH"
+    export GOPATH=~/lib/go:"$GOPATH"
   else
-    GOPATH=~/lib/go
+    export GOPATH=~/lib/go
   fi
-  make -C ~/lib/go
+  make -C ~/lib/go clean list compile
+  make -C ~/lib/go install test vim
 }
 
 {
@@ -118,16 +120,8 @@ EOF
     sudo tee /etc/apt/sources.list.d/canonical.list >/dev/null <<EOF
 # canonical
 deb http://archive.canonical.com/ $DISTRIB_CODENAME partner
-deb-src http://archive.canonical.com/ trusty partner
+deb-src http://archive.canonical.com/ $DISTRIB_CODENAME partner
 EOF
-
-    # ring
-    sudo tee /etc/apt/sources.list.d/ring-nightly-man.list >/dev/null <<EOF
-# ring
-deb https://dl.ring.cx/ring-nightly/ubuntu_$DISTRIB_RELEASE/ ring main
-EOF
-    sudo apt-key adv --keyserver pgp.mit.edu --recv-keys A295D773307D25A33AE72F2F64CD5FA175348F84
-    sudo add-apt-repository universe
   fi
 
     # hipchat
@@ -145,7 +139,7 @@ EOF
     sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
     sudo tee /etc/apt/sources.list.d/docker.list >/dev/null <<EOF
 # docker
-deb https://apt.dockerproject.org/repo ubuntu-trusty main
+deb https://apt.dockerproject.org/repo ubuntu-$DISTRIB_CODENAME main
 EOF
     sudo aptitude update
     sudo aptitude purge docker lxc-docker
@@ -164,18 +158,22 @@ sudo aptitude install \
   biabam \
   bup \
   cron \
+  duplicity \
   gnome-terminal \
   mailutils \
   mutt \
   openssh-server \
   pal \
+  par2 \
   postpone \
   procmail \
+  python-pexpect \
   rsync
 
 echo test | mail "$(whoami)"
 sudo aptitude install \
   bc \
+  boinc-client \
   boincmgr \
   boinctui \
   bzip2 \
@@ -325,7 +323,6 @@ sudo aptitude install \
   openjdk-8-jre-headless \
   openjdk-8-jre-lib \
   openjdk-8-source \
-  par2 \
   parted \
   pexec \
   pinpoint \
@@ -338,7 +335,7 @@ sudo aptitude install \
   qdbm-util \
   qiv \
   reptyr \
-  ring-gnome \
+  ring \
   rpl \
   s3cmd \
   s3ql \
