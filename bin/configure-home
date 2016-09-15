@@ -52,7 +52,7 @@ sudo apt-get install aptitude
     nohup google-chrome https://github.com/settings/ssh &
     read -p "add ssh key to github: $(cat .ssh/id_rsa.pub)"
   fi
-  sudo aptitude install gnupg2 gnupg-agent pinentry-{curses,gtk2} postfix biabam
+  sudo aptitude install gnupg2 gnupg-agent pinentry-curses postfix biabam
   file="$(hostname)"-ssh.tar.bzip2
   tar cfvj "$file" .ssh
   bin/gpg-file "$file"
