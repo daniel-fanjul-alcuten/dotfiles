@@ -184,6 +184,7 @@ sudo aptitude install \
   iotop \
   mail-notification \
   moosic \
+  network-manager-vpnc-gnome \
   newsbeuter \
   orpie \
   ranger \
