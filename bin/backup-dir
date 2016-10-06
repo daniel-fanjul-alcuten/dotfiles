@@ -26,9 +26,6 @@ target="$1" && shift
 whoami=$(whoami)
 hostname=$(hostname)
 
-if [ "$m" ]; then
-  mountpoint -q "$m"
-fi
 cmd="duplicity -vi --gpg-binary $(which gpg2) --ssh-options=\"-oBatchMode=yes -oControlPath=none\" --rsync-options=\"-e 'ssh -oBatchMode=yes -oControlPath=none'\" --exclude-other-filesystems --asynchronous-upload"
 if [ "$s" ]; then
   cmd="sudo SSH_AUTH_SOCK=\"$SSH_AUTH_SOCK\" GPG_AGENT_INFO=\"~/.gnupg/S.gpg-agent\" $cmd"
@@ -38,32 +35,18 @@ if [ "$e" ]; then
 else
   cmd="$cmd --no-encryption"
 fi
+
+if [ "$m" ]; then
+  mountpoint -q "$m"
+fi
 eval nice ionice -c 3 "$cmd" "$@" \""$origin"\" \""$target"\"
 
 if [ "$m" ]; then
   mountpoint -q "$m"
 fi
-cmd="duplicity cleanup -vi --gpg-binary $(which gpg2) --ssh-options=\"-oBatchMode=yes -oControlPath=none\" --rsync-options=\"-e 'ssh -oBatchMode=yes -oControlPath=none'\" --force"
-if [ "$s" ]; then
-  cmd="sudo SSH_AUTH_SOCK=\"$SSH_AUTH_SOCK\" GPG_AGENT_INFO=\"~/.gnupg/S.gpg-agent\" $cmd"
-fi
-if [ "$e" ]; then
-  cmd="$cmd --use-agent --encrypt-key \"<$whoami@$hostname>\" --sign-key \"<$whoami@$hostname>\""
-else
-  cmd="$cmd --no-encryption"
-fi
-eval nice ionice -c 3 "$cmd" "$target"
+eval nice ionice -c 3 "$cmd" cleanup --force "$target"
 
 if [ "$m" ]; then
   mountpoint -q "$m"
 fi
-cmd="duplicity remove-older-than 13W -vi --gpg-binary $(which gpg2) --ssh-options=\"-oBatchMode=yes -oControlPath=none\" --rsync-options=\"-e 'ssh -oBatchMode=yes -oControlPath=none'\""
-if [ "$s" ]; then
-  cmd="sudo SSH_AUTH_SOCK=\"$SSH_AUTH_SOCK\" GPG_AGENT_INFO=\"~/.gnupg/S.gpg-agent\" $cmd"
-fi
-if [ "$e" ]; then
-  cmd="$cmd --use-agent --encrypt-key \"<$whoami@$hostname>\" --sign-key \"<$whoami@$hostname>\""
-else
-  cmd="$cmd --no-encryption"
-fi
-eval nice ionice -c 3 "$cmd" "$target"
+eval nice ionice -c 3 "$cmd" remove-older-than 13W "$target"
