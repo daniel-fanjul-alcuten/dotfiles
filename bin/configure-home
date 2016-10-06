@@ -52,25 +52,15 @@ sudo apt-get install aptitude
     nohup google-chrome https://github.com/settings/ssh &
     read -p "add ssh key to github: $(cat .ssh/id_rsa.pub)"
   fi
-  sudo aptitude install gnupg2 gnupg-agent pinentry-curses postfix biabam
-  file="$(hostname)"-ssh.tar.bzip2
-  tar cfvj "$file" .ssh
-  bin/gpg-file "$file"
-  echo "$file" | biabam "$file".gpg -s "$file" daniel.fanjul.alcuten@gmail.com
-  rm "$file"{,.gpg}
 }
 
 {
   # gpg
+  sudo aptitude install gnupg2 gnupg-agent pinentry-curses
   if ! gpg2 --list-secret-keys | grep "$(whoami)@$(hostname)"; then
     gpg2 --gen-key
     SSH_AUTH_SOCK=~/.gnupg/S.gpg-agent.ssh ssh-add
   fi
-  file="$(hostname)"-gnupg.tar.bzip2
-  tar cfvj "$file" .gnupg
-  bin/gpg-file "$file"
-  echo "$file" | biabam "$file".gpg -s "$file" daniel.fanjul.alcuten@gmail.com
-  rm "$file"{,.gpg}
 }
 
 {
@@ -163,6 +153,7 @@ sudo aptitude install \
   openssh-server \
   pal \
   par2 \
+  postfix \
   postpone \
   procmail \
   python-pexpect \
@@ -222,7 +213,6 @@ sudo aptitude install \
   cmatrix \
   cmatrix-xfont \
   crawl \
-  curl \
   cwcp \
   dctrl-tools \
   debsums \
@@ -255,7 +245,6 @@ sudo aptitude install \
   git2cl \
   gitstats \
   gnupg \
-  gnupg-agent \
   gource \
   graphviz \
   graphviz-doc \
