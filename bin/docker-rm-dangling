@@ -5,3 +5,5 @@ set -x
 for s in exited created dead; do
   sudo docker ps -qf status=$s | xargs -r sudo docker rm
 done
+docker ps -a
+docker volume ls
