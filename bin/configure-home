@@ -378,4 +378,6 @@ sudo aptitude install \
 
 sudo aptitude upgrade
 
+sudo apt autoremove
+
 sudo aptitude clean
