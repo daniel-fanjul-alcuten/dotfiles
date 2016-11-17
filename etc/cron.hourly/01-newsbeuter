@@ -6,4 +6,4 @@ lock=newsbeuter-reload
 log="$lock-$RANDOM".log
 postpone -f -L ~/var/lock/elock-"$lock" \
   ~/bin/mail-exec ~/var/log/"$log" "newsbeuter" \
-  newsbeuter -x reload &>/dev/null &
+  newsbeuter -x reload -x print-unread &>/dev/null &
