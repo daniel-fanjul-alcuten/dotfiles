@@ -1,6 +1,13 @@
 LOGFILE=var/log/procmail.log
+DISPLAY=:0
+XAUTHORITY=.Xauthority
 
 :0
 * ^From: dfanjul@
+* ^Subject: \[exec\] backup par2\+rsync://dfanjul@localhost/var/backups/home:
+$HOME/var/mail/log-backup-home
+
+:0 c
+* ^From: dfanjul@
 * ^Subject: \[exec\]
-$HOME/var/mail/log
+|/usr/bin/notify-send \[exec\] 'exec finished'
