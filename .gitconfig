@@ -131,9 +131,9 @@
 	sr = show-ref
 	symbolic-ref-head = symbolic-ref --short HEAD
 	ua = !git symbolic-ref refs/heads/a $(git rev-parse --symbolic-full-name @)
-	uad = !git symbolic-ref -d refs/heads/a";" git checkout -b a -t $(git rev-parse --symbolic-full-name @)
+	uad = !git symbolic-ref -d refs/heads/a";" git branch -D a";" git checkout -b a -t $(git rev-parse --symbolic-full-name @)
 	un = !git symbolic-ref refs/heads/n $(git rev-parse --symbolic-full-name @)
-	und = !git symbolic-ref -d refs/heads/n";" git checkout -b n -t $(git rev-parse --symbolic-full-name @)
+	und = !git symbolic-ref -d refs/heads/n";" git branch -D n";" git checkout -b n -t $(git rev-parse --symbolic-full-name @)
 	ur = update-ref
 [status]
 	submodulesummary = true
