@@ -646,9 +646,6 @@ gpg-connect-agent-reloadagent() {
   gpg-connect-agent reloadagent /bye
 }
 
-# crawl
-export CRAWL_DIR=~/.crawl
-
 # systemctl
 for file in ~/.config/systemd/{user,system}/*; do
   target=$(basename "$file")
@@ -663,6 +660,9 @@ for file in ~/.config/systemd/{user,system}/*; do
   fi
 done
 unset target
+
+# crawl
+export CRAWL_DIR=~/.crawl
 
 # down
 down
