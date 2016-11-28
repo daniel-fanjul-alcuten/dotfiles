@@ -8,6 +8,8 @@ XAUTHORITY=.Xauthority
 $HOME/var/mail/log-backup-home
 
 :0 c
-* ^From: dfanjul@
+|/usr/bin/notify-send mail 'new mail'
+
+:0 c
 * ^Subject: \[exec\]
-|/usr/bin/notify-send \[exec\] 'exec finished'
+|/usr/bin/notify-send exec 'exec finished'
