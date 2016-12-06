@@ -12,7 +12,6 @@ export SSH_AUTH_SOCK=~/.gnupg/S.gpg-agent.ssh
 gnome-terminal &
 gnome-screensaver &
 gnome-settings-daemon &
-gnome-control-center sound &
 nm-applet &
 
 # set PATH
