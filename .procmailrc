@@ -4,7 +4,7 @@ XAUTHORITY=.Xauthority
 
 :0
 * ^From: dfanjul@
-* ^Subject: \[exec\] backup par2\+rsync://dfanjul@localhost/var/backups/home:
+* ^Subject: \[exec\] backup par2\+rsync://dfanjul@localhost/var/backups/home: 0$
 $HOME/var/mail/log-backup-home
 
 :0 c
