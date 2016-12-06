@@ -147,6 +147,7 @@ sudo aptitude install \
   bup \
   cron \
   duplicity \
+  gnome-settings-daemon \
   gnome-terminal \
   mailutils \
   mutt \
