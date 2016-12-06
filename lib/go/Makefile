@@ -5,6 +5,7 @@ EXECUTABLES=\
 						fs \
 						git-greb \
 						glacier \
+						mining \
 						osdb \
 						ts
 

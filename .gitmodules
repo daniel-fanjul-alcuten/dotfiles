@@ -58,3 +58,6 @@
 [submodule "lib/go/src/github.com/daniel-fanjul-alcuten/ts"]
 	path = lib/go/src/github.com/daniel-fanjul-alcuten/ts
 	url = http://github.com/daniel-fanjul-alcuten/ts.git
+[submodule "lib/go/src/github.com/daniel-fanjul-alcuten/mining"]
+	path = lib/go/src/github.com/daniel-fanjul-alcuten/mining
+	url = http://github.com/daniel-fanjul-alcuten/mining.git
