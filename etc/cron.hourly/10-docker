@@ -5,8 +5,10 @@ for id in $(sudo docker images -q); do
   name=$(sudo docker inspect -f '{{.RepoTags}}' "$id")
   name=$(sed 's,/,-,g' <<< "$name")
   created=$(sudo docker inspect -f '{{.Created}}' "$id")
-  file=~/var/backups/docker/image-"$name-$created".tar
+  prefix=~/var/backups/docker/image-"$name"
+  file="$prefix-$created".tar
   if ! [ -f "$file" ]; then
+    rm -f "$prefix"*
     mkdir -p ~/var/{lock,log} "${file%/*}"
     lock=docker-save-"$id"
     log="$lock-$name-$RANDOM".log
