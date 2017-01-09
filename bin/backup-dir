@@ -49,4 +49,4 @@ eval nice ionice -c 3 "$cmd" cleanup --force "$target"
 if [ "$m" ]; then
   mountpoint -q "$m"
 fi
-eval nice ionice -c 3 "$cmd" remove-older-than 13W "$target"
+eval nice ionice -c 3 "$cmd" remove-older-than 2W --force "$target"
