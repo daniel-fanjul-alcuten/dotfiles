@@ -331,12 +331,7 @@ tta() {
   t add +"$dir" "$@"
 }
 pause() {
-  sudo service cron stop
-  ~/etc/cron.halt/99-umount-all
-}
-unpause() {
-  fs -m -l
-  sudo service cron start
+  run-parts-cron halt -v
 }
 syshalt() {
   run-parts-cron halt -v &&
