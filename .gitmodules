@@ -61,3 +61,6 @@
 [submodule "lib/go/src/github.com/daniel-fanjul-alcuten/mining"]
 	path = lib/go/src/github.com/daniel-fanjul-alcuten/mining
 	url = http://github.com/daniel-fanjul-alcuten/mining.git
+[submodule "lib/go/src/github.com/daniel-fanjul-alcuten/amar-dashboard"]
+	path = lib/go/src/github.com/daniel-fanjul-alcuten/amar-dashboard
+	url = http://github.com/daniel-fanjul-alcuten/amar-dashboard.git
