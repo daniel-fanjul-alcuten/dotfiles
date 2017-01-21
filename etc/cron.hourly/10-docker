@@ -4,6 +4,9 @@ set -e
 for id in $(sudo docker images -q); do
   name=$(sudo docker inspect -f '{{.RepoTags}}' "$id")
   name=$(sed 's,/,-,g' <<< "$name")
+  if [ "$name" = "[]" ]; then
+    continue
+  fi
   created=$(sudo docker inspect -f '{{.Created}}' "$id")
   prefix=~/var/backups/docker/image-"$name"
   file="$prefix-$created".tar
