@@ -1,0 +1,4 @@
+#!/bin/sh
+
+ssh -O exit localhost || true
+ssh -O exit github.com || true
