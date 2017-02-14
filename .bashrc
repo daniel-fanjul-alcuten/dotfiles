@@ -626,6 +626,12 @@ mij() {
 mcij() {
   mvn clean install jetty:run -DskipTests=true "$@"
 }
+mb() {
+  mvn cobertura:cobertura && xdg-open target/site/cobertura/index.html
+}
+mcb() {
+  mvn clean cobertura:cobertura && xdg-open target/site/cobertura/index.html
+}
 
 # gpg
 export GPG_TTY=$(tty)
