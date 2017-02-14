@@ -5,7 +5,6 @@ xset -b
 xsetroot -bg black
 
 # agents
-gpg-connect-agent /bye
 export SSH_AUTH_SOCK=~/.gnupg/S.gpg-agent.ssh
 
 # gnome
