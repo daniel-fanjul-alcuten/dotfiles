@@ -4,4 +4,6 @@ set -e
 id="$1" && shift || { echo id?; exit 1; }
 
 fs -r -u
+~/etc/cron.halt/60-ssh-stop-master
+
 exec nmcli con up id "$id"
