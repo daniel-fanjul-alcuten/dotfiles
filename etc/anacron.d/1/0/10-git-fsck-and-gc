@@ -1,5 +1,5 @@
 #!/bin/bash
 
-find ~ -type d -xdev 2>/dev/null | \
-  xargs -rn 1 -I folder bash -c 'cd "folder" >/dev/null && dir=$(git rev-parse --git-dir) && readlink -e "$dir"' \
+find ~ -type d -xdev -print0 2>/dev/null | \
+  xargs -0 -rn 1 -I folder bash -c 'cd "folder" >/dev/null && dir=$(git rev-parse --git-dir) && readlink -e "$dir"' \
   2>/dev/null | sort -u > ~/var/git-fsck-and-gc.list
