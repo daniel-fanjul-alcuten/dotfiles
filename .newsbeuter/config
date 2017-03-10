@@ -1,0 +1,3 @@
+auto-reload yes
+keep-articles-days 90
+max-items 5000
