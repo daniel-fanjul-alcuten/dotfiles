@@ -94,15 +94,10 @@
 	history-reset = !git reset `echo init | git commit-tree HEAD:`
 	k = cherry-pick
 	kf = cherry-pick --ff
-	l = log --oneline --abbrev-commit
-	lg = log --pretty=oneline --abbrev-commit --graph
-	lgd = log --pretty=oneline --abbrev-commit --graph --decorate
-	lgda = log --pretty=oneline --abbrev-commit --graph --decorate --all
-	lgdar = log --pretty=oneline --abbrev-commit --graph --decorate --all --format=raw
-	lgdr = log --pretty=oneline --abbrev-commit --graph --decorate --format=raw
-	lgr = log --pretty=oneline --abbrev-commit --graph --format=raw
-	lr = log --oneline --abbrev-commit --format=raw
-	lrb = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	lg = log --oneline --decorate --graph --show-signature --abbrev-commit
+	lga = log --oneline --decorate --graph --show-signature --abbrev-commit --all
+	lgar = log --oneline --decorate --graph --show-signature --abbrev-commit --all --format=raw
+	lgr = log --oneline --decorate --graph --show-signature --abbrev-commit --format=raw
 	n = commit -v --amend
 	nn = commit -v --amend --reset-author
 	objs = count-objects -v
