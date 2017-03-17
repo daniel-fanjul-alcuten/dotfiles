@@ -11,7 +11,9 @@
 /home/*/.steam
 /home/*/.steampath
 /home/*/.steampid
+/home/*/.wine
 /home/*/mnt
+/home/*/music
 /home/*/tmp
 /home/*/var/backups/home
 /home/*/var/log
