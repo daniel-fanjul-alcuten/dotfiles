@@ -473,14 +473,70 @@ if [ "$(uname)" = Darwin ]; then
 else
   GOMAXPROCS=$(grep ^processor /proc/cpuinfo | wc -l)
 fi
-alias gf='go fmt ./...'
-alias gt='go test ./...'
-alias gtc='gtcc -o /tmp/coverage.html'
-alias gtcc='go test -coverprofile=/tmp/coverage.data && go tool cover -html=/tmp/coverage.data'
-alias gb='go build ./...'
-alias gm='go build -gcflags -m ./...'
-alias gi='go install ./...'
-alias gti='gi && gt'
+gf() {
+  go fmt "$@" ./...
+}
+gb() {
+  go build "$@" ./...
+}
+gi() {
+  go install "$@" ./...
+}
+gt() {
+  go test "$@" ./...
+}
+gtc() {
+  local tmp1=$(tempfile)
+  if ! go test "$@" -coverprofile "$tmp1" ./...; then
+    command rm "$tmp1"
+    return 1
+  fi
+  command rm "$tmp1"
+}
+gtcc() {
+  local tmp1=$(tempfile)
+  if ! go test "$@" -coverprofile "$tmp1" ./...; then
+    command rm "$tmp1"
+    return 1
+  fi
+  local tmp2=$(tempfile -s .html)
+  if ! go tool cover -html "$tmp1" -o "$tmp2"; then
+    command rm "$tmp1"
+    return 1
+  fi
+  command rm "$tmp1"
+  xdg-open $tmp2
+}
+gv() {
+  go tool vet "$@" .
+}
+gtv() {
+  gi && gt && gv
+}
+gtvi() {
+  gtv
+  inotifywait -m -r -e create -e close_write -e delete --format '%e %f' . \
+    |& grep --line-buffered '.go$' \
+    | while read line; do echo; echo "$line"; while read -t 0.1 line; do echo "$line"; done; gtv; done;
+}
+gtvn() {
+  f=$(tempfile)
+  gtv |& command tee "$f"
+  command notify-send -i ~/usr/share/images/$([ $? = 0 ] && echo blue || echo red).gif gtv "$(cat "$f")"
+  command rm "$f"
+}
+gtvni() {
+  gtvn
+  inotifywait -m -r -e create -e close_write -e delete --format '%e %f' . \
+    |& grep --line-buffered '.go$' \
+    | while read line; do echo; echo "$line"; while read -t 0.1 line; do echo "$line"; done; gtvn; done;
+}
+gd() {
+  go tool doc "$@" | less -F
+}
+gm() {
+  go build -gcflags -m ./...
+}
 
 # ruby configuration
 if [ -d ~/lib/ruby ]; then
