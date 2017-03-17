@@ -10,7 +10,7 @@ for id in $(sudo docker images -q); do
   created=$(sudo docker inspect -f '{{.Created}}' "$id")
   prefix=~/var/backups/docker/image-"$name"
   file="$prefix-$created".tar
-  if ! [ -f "$file" ]; then
+  if ! [ -f "$file.bz2" ]; then
     rm -f "$prefix"*
     mkdir -p ~/var/{lock,log} "${file%/*}"
     lock=docker-save-"$id"
@@ -19,6 +19,7 @@ for id in $(sudo docker images -q); do
       ~/bin/mail-exec ~/var/log/"$log" "docker-save $name" \
       bash -c "sudo docker save \"$id\" > \"$file\"" \
       &>/dev/null || rm -f "$file"
+    bzip2 "$file"
   fi
 done
 
@@ -35,4 +36,5 @@ for id in $(sudo docker ps -f 'status=exited' -q); do
     ~/bin/mail-exec ~/var/log/"$log" "docker-export $name" \
     bash -c "sudo docker export \"$id\" > \"$file\"" \
     &>/dev/null || rm -f "$file"
+  bzip2 "$file"
 done
