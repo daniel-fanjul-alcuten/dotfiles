@@ -97,6 +97,10 @@
 	lg = log --oneline --decorate --graph --show-signature --abbrev-commit
 	lga = log --oneline --decorate --graph --show-signature --abbrev-commit --all
 	lgar = log --oneline --decorate --graph --show-signature --abbrev-commit --all --format=raw
+	lgg = log --decorate --graph --show-signature --abbrev-commit
+	lgga = log --decorate --graph --show-signature --abbrev-commit --all
+	lggar = log --decorate --graph --show-signature --abbrev-commit --all --format=raw
+	lggr = log --decorate --graph --show-signature --abbrev-commit --format=raw
 	lgr = log --oneline --decorate --graph --show-signature --abbrev-commit --format=raw
 	n = commit -v --amend
 	nn = commit -v --amend --reset-author
