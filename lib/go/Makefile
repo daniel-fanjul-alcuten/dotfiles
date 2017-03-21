@@ -26,7 +26,6 @@ fix:
 
 .PHONY: vet
 vet:
-	go get -v golang.org/x/tools/cmd/vet
 	go vet github.com/daniel-fanjul-alcuten/...
 
 .PHONY: lint
