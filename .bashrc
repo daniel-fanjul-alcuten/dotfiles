@@ -508,7 +508,7 @@ gtcc() {
   xdg-open $tmp2
 }
 gv() {
-  go tool vet "$@" .
+  go vet ./...
 }
 gtv() {
   gi && gt && gv
@@ -521,8 +521,10 @@ gtvi() {
 }
 gtvn() {
   f=$(tempfile)
-  gtv |& command tee "$f"
-  command notify-send -i ~/usr/share/images/$([ $? = 0 ] && echo blue || echo red).gif gtv "$(cat "$f")"
+  g=$(tempfile)
+  ln -sf ~/usr/share/images/red.gif "$g"
+  { gtv && ln -sf ~/usr/share/images/blue.gif "$g"; } |& command tee "$f"
+  command notify-send -i "$g" gtv "$(cat "$f")"
   command rm "$f"
 }
 gtvni() {
@@ -532,7 +534,7 @@ gtvni() {
     | while read line; do echo; echo "$line"; while read -t 0.1 line; do echo "$line"; done; gtvn; done;
 }
 gd() {
-  go tool doc "$@" | less -F
+  go doc "$@" | less -F
 }
 gm() {
   go build -gcflags -m ./...
