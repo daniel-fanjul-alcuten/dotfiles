@@ -1,35 +1,47 @@
 #!/bin/bash
 set -e
 
-url="git@github.com:$CENSORED"
-ref="refs/heads/master"
-while getopts 'u:p:r:i:o:fm:gc' opt; do
+ref='HEAD'
+while getopts 'o:p:r:i:d:fv:uc' opt; do
   case $opt in
-    u) url="$OPTARG";;
+    o) url="$OPTARG";;
     p) pkg="$OPTARG";;
     r) ref="$OPTARG";;
     i) gitdir="$OPTARG";;
-    o) godir="$OPTARG";;
+    d) godir="$OPTARG";;
     f) fetch=true;;
-    m) gvm="$OPTARG";;
-    g) update=true;;
+    v) gvm="$OPTARG";;
+    u) update="-u";;
     c) notests=true;;
-    *) exit 1
+    *) exit 16
   esac
 done
 shift $((OPTIND - 1))
 
 if [ -z "$pkg" ]; then
+  if [ -z "$url" ]; then
+    echo "\$url or \$pkg not defined" 2>&1
+    exit 17
+  fi
   pkg="$url"
-  pkg="${pkg##git@}"
-  pkg="${pkg##http://}"
-  pkg="${pkg##https://}"
-  pkg="${pkg/://}"
+  if [[ "$pkg" =~ ^git@ ]]; then
+    pkg="${pkg##git@}"
+    pkg="${pkg/://}"
+  elif [[ "$pkg" =~ ^http:// ]]; then
+    pkg="${pkg##http://}"
+    pkg="${pkg/://}"
+  elif [[ "$pkg" =~ ^https:// ]]; then
+    pkg="${pkg##https://}"
+    pkg="${pkg/://}"
+  else
+    echo "\$pkg not defined" 2>&1
+    exit 18
+  fi
 fi
 
 if [ -z "$godir" ]; then
   if [ -z "$gitdir" ]; then
-    godir="$(mktemp -d 2>/dev/null || mktemp -d -t 'continuous-integration-test')"
+    godir="$(mktemp -d -t 'gopath-XXXXXX')"
     gitdir="$godir/src/$pkg"
   else
     godir="$gitdir"
@@ -38,7 +50,7 @@ if [ -z "$godir" ]; then
     godir="${godir%%src/$pkg}"
     if [ "$godir" = "$tmp" ]; then
       echo "$gitdir does not end with src/$pkg"
-      exit 2
+      exit 19
     fi
   fi
 elif [ -z "$gitdir" ]; then
@@ -46,7 +58,7 @@ elif [ -z "$gitdir" ]; then
 fi
 
 run() {
-  echo "$ $@"
+  echo '>' "$@"
   "$@"
 }
 
@@ -56,6 +68,10 @@ if [ ! -d "$gitdir" ]; then
 fi
 run cd "$gitdir"
 if [ "$fetch" ]; then
+  if [ -z "$url" ]; then
+    echo "\$url not defined" 2>&1
+    exit 17
+  fi
   run git fetch "$url" "$ref"
   run git checkout FETCH_HEAD
 fi
@@ -71,31 +87,26 @@ if [ "$gvm" ]; then
   run gvm use "$gvm"
 fi
 
-export GOPATH="$godir"
+run go version
+run export GOPATH="$godir:$GOPATH"
+run export GOBIN="$godir/bin"
 run go env
 pkgspec="$pkg/..."
-run go list "$pkgspec"
 run go get -v "$pkgspec"
 if [ "$update" ]; then
-  run go get -v -u \
+  run go get -v $update \
     $(go list -f '{{join .Deps "\n"}}' "$pkgspec" |\
-      sort -u |\
-      grep -v "^$pkg" |\
-      xargs go list -f '{{if not .Standard}}{{.ImportPath}}{{end}}')
+    sort -u |\
+    grep -v "^$pkg" |\
+    xargs go list -f '{{if not .Standard}}{{.ImportPath}}{{end}}')
 fi
+run go list "$pkgspec"
 run go install -v "$pkgspec"
 if [ -z "$notests" ]; then
   run go test -v -p 1 "$pkgspec"
 fi
-if run go get -v golang.org/x/tools/cmd/vet; then
-  if [ "$update" ]; then
-    run go get -v -u golang.org/x/tools/cmd/vet
-  fi
-  run go vet "$pkgspec"
-fi
-if run go get -v github.com/golang/lint/golint; then
-  if [ "$update" ]; then
-    go get -v -u github.com/golang/lint/golint
-  fi
-  run "$godir/bin/golint" "$pkgspec" || true
+run go vet -v "$pkgspec"
+run go fix "$pkgspec"
+if run go get -v $update github.com/golang/lint/golint; then
+  run "$GOBIN/golint" -set_exit_status "$pkgspec"
 fi
