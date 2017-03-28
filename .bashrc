@@ -485,27 +485,34 @@ gi() {
 gt() {
   go test "$@" ./...
 }
+gtt() {
+  gi && for t in $(seq 23); do gt || break; done
+}
 gtc() {
-  local tmp1=$(tempfile)
-  if ! go test "$@" -coverprofile "$tmp1" ./...; then
+  for p in $(go list ./...); do
+    local tmp1=$(tempfile)
+    if ! go test "$@" -coverprofile "$tmp1" "$p"; then
+      command rm "$tmp1"
+      return 1
+    fi
     command rm "$tmp1"
-    return 1
-  fi
-  command rm "$tmp1"
+  done
 }
 gtcc() {
-  local tmp1=$(tempfile)
-  if ! go test "$@" -coverprofile "$tmp1" ./...; then
+  for p in $(go list ./...); do
+    local tmp1=$(tempfile)
+    if ! go test "$@" -coverprofile "$tmp1" "$p"; then
+      command rm "$tmp1"
+      return 1
+    fi
+    local tmp2=$(tempfile -s .html)
+    if ! go tool cover -html "$tmp1" -o "$tmp2"; then
+      command rm "$tmp1"
+      return 1
+    fi
     command rm "$tmp1"
-    return 1
-  fi
-  local tmp2=$(tempfile -s .html)
-  if ! go tool cover -html "$tmp1" -o "$tmp2"; then
-    command rm "$tmp1"
-    return 1
-  fi
-  command rm "$tmp1"
-  xdg-open $tmp2
+    xdg-open $tmp2
+  done
 }
 gv() {
   go vet ./...
