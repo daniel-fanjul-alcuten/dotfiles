@@ -159,7 +159,7 @@
 	stat = false
 	autosquash = true
 [push]
-	default = tracking
+	default = upstream
 [pull]
 	rebase = true
 [tig]
