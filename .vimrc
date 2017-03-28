@@ -56,9 +56,9 @@ com! -nargs=1 -complete=dir Oargl :argl <args>/*.go
 com! -nargs=1 -complete=dir Ocd :cd <args> | :ar *.go
 com! -nargs=1 -complete=dir Olcd :lcd <args> | :argl *.go
 com! -nargs=1 -complete=dir Otabe :tabe | :lcd <args> | :argl *.go
-nnoremap <Leader>gi :GoImports<cr>
-nnoremap <Leader>gl :GoLint<cr>
-nnoremap <Leader>gv :GoVet<cr>
+nnoremap <Leader>i :GoImports<cr>
+nnoremap <Leader>l :GoLint<cr>
+nnoremap <Leader>v :GoVet<cr>
 " }}}
 
 " ruby {{{
