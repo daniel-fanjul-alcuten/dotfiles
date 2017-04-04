@@ -9,17 +9,16 @@ for id in $(sudo docker images -q); do
   fi
   created=$(sudo docker inspect -f '{{.Created}}' "$id")
   prefix=~/var/backups/docker/image-"$name"
-  file="$prefix-$created".tar
-  if ! [ -f "$file.bz2" ]; then
+  file="$prefix-$created".tar.bz2
+  if ! [ -f "$file" ]; then
     rm -f "$prefix"*
     mkdir -p ~/var/{lock,log} "${file%/*}"
     lock=docker-save-"$id"
     log="$lock-$name-$RANDOM".log
     postpone -f -L ~/var/lock/elock-"$lock" \
       ~/bin/mail-exec ~/var/log/"$log" "docker-save $name" \
-      bash -c "sudo docker save \"$id\" > \"$file\"" \
+      bash -c "set -o pipefail; sudo docker save \"$id\" | bzip2 > \"$file\"" \
       &>/dev/null || rm -f "$file"
-    bzip2 "$file"
   fi
 done
 
@@ -28,13 +27,12 @@ for id in $(sudo docker ps -f 'status=exited' -q); do
   name=${name#/}
   name=$(sed 's,/,-,g' <<< "$name")
   created=$(sudo docker inspect -f '{{.Created}}' "$id")
-  file=~/var/backups/docker/container-"$name-$created".tar
+  file=~/var/backups/docker/container-"$name-$created".tar.bz2
   mkdir -p ~/var/{lock,log} "${file%/*}"
   lock=docker-export-"$id"
   log="$lock-$name-$RANDOM".log
   postpone -f -L ~/var/lock/elock-"$lock" \
     ~/bin/mail-exec ~/var/log/"$log" "docker-export $name" \
-    bash -c "sudo docker export \"$id\" > \"$file\"" \
+    bash -c "set -o pipefail; sudo docker export \"$id\" | bzip2 > \"$file\"" \
     &>/dev/null || rm -f "$file"
-  bzip2 "$file"
 done
