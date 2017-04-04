@@ -518,27 +518,27 @@ gv() {
   go vet ./...
 }
 gtv() {
-  gi && gt && gv
+  gi && gt "$@" && gv
 }
 gtvi() {
-  gtv
+  gtv "$@"
   inotifywait -m -r -e create -e close_write -e delete --format '%e %f' . \
     |& grep --line-buffered '.go$' \
-    | while read line; do echo; echo "$line"; while read -t 0.1 line; do echo "$line"; done; gtv; done;
+    | while read line; do echo; echo "$line"; while read -t 0.1 line; do echo "$line"; done; gtv "$@"; done;
 }
 gtvn() {
   f=$(tempfile)
   g=$(tempfile)
   ln -sf ~/usr/share/images/red.gif "$g"
-  { gtv && ln -sf ~/usr/share/images/blue.gif "$g"; } |& command tee "$f"
-  command notify-send -i "$g" gtv "$(cat "$f")"
+  { gtv "$@" && ln -sf ~/usr/share/images/blue.gif "$g"; } |& command tee "$f"
+  command notify-send -i "$g" gtv -- "$(cat "$f")"
   command rm "$f"
 }
 gtvni() {
-  gtvn
+  gtvn "$@"
   inotifywait -m -r -e create -e close_write -e delete --format '%e %f' . \
     |& grep --line-buffered '.go$' \
-    | while read line; do echo; echo "$line"; while read -t 0.1 line; do echo "$line"; done; gtvn; done;
+    | while read line; do echo; echo "$line"; while read -t 0.1 line; do echo "$line"; done; gtvn "$@"; done;
 }
 gd() {
   go doc "$@" | less -F
