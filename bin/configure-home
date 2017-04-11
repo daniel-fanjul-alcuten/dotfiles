@@ -217,10 +217,6 @@ sudo aptitude install \
   cwcp \
   dctrl-tools \
   debsums \
-  deluge \
-  deluge-console \
-  deluge-gtk \
-  deluged \
   dict \
   dict-freedict-eng-spa \
   dict-freedict-spa-eng \
