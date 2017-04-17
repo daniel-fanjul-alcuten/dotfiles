@@ -76,7 +76,7 @@ _prompt__hostname() {
   _prompt_apply_color " $(whoami)@$(hostname)" "hostname" "magenta"
 }
 _prompt_systemd() {
-  local target=$(sudo systemctl --type target | grep dfanjul | cut -d ' ' -f 1 | sed 's/\.target//' | sort | tr '\n' ' ' | sed 's/ $//')
+  local target=$(sudo systemctl --type target | grep dfanjul | sed 's/^  *//' | cut -d ' ' -f 1 | sed 's/\.target//' | sort | tr '\n' ' ' | sed 's/ $//')
   if [ "$target" ]; then
     _prompt_apply_color " [$target]" "target" "cyan"
   fi
