@@ -1,38 +1,38 @@
 #!/bin/bash
 set -e
 
-for id in $(sudo docker images -q); do
-  name=$(sudo docker inspect -f '{{.RepoTags}}' "$id")
-  name=$(sed 's,/,-,g' <<< "$name")
-  if [ "$name" = "[]" ]; then
-    continue
-  fi
-  created=$(sudo docker inspect -f '{{.Created}}' "$id")
-  prefix=~/var/backups/docker/image-"$name"
-  file="$prefix-$created".tar.bz2
-  if ! [ -f "$file" ]; then
-    rm -f "$prefix"*
-    mkdir -p ~/var/{lock,log} "${file%/*}"
-    lock=docker-save-"$id"
-    log="$lock-$name-$RANDOM".log
-    postpone -f -L ~/var/lock/elock-"$lock" \
-      ~/bin/mail-exec ~/var/log/"$log" "docker-save $name" \
-      bash -c "set -o pipefail; sudo docker save \"$id\" | bzip2 > \"$file\"" \
-      &>/dev/null || rm -f "$file"
-  fi
-done
+if [ "$#" -eq 0 ]; then
+  for id in $(sudo docker images -q --no-trunc); do
+    lock=docker-save-$(md5sum <<< "$id" | cut -f 1 -d ' ')
+    postpone -l ~/var/lock/lock-"$lock" \
+      ~/etc/cron.hourly/10-docker "$id" &
+  done
+  exit 0
+fi
 
-for id in $(sudo docker ps -f 'status=exited' -q); do
-  name=$(sudo docker inspect -f '{{.Name}}' "$id")
-  name=${name#/}
-  name=$(sed 's,/,-,g' <<< "$name")
-  created=$(sudo docker inspect -f '{{.Created}}' "$id")
-  file=~/var/backups/docker/container-"$name-$created".tar.bz2
-  mkdir -p ~/var/{lock,log} "${file%/*}"
-  lock=docker-export-"$id"
-  log="$lock-$name-$RANDOM".log
-  postpone -f -L ~/var/lock/elock-"$lock" \
-    ~/bin/mail-exec ~/var/log/"$log" "docker-export $name" \
-    bash -c "set -o pipefail; sudo docker export \"$id\" | bzip2 > \"$file\"" \
-    &>/dev/null || rm -f "$file"
+export BUP_DIR=~/var/backups/docker
+export GIT_DIR="$BUP_DIR"
+
+if [ ! -f "$BUP_DIR"/config ]; then
+  bup init
+fi
+
+for id in "$@"; do
+  id=$(docker inspect -f '{{.Id}}' "$id")
+  branch=images/sha256/${id##sha256:}
+  ref=refs/heads/"$branch"
+  lock=docker-save-$(md5sum <<< "$id" | cut -f 1 -d ' ')
+  if ! git rev-parse -q --verify "$branch" &>/dev/null; then
+    log="$lock-$RANDOM".log
+    size=$(sudo docker inspect -f '{{.Size}}' "$id")
+    postpone -f -L ~/var/lock/elock-docker-save \
+      ~/bin/mail-exec ~/var/log/"$log" "docker save $id" \
+      bash -c 'sudo docker save "'"$id"'" | pv -s "'"$size"'" | bup split -q -n "'"$branch"'"'
+  fi
+  for tag in $(docker inspect -f '{{.RepoTags}}' "$id" | sed -e 's/\[//' -e 's/\]//'); do
+    sref=$(sed -e 's@:@/@g' <<<refs/heads/images/"$tag")
+    log="$lock-$RANDOM".log
+    ~/bin/mail-exec ~/var/log/"$log" "docker ref $id" \
+      git symbolic-ref "$sref" "$ref"
+  done
 done
