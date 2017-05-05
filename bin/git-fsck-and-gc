@@ -9,10 +9,10 @@ if [ -z "$dir" ]; then
 fi
 
 mkdir -p ~/var/{lock,log}
+lock=git-$(md5sum <<< "$dir" | cut -f 1 -d ' ')
 
 now="$(date +%s)"
 if [ "$(git config gc.lastfsck || echo 0)" -lt $((now - $((3 * 24 * 3600)))) ]; then
-  lock=git-$(md5sum <<< "$dir" | cut -f 1 -d ' ')
   log="$lock-$RANDOM".log
   if postpone -f -L ~/var/lock/elock-"$lock" -L ~/var/lock/elock-git ~/bin/mail-exec ~/var/log/"$log" "git-fsck $dir" nice git fsck; then
     git config gc.lastfsck $((now+RANDOM))
@@ -20,7 +20,6 @@ if [ "$(git config gc.lastfsck || echo 0)" -lt $((now - $((3 * 24 * 3600)))) ]; 
 fi
 
 if [ "$(git config gc.lastgc || echo 0)" -lt $((now - $((5 * 24 * 3600)))) ]; then
-  lock=git-$(md5sum <<< "$dir" | cut -f 1 -d ' ')
   log="$lock-$RANDOM".log
   if postpone -f -L ~/var/lock/elock-"$lock" -L ~/var/lock/elock-git ~/bin/mail-exec ~/var/log/"$log" "git-gc-auto $dir" nice git gc --auto; then
     git config gc.lastgc $((now+RANDOM))
@@ -28,7 +27,6 @@ if [ "$(git config gc.lastgc || echo 0)" -lt $((now - $((5 * 24 * 3600)))) ]; th
 fi
 
 if [ "$(git config gc.lastgcaggressive || echo 0)" -lt $((now - $((11 * 24 * 3600)))) ]; then
-  lock=git-$(md5sum <<< "$dir" | cut -f 1 -d ' ')
   log="$lock-$RANDOM".log
   if postpone -f -L ~/var/lock/elock-"$lock" -L ~/var/lock/elock-git ~/bin/mail-exec ~/var/log/"$log" "git-gc-aggressive $dir" nice git gc --aggressive; then
     git config gc.lastgcaggressive $((now+RANDOM))
