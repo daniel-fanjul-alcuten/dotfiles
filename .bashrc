@@ -712,8 +712,8 @@ for file in ~/.config/systemd/{user,system}/*; do
   target=$(basename "$file")
   if [ -f ~/.config/systemd/user/"$target" ]; then
     if [ -f ~/.config/systemd/system/"$target" ]; then
-      eval -- "+$target()" \{ sudo systemctl start "$target" '&&' sleep 0.5 '&&' systemctl --user start "$target"\; \}
-      eval -- "-$target()" \{ sudo systemctl stop "$target" '&&' sleep 0.5 '&&' systemctl --user stop "$target"\; \}
+      eval -- "+$target()" \{ sudo systemctl start "$target" '&&' systemctl --user start "$target"\; \}
+      eval -- "-$target()" \{ sudo systemctl stop "$target" '&&' systemctl --user stop "$target"\; \}
     else
       eval -- "+$target()" \{ systemctl --user start "$target"\; \}
       eval -- "-$target()" \{ systemctl --user stop "$target"\; \}
