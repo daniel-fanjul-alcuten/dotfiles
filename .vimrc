@@ -51,11 +51,8 @@ aug go_filetype
   au Filetype go nnoremap <buffer> <Leader>t :GoTest<CR>
   au BufWrite *.go silent !~/lib/go/bin/gotags -L <(find . -type f -name \*.go) > tags
 aug end
-com! -nargs=1 -complete=dir Oar :ar <args>/*.go
-com! -nargs=1 -complete=dir Oargl :argl <args>/*.go
-com! -nargs=1 -complete=dir Ocd :cd <args> | :ar *.go
-com! -nargs=1 -complete=dir Olcd :lcd <args> | :argl *.go
-com! -nargs=1 -complete=dir Otabe :tabe | :lcd <args> | :argl *.go
+com! -nargs=1 -complete=dir Gg :argl <args>/*.go
+com! -nargs=1 -complete=dir Tg :tabe | :Gg <args>
 nnoremap <Leader>i :GoImports<cr>
 nnoremap <Leader>l :GoLint<cr>
 nnoremap <Leader>v :GoVet<cr>
