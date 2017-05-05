@@ -9,7 +9,6 @@ export SSH_AUTH_SOCK=~/.gnupg/S.gpg-agent.ssh
 
 # gnome
 gnome-terminal &
-gnome-screensaver &
 gnome-settings-daemon &
 nm-applet &
 
