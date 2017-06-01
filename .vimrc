@@ -20,6 +20,11 @@ nnoremap <Leader>sv :source $MYVIMRC<cr>
 " }}}
 " }}}
 
+" gpg {{{
+let g:GPGExecutable='gpg2'
+let g:GPGPreferSign=1
+" }}}
+
 " git {{{
 aug gitconfig_filetype
   au Filetype gitconfig setl noet
