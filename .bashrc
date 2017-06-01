@@ -331,50 +331,50 @@ tta() {
   t add +"$dir" "$@"
 }
 pause() {
-  run-parts-cron halt -v
+  run-parts-cron -d halt -v
 }
 syshalt() {
-  run-parts-cron halt -v &&
+  pause &&
     ts -f &&
     sudo systemctl halt "$@"
 }
 syspoweroff() {
-  run-parts-cron halt -v &&
+  pause &&
     ts -f &&
     sudo systemctl poweroff "$@"
 }
 sysreboot() {
-  run-parts-cron halt -v &&
+  pause &&
     ts -f &&
     sudo systemctl reboot "$@"
 }
 syssuspend() {
-  run-parts-cron halt -v &&
+  pause &&
     ts -f &&
     sudo systemctl suspend "$@"
 }
 syshibernate() {
-  run-parts-cron halt -v &&
+  pause &&
     ts -f &&
     sudo systemctl hibernate "$@"
 }
 syshybridsleep() {
-  run-parts-cron halt -v &&
+  pause &&
     ts -f &&
     sudo systemctl hybrid-sleep "$@"
 }
 xlogout() {
-  run-parts-cron halt -v && \
+  pause && \
     ts -f &&
     gnome-session-quit --logout
 }
 xpoweroff() {
-  run-parts-cron halt -v && \
+  pause && \
     ts -f &&
     gnome-session-quit --power-off
 }
 xreboot() {
-  run-parts-cron halt -v && \
+  pause && \
     ts -f &&
     gnome-session-quit --reboot
 }

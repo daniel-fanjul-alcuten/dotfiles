@@ -1,13 +1,28 @@
 #!/bin/bash
 set -e
 
+unset d
+while getopts 'd' opt; do
+  case $opt in
+    d)
+      d=true;;
+    *)
+      exit 1;;
+  esac
+done
+shift $((OPTIND - 1))
+
 suffix="$1" && shift || { echo suffix? ; exit 1; }
 
 dir1=~/etc/cron."$suffix"
 dir2="$dir1"/$(hostname)
 for dir in "$dir1" "$dir2"; do
   if [ -d "$dir" ]; then
-    lock=run-parts-$(md5sum <<< "$dir" | cut -f 1 -d ' ')
-    postpone -f -l ~/var/lock/"$lock" run-parts "$dir" "$@"
+    if [ "$d" ]; then
+      run-parts "$dir" "$@"
+    else
+      lock=run-parts-$(md5sum <<< "$dir" | cut -f 1 -d ' ')
+      postpone -f -l ~/var/lock/lock-"$lock" run-parts "$dir" "$@"
+    fi
   fi
 done
