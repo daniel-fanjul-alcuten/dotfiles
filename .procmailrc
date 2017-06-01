@@ -7,6 +7,31 @@ XAUTHORITY=.Xauthority
 * ^Subject: \[exec\] backup par2\+rsync://dfanjul@localhost/var/backups/home: 0$
 $HOME/var/mail/log-backup-home
 
+:0
+* ^From: dfanjul@
+* ^Subject: \[exec\] git-fsck .*: 0$
+/dev/null
+
+:0
+* ^From: dfanjul@
+* ^Subject: \[exec\] git-gc-auto .*: 0$
+/dev/null
+
+:0
+* ^From: dfanjul@
+* ^Subject: \[exec\] git-gc-aggressive .*: 0$
+/dev/null
+
+:0
+* ^From: dfanjul@
+* ^Subject: \[exec\] docker save .*: 0$
+/dev/null
+
+:0
+* ^From: dfanjul@
+* ^Subject: \[exec\] docker ref .*: 0$
+/dev/null
+
 :0 c
 |/usr/bin/notify-send mail 'new mail'
 
