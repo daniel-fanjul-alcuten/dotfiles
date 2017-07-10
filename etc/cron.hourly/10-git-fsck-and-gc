@@ -3,5 +3,5 @@ set -e
 
 export TERM=
 xargs -rn 1 -I folder bash -c \
-  'cd "folder" &>/dev/null && postpone -l ~/var/lock/lock-git-fsck-and-gc-"$(md5sum <<<"$folder" | cut -f 1 -d " ")" ~/bin/git-fsck-and-gc &>/dev/null&' \
+  'cd "folder" &>/dev/null && postpone -l ~/var/lock/lock-git-fsck-and-gc-"$(md5sum <<<"$folder" | cut -f 1 -d " ")" ~/bin/git-fsck-and-gc &>/dev/null& true' \
   <~/var/git-fsck-and-gc.list
