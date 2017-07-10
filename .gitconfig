@@ -176,3 +176,5 @@
 [filter "gofmt"]
 	clean = gofmt
 	smudge = gofmt
+[url "ssh://git@bitbucket.org/"]
+	insteadOf = https://bitbucket.org/
