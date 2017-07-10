@@ -12,24 +12,29 @@ mkdir -p ~/var/{lock,log}
 lock=git-$(md5sum <<< "$dir" | cut -f 1 -d ' ')
 
 now="$(date +%s)"
-if [ "$(git config gc.lastfsck || echo 0)" -lt $((now - $((3 * 24 * 3600)))) ]; then
+
+lastfsck="$(git config gc.lastfsck || echo 0)"
+nextfsck="$(git config gc.nextfsck || echo $((3 * 24 * 3600)))"
+if [ "$lastfsck" -lt $((now - nextfsck)) ]; then
   log="$lock-$RANDOM".log
-  if postpone -f -L ~/var/lock/elock-"$lock" -L ~/var/lock/elock-git ~/bin/mail-exec ~/var/log/"$log" "git-fsck $dir" nice git fsck; then
-    git config gc.lastfsck $((now+RANDOM))
-  fi
+  postpone -f -L ~/var/lock/elock-"$lock" -L ~/var/lock/elock-git \
+    ~/bin/mail-exec ~/var/log/"$log" "git-fsck $dir" \
+    bash -c "nice git fsck && git config gc.lastfsck $((now+RANDOM))"
 fi
 
-if [ "$(git config gc.lastgc || echo 0)" -lt $((now - $((5 * 24 * 3600)))) ]; then
+lastgc="$(git config gc.lastgc || echo 0)"
+nextgc="$(git config gc.nextgc || echo $((5 * 24 * 3600)))"
+if [ "$lastgc" -lt $((now - nextgc)) ]; then
   log="$lock-$RANDOM".log
-  if postpone -f -L ~/var/lock/elock-"$lock" -L ~/var/lock/elock-git ~/bin/mail-exec ~/var/log/"$log" "git-gc-auto $dir" nice git gc --auto; then
-    git config gc.lastgc $((now+RANDOM))
-  fi
+  postpone -f -L ~/var/lock/elock-"$lock" -L ~/var/lock/elock-git \
+    ~/bin/mail-exec ~/var/log/"$log" "git-gc-auto $dir" bash -c "nice git gc --auto && git config gc.lastgc $((now+RANDOM))"
 fi
 
-if [ "$(git config gc.lastgcaggressive || echo 0)" -lt $((now - $((11 * 24 * 3600)))) ]; then
+lastgcaggressive="$(git config gc.lastgcaggressive || echo 0)"
+nextgcaggressive="$(git config gc.nextgcaggressive || echo $((11 * 24 * 3600)))"
+if [ "$lastgcaggressive" -lt $((now - nextgcaggressive)) ]; then
   log="$lock-$RANDOM".log
-  if postpone -f -L ~/var/lock/elock-"$lock" -L ~/var/lock/elock-git ~/bin/mail-exec ~/var/log/"$log" "git-gc-aggressive $dir" nice git gc --aggressive; then
-    git config gc.lastgcaggressive $((now+RANDOM))
-  fi
+  postpone -f -L ~/var/lock/elock-"$lock" -L ~/var/lock/elock-git \
+    ~/bin/mail-exec ~/var/log/"$log" "git-gc-aggressive $dir" \
+    bash -c "nice git gc --aggressive && git config gc.lastgcaggressive $((now+RANDOM))"
 fi
-
