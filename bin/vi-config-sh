@@ -2,17 +2,10 @@
 set -e
 set -x
 
-dir=$(git rev-parse --git-dir)
+cd "$(git rev-parse --git-dir)"
 
-if [ -f "$dir"/config.sh ]; then
-  vi "$dir"/config.sh
-elif [ -f "$dir"/config.sh.gpg ]; then
-  gpg2 "$dir"/config.sh.gpg
-  vi "$dir"/config.sh
+if [ -f config.sh.gpg ]; then
+  vi config.sh.gpg
 else
-  vi "$dir"/config.sh
+  vi config.sh.gpg
 fi
-
-me=$(whoami)@$(hostname)
-gpg2 --batch --yes -es -u "$me" -r "$me" "$dir"/config.sh
-shred -uv "$dir"/config.sh
