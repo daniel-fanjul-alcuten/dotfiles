@@ -14,6 +14,7 @@ set confirmappend=no
 set pgp_use_gpg_agent=yes
 set crypt_autoencrypt=yes
 set crypt_autosign=yes
+set mail_check=71
 auto_view text/html
 bind index "\\n" next-unread-mailbox
 
