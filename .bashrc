@@ -723,6 +723,11 @@ for file in ~/.config/systemd/{user,system}/*; do
     eval -- "-$target()" \{ sudo systemctl stop "$target"\; \}
   fi
 done
+for target in boinccmd-{run,gpu,network}@{never,auto,always}.service; do
+  eval -- "+$target()" \{ systemctl --user start "$target"\; \}
+  eval -- "-$target()" \{ systemctl --user stop "$target"\; \}
+done
+eval -- "+reload()" \{ sudo systemctl daemon-reload '&&' systemctl --user daemon-reload\; \}
 unset target
 
 # crawl
