@@ -1,0 +1,17 @@
+#!/bin/bash
+
+{
+  docker images | \
+    tail -n +2 | \
+    sort -n
+  docker network ls | \
+    tail -n +2 | \
+    sort -n
+  docker volume ls | \
+    tail -n +2 | \
+    sort -n
+  docker ps -a | \
+    tail -n +2 | \
+    sort -n
+} | less -F
+
