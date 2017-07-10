@@ -5,4 +5,5 @@
 *~
 .~lock.*#
 Session.vim
+screenlog.*
 tags
