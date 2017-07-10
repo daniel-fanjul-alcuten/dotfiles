@@ -38,7 +38,6 @@ nnoremap <Leader>gcc :Gcommit -m.<cr>
 nnoremap <Leader>gd :Gdiff<cr>
 nnoremap <Leader>gpp :Git push<cr>
 nnoremap <Leader>gpm :Git pushm<cr>
-nnoremap <Leader>gpmf :Git pushmf<cr>
 nnoremap <Leader>gs :Gstatus<cr>
 nnoremap <Leader>gw :Gwrite<cr>
 nnoremap git :Git
