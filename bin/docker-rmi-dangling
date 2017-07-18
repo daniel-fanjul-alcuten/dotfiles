@@ -2,5 +2,8 @@
 set -e
 set -x
 
-sudo docker images -qf dangling=true | xargs -r sudo docker rmi
+sudo docker images \
+  -qf dangling=true \
+  | xargs -r sudo docker rmi
+
 sudo docker images
