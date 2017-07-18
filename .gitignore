@@ -71,6 +71,7 @@
 /.gnupg/trustdb.gpg
 /.gvm
 /.java
+/.kube/
 /.lesshst
 /.lftp/transfer_log
 /.links2/
