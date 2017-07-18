@@ -300,13 +300,19 @@ cd() {
       tt
     fi
     local dir=$(git rev-parse --git-dir)
-    if [ -f "$dir"/config.sh ]; then
-      source "$dir"/config.sh
-    elif [ -f "$dir"/config.sh.gpg ]; then
+    if [ -f "$dir"/config.sh.gpg ]; then
       source <(gpg2 --batch -d "$dir"/config.sh.gpg)
     fi
     true
   } 2>/dev/null
+}
+function vi-config-sh-gpg() {
+  local gitdir="$(git rev-parse --git-dir)"
+  (builtin cd "$gitdir" && \
+    vi config.sh.gpg) && \
+    if [ -f "$gitdir"/config.sh.gpg ]; then
+      source <(gpg2 --batch -d "$gitdir"/config.sh.gpg)
+    fi
 }
 clear() {
   command clear
