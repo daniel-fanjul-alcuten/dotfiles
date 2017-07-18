@@ -730,6 +730,11 @@ done
 eval -- "+reload()" \{ sudo systemctl daemon-reload '&&' systemctl --user daemon-reload\; \}
 unset target
 
+# kubectl
+if type kubectl &>/dev/null; then
+  source <(kubectl completion bash)
+fi
+
 # crawl
 export CRAWL_DIR=~/.crawl
 
