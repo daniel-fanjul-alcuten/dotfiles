@@ -111,13 +111,6 @@ deb http://archive.canonical.com/ $DISTRIB_CODENAME partner
 deb-src http://archive.canonical.com/ $DISTRIB_CODENAME partner
 EOF
   fi
-
-    # hipchat
-  wget -O - https://www.hipchat.com/keys/hipchat-linux.key | sudo apt-key add -
-  sudo tee /etc/apt/sources.list.d/atlassian-hipchat.list >/dev/null <<EOF
-# hipchat
-deb http://downloads.hipchat.com/linux/apt stable main
-EOF
 }
 
 {
@@ -247,7 +240,6 @@ sudo aptitude install \
   graphviz-doc \
   hardinfo \
   hgview \
-  hipchat \
   httpcode \
   hwdata \
   id3 \
