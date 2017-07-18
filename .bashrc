@@ -733,7 +733,7 @@ for target in boinccmd-{run,gpu,network}@{never,auto,always}.service; do
   eval -- "+$target()" \{ systemctl --user start "$target"\; \}
   eval -- "-$target()" \{ systemctl --user stop "$target"\; \}
 done
-eval -- "+reload()" \{ sudo systemctl daemon-reload '&&' systemctl --user daemon-reload\; \}
+eval -- "+daemon-reload()" \{ sudo systemctl daemon-reload '&&' systemctl --user daemon-reload\; \}
 unset target
 
 # kubectl
