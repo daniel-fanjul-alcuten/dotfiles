@@ -106,7 +106,7 @@
 	nn = commit -v --amend --reset-author
 	objs = count-objects -v
 	p = diff --cached
-	pf = pull --ff-only
+	pf = pull --no-rebase --ff-only
 	pm = pull --no-rebase
 	pr = pull --rebase
 	ps = diff --cached --stat
