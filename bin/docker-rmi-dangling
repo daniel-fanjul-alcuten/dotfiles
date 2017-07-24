@@ -6,4 +6,20 @@ sudo docker images \
   -qf dangling=true \
   | xargs -r sudo docker rmi
 
+sudo docker images | \
+  tail -n +2 | \
+  grep ^localhost:5000/ | \
+  sed 's/  */ /g' | \
+  cut -f 1,2 -d ' ' | \
+  tr ' ' : | \
+  xargs -r docker rmi
+
+sudo docker images | \
+  tail -n +2 | \
+  grep ^127.0.0.1:5000/ | \
+  sed 's/  */ /g' | \
+  cut -f 1,2 -d ' ' | \
+  tr ' ' : | \
+  xargs -r docker rmi
+
 sudo docker images
