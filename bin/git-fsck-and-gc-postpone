@@ -1,4 +1,0 @@
-#!/bin/bash
-set -e
-
-postpone -l ~/var/lock/lock-git-fsck-and-gc-"$(md5sum <<<"$PWD" | cut -f 1 -d " ")" ~/bin/git-fsck-and-gc
