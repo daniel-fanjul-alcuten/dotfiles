@@ -700,6 +700,15 @@ done
 eval -- "+daemon-reload()" \{ sudo systemctl daemon-reload '&&' systemctl --user daemon-reload\; \}
 unset target
 
+# sysctl
+function swappiness() {
+  if [ "$1" ]; then
+    sudo sysctl -w vm.swappiness="$1"
+  else
+    sudo sysctl vm.swappiness
+  fi
+}
+
 # kubectl
 if type kubectl &>/dev/null; then
   source <(kubectl completion bash)
