@@ -30,9 +30,9 @@ for id in "$@"; do
       bash -c 'sudo docker save "'"$id"'" | pv -s "'"$size"'" | bup split -q -n "'"$branch"'"'
   fi
   for tag in $(docker inspect -f '{{.RepoTags}}' "$id" | sed -e 's/\[//' -e 's/\]//'); do
-    sref=$(sed -e 's@:@/@g' <<<refs/heads/images/"$tag")
+    sref=$(sed -e 's@:@/@g' <<<refs/heads/images/names/"$tag")
     log="$lock-$RANDOM".log
     ~/bin/mail-exec ~/var/log/"$log" "docker ref $id" \
-      git symbolic-ref "$sref" "$ref"
+      git update-ref "$sref" "$ref"
   done
 done
