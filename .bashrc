@@ -207,7 +207,7 @@ if type git &>/dev/null; then
     COMP_WORDS=(git "${COMP_WORDS[@]}")
     __git_wrap__git_main
   }
-  for command in $(git config -l --global | grep ^alias\\. | cut -d= -f1 | cut -c7-)\
+  for command in $(git config -l | grep ^alias\\. | cut -d= -f1 | cut -c7-)\
       add \
       am \
       apply \
