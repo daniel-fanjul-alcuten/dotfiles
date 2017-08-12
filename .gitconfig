@@ -91,7 +91,7 @@
 	gsd = !~/usr/local/bin/git-greb -s -d
 	hard = reset --hard
 	hardu = reset --hard @{u}
-	history-reset = !git reset `echo init | git commit-tree HEAD:`
+	history-reset = !git reset `echo Initial commit | git commit-tree HEAD:`
 	k = cherry-pick
 	kf = cherry-pick --ff
 	lg = log --oneline --decorate --graph --show-signature --abbrev-commit
