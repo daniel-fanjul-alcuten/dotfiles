@@ -1,0 +1,8 @@
+#!/bin/bash
+
+for image in "$@"; do
+  for i in $(docker images -q); do
+    docker history "$i" | grep -q "$image" && echo "$i"
+  done | sort -u | \
+    xargs -r -n 1 docker inspect --format '{{.RepoTags}}' | sort -u
+done | sort -u | grep -v '^\[\]$'
