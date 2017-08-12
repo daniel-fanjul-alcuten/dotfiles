@@ -76,7 +76,7 @@
 /.lftp/transfer_log
 /.links2/
 /.local/
-/.m2/
+/.m2/repository/
 /.moosic/player_log
 /.moosic/saved_state
 /.moosic/server_log
