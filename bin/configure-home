@@ -170,6 +170,7 @@ sudo aptitude install \
   network-manager-vpnc-gnome \
   newsbeuter \
   orpie \
+  pasystray \
   ranger \
   sc \
   schedtool \
