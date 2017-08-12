@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-set -x
 
 sudo docker images \
   -qf dangling=true \
@@ -23,3 +22,12 @@ sudo docker images | \
   xargs -r docker rmi
 
 sudo docker images
+
+sudo docker images | \
+  tail -n +2 | \
+  sed 's/  */ /g' | \
+  cut -f 1,2,3 -d ' ' | \
+  tr ' ' : | \
+  grep ':<none>:' | \
+  sed 's/.*:<none>://' | \
+  xargs -r ~/bin/docker-descendant-child-images
