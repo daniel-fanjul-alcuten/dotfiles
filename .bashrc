@@ -756,6 +756,10 @@ if type fs &>/dev/null; then
   complete -F _fs_completion fs
 fi
 
+# ssh
+gpg-connect-agent updatestartuptty /bye
+ssh localhost true
+
 # pal
 if type pal &>/dev/null; then
   pal -r 7 -c 1
