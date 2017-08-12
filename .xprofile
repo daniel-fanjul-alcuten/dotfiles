@@ -11,6 +11,7 @@ export SSH_AUTH_SOCK=~/.gnupg/S.gpg-agent.ssh
 gnome-terminal &
 gnome-settings-daemon &
 nm-applet &
+pasystray &
 
 # set PATH
 if [ -d ~/usr/local/bin ]; then
