@@ -8,10 +8,11 @@ xsetroot -bg black
 export SSH_AUTH_SOCK=~/.gnupg/S.gpg-agent.ssh
 
 # gnome
-gnome-terminal &
 gnome-settings-daemon &
+gnome-terminal &
 nm-applet &
 pasystray &
+xscreensaver -no-splash &
 
 # set PATH
 if [ -d ~/usr/local/bin ]; then
@@ -23,6 +24,3 @@ fi
 if [ -d ~/bin ] ; then
   PATH=~/bin:"$PATH"
 fi
-
-# awesome
-awesome

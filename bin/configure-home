@@ -162,6 +162,7 @@ sudo aptitude install \
   bzip2 \
   dc \
   gmrun \
+  gnome-screensaver- \
   golang-petname \
   htop \
   iotop \
@@ -181,7 +182,8 @@ sudo aptitude install \
   vim-gnome \
   vim-puppet \
   vim-syntax-go \
-  wcd
+  wcd \
+  xscreensaver
 
 sudo aptitude install \
   abcde \
