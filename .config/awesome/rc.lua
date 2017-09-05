@@ -291,7 +291,7 @@ globalkeys = awful.util.table.join(
     awful.key({ "Mod1", "Shift" }, "5", function () awful.util.spawn_with_shell("setxkbmap colemak") end),
     awful.key({ "Mod1", "Shift" }, "6", function () awful.util.spawn_with_shell("setxkbmap dvorak") end),
     awful.key({ modkey }, "a", function () awful.util.spawn_with_shell("gnome-terminal -t aptitude -x sudo aptitude") end),
-    awful.key({ modkey }, "b", function () awful.util.spawn("google-chrome --profile-directory=Default") end),
+    awful.key({ modkey }, "b", function () awful.util.spawn("google-chrome --profile-directory=daniel.fanjul.alcuten@gmail.com --incognito") end),
     awful.key({ modkey }, "g", function () awful.util.spawn_with_shell("gnome-terminal -t ranger -x ranger") end),
     awful.key({ modkey }, "s", function () awful.util.spawn_with_shell("gnome-terminal -t screen --window-with-profile=Solarized -x screen -RR") end),
     awful.key({ modkey, "Shift" }, "d", function () awful.util.spawn_with_shell("gnome-terminal -t iotop -x sudo iotop") end),
