@@ -261,7 +261,6 @@ sudo aptitude install \
   links \
   lltag \
   loadwatch \
-  lockout \
   lrzip \
   lsyncd \
   lynx \
