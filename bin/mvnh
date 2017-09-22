@@ -2,7 +2,7 @@
 
 MAVEN_IMAGE=${MAVEN_IMAGE:-maven:3.5-jdk-8-alpine}
 
-docker run -it --rm \
+docker run -t --rm \
   --name mvn-"$(sed -e 's@ @-@g' -e 's@/@-@g' -e 's@:@-@g' -e 's@=@-@g' -e 's@,@-@g' <<<"$*")" \
   --network host \
   --user "$(id -u):$(id -g)" \
