@@ -224,7 +224,6 @@ sudo aptitude install \
   e2fsprogs \
   evince \
   fbreader \
-  feh \
   flac \
   fonts-inconsolata \
   freecdb \
