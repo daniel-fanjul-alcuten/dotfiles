@@ -304,7 +304,7 @@ cd() {
       source <(gpg2 --batch -d "$dir"/config.sh.gpg)
     fi
     true
-  } 2>/dev/null
+  }
 }
 function vi-config-sh-gpg() {
   local gitdir="$(git rev-parse --git-dir)"
