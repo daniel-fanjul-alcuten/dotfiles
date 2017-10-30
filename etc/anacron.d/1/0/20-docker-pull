@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+set -o pipefail
+
+docker images | \
+  tail -n +2 | \
+  sed 's/  */ /g' | \
+  cut -f 1,2 -d ' ' | \
+  tr ' ' : | \
+  xargs -n 1 -I image bash -c 'docker pull image &>/dev/null &'
