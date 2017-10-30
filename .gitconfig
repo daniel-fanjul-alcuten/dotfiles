@@ -155,13 +155,15 @@
 [rerere]
 	enabled = true
 	autoupdate = true
-[rebase]
-	stat = false
-	autosquash = true
+[fetch]
+	prune = true
 [push]
 	default = upstream
 [pull]
 	rebase = true
+[rebase]
+	stat = false
+	autosquash = true
 [tig]
 	tab-size = 4
 	line-graphics = utf-8
