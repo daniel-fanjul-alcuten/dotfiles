@@ -91,6 +91,26 @@ _prompt_nmcli() {
     _prompt_apply_color " <$nmcli>" "nmcli" "blue"
   fi
 }
+_prompt_battery()
+{
+  local state=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep state | cut -f 2 -d : | sed 's/ //g')
+  if [ "${state}" = "fully-charged" ]; then
+    return
+  fi
+  local battery=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep percentage | cut -f 2 -d : | sed -e 's/ //g' -e 's/%//g')
+  if [ "${battery}" -lt "20" ]; then
+    _prompt_apply_color " ${battery}%" "battery" "red"
+  elif [ "${battery}" -lt "40" ]; then
+    _prompt_apply_color " ${battery}%" "battery" "yellow"
+  elif [ "${battery}" -lt "60" ]; then
+    _prompt_apply_color " ${battery}%" "battery" "green"
+  else
+    _prompt_apply_color " ${battery}%" "battery" "cyan"
+  fi
+  if [ "${state}" = "discharging" ]; then
+    _prompt_apply_color "!" "discharging" "red"
+  fi
+}
 _prompt_git() {
   local subdir
   if ! subdir=$(git rev-parse --show-prefix 2>/dev/null); then
@@ -130,7 +150,7 @@ _prompt_jobscount()
     _prompt_apply_color " [$count]" "jobscount" "yellow"
   fi
 }
-PS1='`_prompt_status``_prompt_date``_prompt__hostname``_prompt_systemd``_prompt_nmcli``_prompt_git``_prompt_jobscount`\n\$ '
+PS1='`_prompt_status``_prompt_date``_prompt__hostname``_prompt_battery``_prompt_systemd``_prompt_nmcli``_prompt_git``_prompt_jobscount`\n\$ '
 
 # aliases
 alias ls='ls -F'
