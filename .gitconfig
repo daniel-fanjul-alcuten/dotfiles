@@ -59,15 +59,15 @@
 	fa = fetch --all
 	fag = !"gpg-connect-agent updatestartuptty /bye && git fetch --all"
 	ff = merge --ff-only
-	fhardu = !git fa && git hardu
+	fhardu = !git f && git hardu
 	fixup = !f=\"$1\" && shift && git ci --fixup=\"$f\"
 	flow = !git-flow
-	freu = !git fa && git reu
-	freus = !git fa && git reus
+	freu = !git f && git reu
+	freus = !git f && git reus
 	fsb = !"git fa; git sb"
 	fsbm = !git fa && git sbm
 	fsbs = !git fa && git sbs
-	fsbu = !git fa && git sbu
+	fsbu = !git f && git sbu
 	fsr = !"git fa; git sr"
 	g- = !"if b=$(git symbolic-ref --short GREB_HEAD); then ~/usr/local/bin/git-greb -C \"$b\"; else ~/usr/local/bin/git-greb; fi"
 	g-l = !"if b=$(git symbolic-ref --short GREB_HEAD); then ~/usr/local/bin/git-greb -C \"$b\" -l; else ~/usr/local/bin/git-greb -l; fi"
