@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 
+export BUP_DIR=~/var/backups/docker/
+export GIT_DIR="$BUP_DIR"
+
+if [ ! -f "$BUP_DIR"/config ]; then
+  bup init
+fi
+
 if [ "$#" -eq 0 ]; then
   for id in $(sudo docker images -q --no-trunc); do
     lock=docker-save-$(md5sum <<< "$id" | cut -f 1 -d ' ')
@@ -8,13 +15,6 @@ if [ "$#" -eq 0 ]; then
       ~/etc/cron.hourly/10-docker "$id" &
   done
   exit 0
-fi
-
-export BUP_DIR=~/var/backups/docker
-export GIT_DIR="$BUP_DIR"
-
-if [ ! -f "$BUP_DIR"/config ]; then
-  bup init
 fi
 
 for id in "$@"; do
