@@ -30,14 +30,8 @@ aug gitconfig_filetype
   au Filetype gitconfig setl noet
 aug end
 " vim-fugitive {{{
-nnoremap <Leader>gb :Gblame<cr>
-nnoremap <Leader>gc :Gcommit -v<cr>
-nnoremap <Leader>gca :Gcommit -v -a<cr>
-nnoremap <Leader>gcaa :Gcommit -a -m.<cr>
-nnoremap <Leader>gcc :Gcommit -m.<cr>
 nnoremap <Leader>gd :Gdiff<cr>
-nnoremap <Leader>gpp :Git push<cr>
-nnoremap <Leader>gpm :Git pushm<cr>
+nnoremap <Leader>gr :Gread<cr>
 nnoremap <Leader>gs :Gstatus<cr>
 nnoremap <Leader>gw :Gwrite<cr>
 nnoremap git :Git
