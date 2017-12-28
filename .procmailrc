@@ -32,6 +32,11 @@ $HOME/var/mail/log-backup-home
 * ^Subject: \[exec\] docker ref .*: 0$
 /dev/null
 
+:0
+* ^From: dfanjul@
+* ^Subject: \[exec\] newsbeuter: 0$
+/dev/null
+
 #:0 c
 #|/usr/bin/notify-send mail 'new mail'
 
