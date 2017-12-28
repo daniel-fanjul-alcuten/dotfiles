@@ -49,7 +49,9 @@
 	caa = !git commit -v -a -m $(git symbolic-ref --short HEAD 2>/dev/null || echo HEAD)
 	ci = commit -v
 	cii = !git commit -v -m $(git symbolic-ref --short HEAD 2>/dev/null || echo HEAD)
+	cp = checkout -p
 	cu = checkout @{u}
+	cup = checkout @{u} -p
 	d = diff
 	ds = diff --stat
 	du = diff @{u}
