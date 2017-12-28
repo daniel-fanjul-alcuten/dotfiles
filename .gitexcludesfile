@@ -3,6 +3,7 @@
 *.sw?
 *.test
 *~
+.idea
 .~lock.*#
 Session.vim
 screenlog.*
