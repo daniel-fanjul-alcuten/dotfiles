@@ -547,6 +547,9 @@ gtv() {
   gi && gt "$@" && gv
 }
 gtvi() {
+  if [ "$STY" ]; then
+    screen -X title gtvi
+  fi
   gtv "$@"
   inotifywait -m -r -e create -e close_write -e delete --format '%e %f' . \
     |& grep --line-buffered '.go$' \
@@ -561,6 +564,9 @@ gtvn() {
   command rm "$f"
 }
 gtvni() {
+  if [ "$STY" ]; then
+    screen -X title gtvni
+  fi
   gtvn "$@"
   inotifywait -m -r -e create -e close_write -e delete --format '%e %f' . \
     |& grep --line-buffered '.go$' \
