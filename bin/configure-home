@@ -151,7 +151,8 @@ sudo aptitude install \
   postpone \
   procmail \
   python-pexpect \
-  rsync
+  rsync \
+  screen
 
 echo test | mail "$(whoami)"
 sudo aptitude install \
@@ -175,7 +176,6 @@ sudo aptitude install \
   ranger \
   sc \
   schedtool \
-  screen \
   task \
   tree \
   vim-doc \
