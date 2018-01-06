@@ -125,6 +125,7 @@
 	rsclean = !git clean -fdx && git submodule foreach --recursive git clean -fdx
 	rshard = !git reset --hard && git submodule foreach --recursive git reset --hard
 	rsupdate = submodule update --init --recursive
+	rv = revert
 	s = status -sb
 	sb = show-branch
 	sbc = show-branch --current
