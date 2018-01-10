@@ -33,6 +33,7 @@
 /.config/monitors.xml
 /.config/monitors.xml.backup
 /.config/nautilus/
+/.config/pavucontrol.ini
 /.config/pulse/
 /.config/ranger/bookmarks
 /.config/ranger/history
