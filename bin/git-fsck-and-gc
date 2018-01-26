@@ -2,46 +2,57 @@
 set -e
 set -o pipefail
 
-if [ "$#" -eq 0 ]; then
-  lock="$(md5sum <<<"$PWD" | cut -f 1 -d " ")"
-  exec postpone -l ~/var/lock/lock-git-fsck-and-gc-"$lock" \
-    ~/bin/git-fsck-and-gc "$PWD"
-fi
+unset f
+unset g
+while getopts 'fg' opt; do
+  case $opt in
+    f)
+      f=true;;
+    g)
+      g=true;;
+    *)
+      exit 1;;
+  esac
+done
+shift $((OPTIND - 1))
 
-cd "$1"
-dir=$(git rev-parse --show-toplevel)
-if [ -z "$dir" ]; then
-  dir=$(git rev-parse --git-dir)
+if [ "$f" ]; then
+  now="$(date +%s)"
+  lastfsck="$(git config gc.lastfsck || echo 0)"
+  nextfsck="$(git config gc.nextfsck || echo $((3 * 24 * 3600)))"
+  if [ "$lastfsck" -lt $((now - nextfsck)) ]; then
+    nice git fsck
+    git config gc.lastfsck $((now+RANDOM))
+  fi
+
+elif [ "$g" ]; then
+  now="$(date +%s)"
+  lastgc="$(git config gc.lastgc || echo 0)"
+  nextgc="$(git config gc.nextgc || echo $((11 * 24 * 3600)))"
+  if [ "$lastgc" -lt $((now - nextgc)) ]; then
+    nice git gc --aggressive
+    git config gc.lastgc $((now+RANDOM))
+  fi
+
+else
+
+  mkdir -p ~/var/{lock,log}
+  dir=$(git rev-parse --show-toplevel)
+  if [ -z "$dir" ]; then
+    dir=$(git rev-parse --git-dir)
+  fi
   dir=$(readlink -e "$dir")
-fi
+  sum="$(md5sum <<< "$dir" | cut -f 1 -d ' ')"
 
-mkdir -p ~/var/{lock,log}
-lock=git-$(md5sum <<< "$dir" | cut -f 1 -d ' ')
-
-now="$(date +%s)"
-
-lastfsck="$(git config gc.lastfsck || echo 0)"
-nextfsck="$(git config gc.nextfsck || echo $((3 * 24 * 3600)))"
-if [ "$lastfsck" -lt $((now - nextfsck)) ]; then
-  log="$lock-fsck-$RANDOM".log
-  postpone -f -l ~/var/lock/elock-"$lock" -L ~/var/lock/elock-git \
+  lock=git-fsck-"$sum"
+  log="$lock-$RANDOM".log
+  postpone -f -l ~/var/lock/lock-"$lock" -L ~/var/lock/elock-git \
     ~/bin/mail-exec ~/var/log/"$log" "git-fsck $dir" \
-    bash -c "nice git fsck && git config gc.lastfsck $((now+RANDOM))"
-fi
+    "$0" -f &>/dev/null &
 
-lastgc="$(git config gc.lastgc || echo 0)"
-nextgc="$(git config gc.nextgc || echo $((5 * 24 * 3600)))"
-if [ "$lastgc" -lt $((now - nextgc)) ]; then
-  log="$lock-gc-auto-$RANDOM".log
-  postpone -f -l ~/var/lock/elock-"$lock" -L ~/var/lock/elock-git \
-    ~/bin/mail-exec ~/var/log/"$log" "git-gc-auto $dir" bash -c "nice git gc --auto && git config gc.lastgc $((now+RANDOM))"
-fi
-
-lastgcaggressive="$(git config gc.lastgcaggressive || echo 0)"
-nextgcaggressive="$(git config gc.nextgcaggressive || echo $((11 * 24 * 3600)))"
-if [ "$lastgcaggressive" -lt $((now - nextgcaggressive)) ]; then
-  log="$lock-gc-aggressive-$RANDOM".log
-  postpone -f -l ~/var/lock/elock-"$lock" -L ~/var/lock/elock-git \
-    ~/bin/mail-exec ~/var/log/"$log" "git-gc-aggressive $dir" \
-    bash -c "nice git gc --aggressive && git config gc.lastgcaggressive $((now+RANDOM))"
+  lock=git-gc-"$sum"
+  log="$lock-$RANDOM".log
+  postpone -f -l ~/var/lock/lock-"$lock" -L ~/var/lock/elock-git \
+    ~/bin/mail-exec ~/var/log/"$log" "git-gc $dir" \
+    "$0" -g &>/dev/null &
 fi
