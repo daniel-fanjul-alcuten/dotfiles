@@ -143,6 +143,7 @@ sudo aptitude install \
   gnome-settings-daemon \
   gnome-terminal \
   mailutils \
+  moreutils \
   mutt \
   openssh-server \
   pal \
