@@ -44,15 +44,25 @@ else
   dir=$(readlink -e "$dir")
   sum="$(md5sum <<< "$dir" | cut -f 1 -d ' ')"
 
-  lock=git-fsck-"$sum"
-  log="$lock-$RANDOM".log
-  postpone -f -l ~/var/lock/lock-"$lock" -L ~/var/lock/elock-git \
-    ~/bin/mail-exec ~/var/log/"$log" "git-fsck $dir" \
-    "$0" -f &>/dev/null &
+  now="$(date +%s)"
+  lastfsck="$(git config gc.lastfsck || echo 0)"
+  nextfsck="$(git config gc.nextfsck || echo $((3 * 24 * 3600)))"
+  if [ "$lastfsck" -lt $((now - nextfsck)) ]; then
+    lock=git-fsck-"$sum"
+    log="$lock-$RANDOM".log
+    postpone -f -l ~/var/lock/lock-"$lock" -L ~/var/lock/elock-git \
+      ~/bin/mail-exec ~/var/log/"$log" "git-fsck $dir" \
+      "$0" -f &>/dev/null &
+  fi
 
-  lock=git-gc-"$sum"
-  log="$lock-$RANDOM".log
-  postpone -f -l ~/var/lock/lock-"$lock" -L ~/var/lock/elock-git \
-    ~/bin/mail-exec ~/var/log/"$log" "git-gc $dir" \
-    "$0" -g &>/dev/null &
+  now="$(date +%s)"
+  lastgc="$(git config gc.lastgc || echo 0)"
+  nextgc="$(git config gc.nextgc || echo $((11 * 24 * 3600)))"
+  if [ "$lastgc" -lt $((now - nextgc)) ]; then
+    lock=git-gc-"$sum"
+    log="$lock-$RANDOM".log
+    postpone -f -l ~/var/lock/lock-"$lock" -L ~/var/lock/elock-git \
+      ~/bin/mail-exec ~/var/log/"$log" "git-gc $dir" \
+      "$0" -g &>/dev/null &
+  fi
 fi
