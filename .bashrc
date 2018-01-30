@@ -466,6 +466,14 @@ stopwatch(){
     sleep 0.1
   done
 }
+tachistory() {
+  builtin history -a &&
+    command tac "$HISTFILE" |\
+    command awk '!x[$0]++' |\
+    command tac |\
+    command sponge "$HISTFILE" &&\
+    exec vi ~/.bash_history
+}
 
 # set PATH
 if [ -d ~/usr/local/bin ]; then
