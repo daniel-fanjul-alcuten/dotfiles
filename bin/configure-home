@@ -102,7 +102,6 @@ EOF
 
 {
   # apt
-
   if [ "$ubuntu" ] && [ "$DISTRIB_CODENAME" ]; then
     # canonical
     sudo tee /etc/apt/sources.list.d/canonical.list >/dev/null <<EOF
