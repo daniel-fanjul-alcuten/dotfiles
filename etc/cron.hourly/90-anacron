@@ -9,8 +9,13 @@ for dir1 in ~/etc/anacron.d/*; do
   for dir2 in "$dir1"/*; do
     j=$(basename "$dir2")
     for script in "$dir2"/*; do
-      s=$(basename "$script")
-      echo "$i $j $i-$j-$s $script"
+      if [ -x "$script" ]; then
+        s="$(basename "$script" | sed 's/ /-/g')"
+        key="$i-$j-$s"
+        sum="$(md5sum <<< "$key" | cut -f 1 -d ' ')"
+        lock=anacron-"$sum"
+        echo "$i $j $i-$j-$s postpone -f -l ~/var/lock/lock-\"$lock\" \"$script\""
+      fi
     done
   done
 done
