@@ -39,6 +39,7 @@ compile: fix
 	go get -v github.com/oz/osdb/cmd/osdb
 	go get -v github.com/rdwilliamson/glacier
 	go get -v golang.org/x/tools/cmd/godoc
+	go get -v github.com/coreos/bbolt/...
 	go install github.com/daniel-fanjul-alcuten/...
 
 .PHONY: install
