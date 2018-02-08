@@ -738,6 +738,10 @@ for target in boinccmd-{run,gpu,network}@{never,auto,always}.service; do
   eval -- "+$target()" \{ systemctl --user start "$target"\; \}
   eval -- "-$target()" \{ systemctl --user stop "$target"\; \}
 done
+for service in $(grep -h \\.service ~/.config/systemd/system/*.target | sed 's/^Wants=//' | sort -u); do
+  eval -- "+$service()" \{ sudo systemctl start "$service"\; \}
+  eval -- "-$service()" \{ sudo systemctl stop "$service"\; \}
+done
 eval -- "+daemon-reload()" \{ sudo systemctl daemon-reload '&&' systemctl --user daemon-reload\; \}
 unset target
 
