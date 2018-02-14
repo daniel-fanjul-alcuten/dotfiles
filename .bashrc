@@ -369,32 +369,38 @@ pause() {
 syshalt() {
   pause &&
     ts -f &&
-    sudo systemctl halt "$@"
+    sudo systemctl halt "$@" &&
+    exit
 }
 syspoweroff() {
   pause &&
     ts -f &&
-    sudo systemctl poweroff "$@"
+    sudo systemctl poweroff "$@" &&
+    exit
 }
 sysreboot() {
   pause &&
     ts -f &&
-    sudo systemctl reboot "$@"
+    sudo systemctl reboot "$@" &&
+    exit
 }
 syssuspend() {
   pause &&
     ts -f &&
-    sudo systemctl suspend "$@"
+    sudo systemctl suspend "$@" &&
+    exit
 }
 syshibernate() {
   pause &&
     ts -f &&
-    sudo systemctl hibernate "$@"
+    sudo systemctl hibernate "$@" &&
+    exit
 }
 syshybridsleep() {
   pause &&
     ts -f &&
-    sudo systemctl hybrid-sleep "$@"
+    sudo systemctl hybrid-sleep "$@" &&
+    exit
 }
 xlogout() {
   pause && \
