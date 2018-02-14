@@ -53,6 +53,7 @@
 /.config/yelp/
 /.dbus/
 /.dmrc
+/.docker
 /.dropbox-dist/
 /.dropbox/
 /.dvm/
