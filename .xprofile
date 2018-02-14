@@ -12,7 +12,7 @@ gnome-settings-daemon &
 gnome-terminal &
 nm-applet &
 pasystray &
-xscreensaver -no-splash &
+systemctl --user start xscreensaver.service &
 
 # set PATH
 if [ -d ~/usr/local/bin ]; then
