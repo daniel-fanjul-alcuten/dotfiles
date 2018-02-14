@@ -1,0 +1,10 @@
+[Unit]
+Description=dfanjul athome
+Wants=boinccmd-gpu@auto.service
+Wants=boinccmd-network@always.service
+Wants=boinccmd-run@auto.service
+Wants=dstat.service
+Wants=moosic.service
+Wants=mutt.service
+Wants=xrandr-edp.service
+Wants=xscreensaver.service
