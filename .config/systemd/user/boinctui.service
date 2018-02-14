@@ -1,0 +1,7 @@
+[Unit]
+Description=dfanjul boinctui
+
+[Service]
+Environment="DISPLAY=:0"
+Environment="XAUTHORITY=/home/dfanjul/.Xauthority"
+ExecStart=/usr/bin/gnome-terminal --disable-factory -x boinctui
