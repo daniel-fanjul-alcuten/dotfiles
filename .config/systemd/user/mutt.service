@@ -1,0 +1,7 @@
+[Unit]
+Description=dfanjul mutt
+
+[Service]
+Environment="DISPLAY=:0"
+Environment="XAUTHORITY=/home/dfanjul/.Xauthority"
+ExecStart=/usr/bin/gnome-terminal --disable-factory --window-with-profile=Solarized -x mutt
