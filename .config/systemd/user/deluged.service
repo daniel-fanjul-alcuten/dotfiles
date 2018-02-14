@@ -1,0 +1,6 @@
+[Unit]
+Description=dfanjul deluged
+
+[Service]
+ExecStart=/usr/bin/deluged -d
+LimitNOFILE=65536
