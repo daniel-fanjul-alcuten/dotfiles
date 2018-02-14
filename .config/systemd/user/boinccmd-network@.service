@@ -1,0 +1,6 @@
+[Unit]
+Description=boinccmd-network-%i
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/boinccmd --set_network_mode %i
