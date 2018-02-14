@@ -1,4 +1,5 @@
-LOGFILE=var/log/procmail.log
+#LOGFILE=var/log/procmail.log
+LOGFILE=/dev/null
 DISPLAY=:0
 XAUTHORITY=.Xauthority
 
