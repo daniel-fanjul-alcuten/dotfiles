@@ -220,7 +220,6 @@ for command in \
     iotop \
     service \
     shutdown \
-    systemctl \
     ; do
   alias $command="sudo $command"
 done
