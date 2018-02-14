@@ -83,6 +83,7 @@
 /.moosic/server_log
 /.mozilla/
 /.mutt
+/.mysql/
 /.mysql_history
 /.newsbeuter/cache.db
 /.newsbeuter/cache.db.lock
