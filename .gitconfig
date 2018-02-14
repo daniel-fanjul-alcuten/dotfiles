@@ -189,3 +189,5 @@
 	smudge = gofmt
 [url "ssh://bitbucket.org/"]
 	insteadOf = https://bitbucket.org/
+[gpg]
+	program = gpg2
