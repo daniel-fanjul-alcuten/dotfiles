@@ -1,0 +1,6 @@
+[Unit]
+Description=boinccmd-run-%i
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/boinccmd --set_run_mode %i
