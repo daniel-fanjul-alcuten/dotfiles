@@ -1,0 +1,7 @@
+[Unit]
+Description=dfanjul dstat
+
+[Service]
+Environment="DISPLAY=:0"
+Environment="XAUTHORITY=/home/dfanjul/.Xauthority"
+ExecStart=/bin/bash -c 'exec /usr/bin/gnome-terminal --disable-factory --window-with-profile=dstat -x dstat -lcgmsdn -D $(echo /dev/sd? | tr " " , | sed "s,/dev/,,g") 7'
