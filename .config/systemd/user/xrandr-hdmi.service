@@ -1,0 +1,8 @@
+[Unit]
+Description=xrandr hdmi
+
+[Service]
+Type=oneshot
+Environment="DISPLAY=:0"
+Environment="XAUTHORITY=/home/dfanjul/.Xauthority"
+ExecStart=/usr/bin/xrandr --output eDP-1 --off --output HDMI-1 --auto --primary --rotate normal
