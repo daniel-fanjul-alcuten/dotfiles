@@ -8,3 +8,4 @@ Wants=moosic.service
 Wants=mutt.service
 Wants=xrandr-edp.service
 Wants=xscreensaver.service
+Wants=xsetroot-black.service

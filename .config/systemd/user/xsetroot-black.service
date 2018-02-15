@@ -1,0 +1,8 @@
+[Unit]
+Description=xsetroot black
+
+[Service]
+Type=oneshot
+Environment="DISPLAY=:0"
+Environment="XAUTHORITY=/home/dfanjul/.Xauthority"
+ExecStart=/usr/bin/xsetroot -bg black
