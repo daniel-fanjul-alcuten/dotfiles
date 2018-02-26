@@ -532,7 +532,7 @@ gt() {
   go test "$@" ./...
 }
 gtt() {
-  gi && for t in $(seq 23); do gt || break; done
+  for t in $(seq 23); do gt || break; done
 }
 gtc() {
   for p in $(go list ./...); do
@@ -564,7 +564,7 @@ gv() {
   go vet ./...
 }
 gtv() {
-  gi && gt "$@" && gv
+  gt "$@" && gv
 }
 gtvi() {
   if [ "$STY" ]; then
@@ -587,10 +587,10 @@ gtvni() {
   if [ "$STY" ]; then
     screen -X title gtvni
   fi
-  gtvn "$@"
+  gi && gtvn "$@"
   inotifywait -m -r -e create -e close_write -e delete --format '%e %f' . \
     |& grep --line-buffered '.go$' \
-    | while read line; do echo; echo "$line"; while read -t 0.1 line; do echo "$line"; done; gtvn "$@"; done;
+    | while read line; do echo; echo "$line"; while read -t 0.1 line; do echo "$line"; done; gi && gtvn "$@"; done;
 }
 gd() {
   go doc "$@" | less -F
