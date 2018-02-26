@@ -1,5 +1,5 @@
 [Unit]
-Description=dfanjul moosic
+Description=moosic
 
 [Service]
 ExecStart=/usr/bin/moosic start-server -f
