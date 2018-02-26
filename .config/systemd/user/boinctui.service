@@ -1,5 +1,5 @@
 [Unit]
-Description=dfanjul boinctui
+Description=boinctui
 
 [Service]
 Environment="DISPLAY=:0"
