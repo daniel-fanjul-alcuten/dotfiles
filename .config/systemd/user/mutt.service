@@ -1,5 +1,5 @@
 [Unit]
-Description=dfanjul mutt
+Description=mutt
 
 [Service]
 Environment="DISPLAY=:0"
