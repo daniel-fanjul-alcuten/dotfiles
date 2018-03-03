@@ -586,11 +586,12 @@ gtvn() {
 gtvni() {
   if [ "$STY" ]; then
     screen -X title gtvni
+    screen -X number 99
   fi
-  gi && gtvn "$@"
+  gtvn "$@" && gi
   inotifywait -m -r -e create -e close_write -e delete --format '%e %f' . \
     |& grep --line-buffered '.go$' \
-    | while read line; do echo; echo "$line"; while read -t 0.1 line; do echo "$line"; done; gi && gtvn "$@"; done;
+    | while read line; do echo; echo "$line"; while read -t 0.1 line; do echo "$line"; done; gtvn "$@" && gi; done;
 }
 gd() {
   go doc "$@" | less -F
