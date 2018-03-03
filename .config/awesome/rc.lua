@@ -59,10 +59,10 @@ modkey = "Mod4"
 local layouts =
 {
     awful.layout.suit.max,
-    awful.layout.suit.tile,
     awful.layout.suit.tile.bottom,
-    awful.layout.suit.floating,
+    awful.layout.suit.tile,
     awful.layout.suit.magnifier,
+    awful.layout.suit.floating,
     awful.layout.suit.tile.left,
     awful.layout.suit.tile.top,
     awful.layout.suit.fair,
@@ -480,6 +480,26 @@ client.connect_signal("manage", function (c, startup)
     end
 end)
 
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+client.connect_signal("focus", function(c)
+  c.border_color = beautiful.border_focus
+  if awful.layout.get(c.screen) == awful.layout.suit.max.fullscreen then
+    c.border_width = 0
+  else
+    c.border_width = beautiful.border_width
+  end
+end)
+client.connect_signal("unfocus", function(c)
+  c.border_color = beautiful.border_normal
+  c.border_width = beautiful.border_width
+end)
+tag.connect_signal("property::layout", function(t)
+  c = client.focus
+  if c then
+    if awful.layout.get(c.screen) == awful.layout.suit.max.fullscreen then
+      c.border_width = 0
+    else
+      c.border_width = beautiful.border_width
+    end
+  end
+end)
 -- }}}
