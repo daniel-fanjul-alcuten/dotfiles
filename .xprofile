@@ -2,6 +2,7 @@
 
 # quick
 xset -b
+xsetroot -bg black
 
 # agents
 export SSH_AUTH_SOCK=~/.gnupg/S.gpg-agent.ssh
