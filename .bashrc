@@ -478,7 +478,7 @@ stopwatch(){
     sleep 0.1
   done
 }
-tachistory() {
+vi-bash-history() {
   builtin history -a &&
     command tac "$HISTFILE" |\
     command awk '!x[$0]++' |\
