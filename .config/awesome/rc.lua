@@ -278,7 +278,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "p", function() menubar.show() end),
 
     -- dfanjul
-    awful.key({ "Mod1", "Control" }, "l", function () awful.util.spawn_with_shell("systemctl --user start xscreensaver.service && xscreensaver-command -lock") end),
+    awful.key({ "Mod1", "Control" }, "l", function () awful.util.spawn_with_shell("until xscreensaver-command -lock; do systemctl --user start xscreensaver.service; done") end),
     awful.key({ "Mod1", "Shift" }, "l", function () awful.util.spawn_with_shell("systemctl --user stop xscreensaver.service") end),
     awful.key({ "Mod1", "Control" }, "n", function () awful.util.spawn_with_shell("moosic next") end),
     awful.key({ "Mod1", "Control" }, "p", function () awful.util.spawn_with_shell("moosic prev") end),
