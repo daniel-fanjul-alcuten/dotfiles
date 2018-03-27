@@ -47,10 +47,7 @@ sudo apt-get install aptitude
   # ssh
   sudo aptitude install openssh-client
   if ! [ -f .ssh/id_rsa ]; then
-    chmod 700 .ssh
-    ssh-keygen
-    nohup google-chrome https://github.com/settings/ssh &
-    read -p "add ssh key to github: $(cat .ssh/id_rsa.pub)"
+    read -p "Restore ssh keys"
   fi
 }
 
@@ -58,8 +55,7 @@ sudo apt-get install aptitude
   # gpg
   sudo aptitude install gnupg2 gnupg-agent pinentry-curses
   if ! gpg2 --list-secret-keys | grep "$(whoami)@$(hostname)"; then
-    gpg2 --gen-key
-    SSH_AUTH_SOCK=~/.gnupg/S.gpg-agent.ssh ssh-add
+    read -p "Restore gpg keys"
   fi
 }
 
@@ -89,8 +85,12 @@ EOF
   [ ! -s ~/.gvm/scripts/gvm ] && bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
   source ~/.gvm/scripts/gvm
   gvm use system
-  gvm install go1.9.3
-  gvm use go1.9.3 --default
+  gvm install go1.8.7
+  gvm use go1.8.7
+  gvm install go1.9.4
+  gvm use go1.9.4
+  gvm install go1.10
+  gvm use go1.10 --default
   if [ "$GOPATH" ]; then
     export GOPATH=~/lib/go:"$GOPATH"
   else
@@ -172,7 +172,10 @@ sudo aptitude install \
   network-manager-vpnc-gnome \
   newsbeuter \
   orpie \
+  paprefs \
   pasystray \
+  pavucontrol \
+  pavumeter \
   ranger \
   sc \
   schedtool \
@@ -264,7 +267,6 @@ sudo aptitude install \
   lsyncd \
   lynx \
   markdown \
-  maven \
   mbuffer \
   md5deep \
   mdadm \
