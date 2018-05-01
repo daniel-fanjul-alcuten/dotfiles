@@ -1,0 +1,7 @@
+[Unit]
+Description=boinccmd always
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/boinccmd --set_run_mode always
+ExecStart=/usr/bin/boinccmd --set_gpu_mode always
