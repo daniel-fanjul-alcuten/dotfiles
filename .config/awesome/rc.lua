@@ -284,7 +284,7 @@ globalkeys = awful.util.table.join(
     awful.key({ "Mod1", "Control" }, "p", function () awful.util.spawn_with_shell("moosic prev") end),
     awful.key({ "Mod1", "Control" }, "s", function () awful.util.spawn_with_shell("gnome-terminal -x alsamixer") end),
     awful.key({ "Mod1", "Control" }, "x", function () awful.util.spawn_with_shell("moosic toggle-pause") end),
-    awful.key({ "Mod1", "Control" }, "r", function () awful.util.spawn_with_shell("scrot") end),
+    awful.key({ modkey }, "\\", function () awful.util.spawn_with_shell("scrot") end),
     awful.key({ "Mod1", "Shift" }, "1", function () awful.util.spawn_with_shell("setxkbmap us") end),
     awful.key({ "Mod1", "Shift" }, "2", function () awful.util.spawn_with_shell("setxkbmap es") end),
     awful.key({ "Mod1", "Shift" }, "3", function () awful.util.spawn_with_shell("setxkbmap se") end),
