@@ -97,18 +97,14 @@
 	k = cherry-pick
 	ke = cherry-pick --edit
 	kf = cherry-pick --ff
-	lg = log --oneline --decorate --graph --show-signature --abbrev-commit
-	lga = log --oneline --decorate --graph --show-signature --abbrev-commit --all
-	lgaf = log --oneline --decorate --graph --show-signature --abbrev-commit --all --format=fuller
-	lgar = log --oneline --decorate --graph --show-signature --abbrev-commit --all --format=raw
-	lgf = log --oneline --decorate --graph --show-signature --abbrev-commit --format=fuller
+	lg = log --oneline --decorate --graph --abbrev-commit
+	lga = log --oneline --decorate --graph --abbrev-commit --all
+	lgaf = log --decorate --graph --show-signature --abbrev-commit --all --format=fuller
+	lgar = log --decorate --graph --show-signature --abbrev-commit --all --format=raw
+	lgf = log --decorate --graph --show-signature --abbrev-commit --format=fuller
 	lgg = log --decorate --graph --show-signature --abbrev-commit
 	lgga = log --decorate --graph --show-signature --abbrev-commit --all
-	lggaf = log --decorate --graph --show-signature --abbrev-commit --all --format=fuller
-	lggar = log --decorate --graph --show-signature --abbrev-commit --all --format=raw
-	lggf = log --decorate --graph --show-signature --abbrev-commit --format=fuller
-	lggr = log --decorate --graph --show-signature --abbrev-commit --format=raw
-	lgr = log --oneline --decorate --graph --show-signature --abbrev-commit --format=raw
+	lgr = log --decorate --graph --show-signature --abbrev-commit --format=raw
 	n = commit -v --amend
 	nn = commit -v --amend --reset-author
 	objs = count-objects -v
