@@ -382,18 +382,24 @@ sysreboot() {
 syssuspend() {
   pause &&
     ts -f &&
+    { killall -HUP gpg-agent; true; } &&
+    until xscreensaver-command -lock; do systemctl --user start xscreensaver.service; done &&
     sudo systemctl suspend "$@" &&
     exit
 }
 syshibernate() {
   pause &&
     ts -f &&
+    { killall -HUP gpg-agent; true; } &&
+    until xscreensaver-command -lock; do systemctl --user start xscreensaver.service; done &&
     sudo systemctl hibernate "$@" &&
     exit
 }
 syshybridsleep() {
   pause &&
     ts -f &&
+    { killall -HUP gpg-agent; true; } &&
+    until xscreensaver-command -lock; do systemctl --user start xscreensaver.service; done &&
     sudo systemctl hybrid-sleep "$@" &&
     exit
 }
