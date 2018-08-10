@@ -115,6 +115,7 @@
 	ps = diff --cached --stat
 	pull-from-peer = !bash -c \"b=\\$(git symbolic-ref --short HEAD) && c=\\$(sed s/$(whoami)/$1/ <<< \\$b) && set -x && git pull origin \\$c\"
 	pushm = !me=$(whoami) && git push -v \"$@\" origin \"refs/heads/$me/*\"
+	pushs = !push -v origin +:
 	r = remote
 	re = rebase --interactive
 	reu = rebase --interactive HEAD@{u}
