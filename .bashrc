@@ -671,9 +671,8 @@ ssh() {
 }
 
 # aws configuration
-if [ -f ~/.local/lib/aws/bin/aws_completer ]; then
-  PATH=~/.local/lib/aws/bin:"$PATH"
-  complete -C ~/.local/lib/aws/bin/aws_completer aws
+if type aws_completer &>/dev/null; then
+  complete -C $(which aws_completer) aws
 fi
 
 # maven configuration
