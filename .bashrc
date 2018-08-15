@@ -206,6 +206,7 @@ fi
 
 # sudo aliases
 for command in \
+    apt \
     apt-get \
     aptitude \
     debfoster \
