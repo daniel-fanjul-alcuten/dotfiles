@@ -57,7 +57,7 @@ _prompt_apply_color() {
   if _prompt_color_enabled; then
     _prompt_color "$color" "$default"
     echo -ne "${output}"
-    _prompt_color "reset" ""
+    _prompt_color "reset" "reset"
   else
     echo -ne "$output"
   fi
