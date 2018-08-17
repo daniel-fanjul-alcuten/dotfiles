@@ -178,9 +178,9 @@
 [gitreview]
 	rebase = false
 [pager]
-	log = /usr/bin/perl /usr/share/doc/git/contrib/diff-highlight/diff-highlight | less
-	show = /usr/bin/perl /usr/share/doc/git/contrib/diff-highlight/diff-highlight | less
-	diff = /usr/bin/perl /usr/share/doc/git/contrib/diff-highlight/diff-highlight | less
+	log = diff-highlight | less
+	show = diff-highlight | less
+	diff = diff-highlight | less
 [filter "gofmt"]
 	clean = gofmt
 	smudge = gofmt
