@@ -17,6 +17,7 @@ EOF
 sudo chmod 0440 /etc/sudoers.d/"$(whoami)"
 
 sudo apt-get install aptitude
+sudo aptitude update
 
 {
   # etckeeper
@@ -113,23 +114,22 @@ EOF
 {
   # docker
   if [ "$ubuntu" ] && [ "$DISTRIB_CODENAME" ]; then
-    sudo aptitude install apt-transport-https ca-certificates
-    sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-    sudo tee /etc/apt/sources.list.d/docker.list >/dev/null <<EOF
-# docker
-deb https://apt.dockerproject.org/repo ubuntu-$DISTRIB_CODENAME main
-EOF
+    sudo aptitude purge docker lxc-docker docker.io docker-engine
+    sudo aptitude install \
+      apt-transport-https \
+      ca-certificates \
+      curl \
+      software-properties-common
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    sudo add-apt-repository \
+      "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+      $(lsb_release -cs) \
+      stable"
     sudo aptitude update
-    sudo aptitude purge docker lxc-docker
-    sudo aptitude install docker-engine
-    sudo curl -L -o /usr/local/bin/docker-compose.tmp \
-      https://github.com/docker/compose/releases/download/1.6.0/docker-compose-"$(uname -s)-$(uname -m)"
-    sudo chmod +x /usr/local/bin/docker-compose.tmp
-    sudo mv /usr/local/bin/docker-compose{.tmp,}
-fi
+    sudo aptitude install docker-ce
+  fi
 }
 
-sudo aptitude update
 sudo aptitude install \
   anacron \
   at \
@@ -156,7 +156,7 @@ echo test | mail "$(whoami)"
 sudo aptitude install \
   bc \
   boinc-client \
-  boincmgr \
+  boinc-manager \
   boinctui \
   bzip2 \
   dc \
@@ -177,12 +177,11 @@ sudo aptitude install \
   ranger \
   sc \
   schedtool \
-  task \
+  taskwarrior \
   tree \
   vim-doc \
   vim-gnome \
   vim-puppet \
-  vim-syntax-go \
   wcd \
   xscreensaver
 
@@ -206,7 +205,6 @@ sudo aptitude install \
   capistrano \
   cfget \
   cfv \
-  cifs-utils \
   clusterssh \
   cmatrix \
   cmatrix-xfont \
@@ -244,12 +242,10 @@ sudo aptitude install \
   hardinfo \
   hgview \
   httpcode \
-  hwdata \
   id3 \
   id3ren \
   id3v2 \
   iftop \
-  inotail \
   inotify-tools \
   ioping \
   irssi \
@@ -271,12 +267,9 @@ sudo aptitude install \
   meld \
   mercurial-git \
   mlocate \
-  mp3gain \
   mp3info \
   mp3splt \
   mpg321 \
-  mplayer2 \
-  mtools \
   mtp-tools \
   mtpfs \
   netpipes \
@@ -286,21 +279,6 @@ sudo aptitude install \
   nilfs-tools \
   ntfs-3g \
   ntp \
-  openjdk-6-jdk \
-  openjdk-6-jre \
-  openjdk-6-jre-headless \
-  openjdk-6-jre-lib \
-  openjdk-6-source \
-  openjdk-7-jdk \
-  openjdk-7-jre \
-  openjdk-7-jre-headless \
-  openjdk-7-jre-lib \
-  openjdk-7-source \
-  openjdk-8-jdk \
-  openjdk-8-jre \
-  openjdk-8-jre-headless \
-  openjdk-8-jre-lib \
-  openjdk-8-source \
   parted \
   pexec \
   pinpoint \
@@ -313,14 +291,12 @@ sudo aptitude install \
   qdbm-util \
   qiv \
   reptyr \
-  ring \
   rpl \
   s3cmd \
   s3ql \
   saidar \
   shellcheck \
   simhash \
-  skype \
   smem \
   smplayer \
   sshfs \
