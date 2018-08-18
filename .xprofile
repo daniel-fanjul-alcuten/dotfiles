@@ -8,7 +8,6 @@ xsetroot -bg black
 export SSH_AUTH_SOCK=~/.gnupg/S.gpg-agent.ssh
 
 # gnome
-gnome-terminal &
 nm-applet &
 pasystray &
 systemctl --user start xscreensaver.service &
