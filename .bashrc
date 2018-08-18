@@ -511,13 +511,6 @@ fi
 set -o vi
 
 # go configuration
-[ -s ~/.gvm/scripts/gvm ] && source ~/.gvm/scripts/gvm
-type gvm &>/dev/null && gvm use go1.10.3
-if [ "$GOPATH" ]; then
-  GOPATH=~/lib/go:"$GOPATH"
-else
-  GOPATH=~/lib/go
-fi
 if [ "$(uname)" = Darwin ]; then
   GOMAXPROCS=$(sysctl -n hw.ncpu)
 else
@@ -771,31 +764,40 @@ fi
 # crawl
 export CRAWL_DIR=~/.crawl
 
-# down
-down
-
-# sudo
-sudo -v
-
 # fs
 if type fs &>/dev/null; then
   source <(fs --bash _fs_completion)
   complete -F _fs_completion fs
 fi
 
-# ssh
-gpg-connect-agent updatestartuptty /bye
-ssh localhost true
+# down
+down
 
 # pal
 if type pal &>/dev/null; then
   pal -r 7 -c 1
 fi
 
+# gvm
+[ -s ~/.gvm/scripts/gvm ] && source ~/.gvm/scripts/gvm
+type gvm &>/dev/null && gvm use go1.10.3
+if [ "$GOPATH" ]; then
+  GOPATH=~/lib/go:"$GOPATH"
+else
+  GOPATH=~/lib/go
+fi
+
 # from
 if type from &>/dev/null; then
   from -c
 fi
+
+# sudo
+sudo -v
+
+# ssh
+gpg-connect-agent updatestartuptty /bye >/dev/null
+ssh localhost true
 
 # cd .
 cd .
