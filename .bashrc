@@ -764,6 +764,13 @@ fi
 # crawl
 export CRAWL_DIR=~/.crawl
 
+# sudo
+sudo -v
+
+# ssh
+gpg-connect-agent updatestartuptty /bye >/dev/null
+ssh localhost true
+
 # fs
 if type fs &>/dev/null; then
   source <(fs --bash _fs_completion)
@@ -791,13 +798,6 @@ fi
 if type from &>/dev/null; then
   from -c
 fi
-
-# sudo
-sudo -v
-
-# ssh
-gpg-connect-agent updatestartuptty /bye >/dev/null
-ssh localhost true
 
 # cd .
 cd .
