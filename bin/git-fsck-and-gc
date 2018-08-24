@@ -21,7 +21,7 @@ if [ "$f" ]; then
   lastfsck="$(git config gc.lastfsck || echo 0)"
   nextfsck="$(git config gc.nextfsck || echo $((3 * 24 * 3600)))"
   if [ "$lastfsck" -lt $((now - nextfsck)) ]; then
-    nice git fsck
+    nice git fsck --progress
     git config gc.lastfsck $((now+RANDOM))
   fi
 
