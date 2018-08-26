@@ -260,6 +260,7 @@ if type git &>/dev/null; then
       merge \
       merge-base \
       mergetool \
+      mktree \
       mv \
       prune \
       pull \
