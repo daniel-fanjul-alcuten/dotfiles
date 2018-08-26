@@ -221,78 +221,7 @@ for command in \
   alias $command="sudo $command"
 done
 
-# git aliases
-if type git &>/dev/null; then
-  _complete_git_aliases() {
-    COMP_CWORD=$((COMP_CWORD+1))
-    COMP_LINE="git $COMP_LINE"
-    COMP_POINT=$((COMP_POINT+4))
-    COMP_WORDS=(git "${COMP_WORDS[@]}")
-    __git_wrap__git_main
-  }
-  for command in $(git config -l | grep ^alias\\. | cut -d= -f1 | cut -c7-)\
-      add \
-      am \
-      apply \
-      archive \
-      bisect \
-      blame \
-      branch \
-      bundle \
-      cherry \
-      cherry-pick \
-      clean \
-      clone \
-      commit-tree \
-      config \
-      describe \
-      diff \
-      difftool \
-      fetch \
-      fsck \
-      gc \
-      help \
-      init \
-      log \
-      ls-files \
-      ls-remote \
-      ls-tree \
-      merge \
-      merge-base \
-      mergetool \
-      mktree \
-      mv \
-      prune \
-      pull \
-      push \
-      rebase \
-      reflog \
-      remote \
-      repack \
-      request-pull \
-      reset \
-      rev-list \
-      rev-parse \
-      revert \
-      rm \
-      shortlog \
-      show \
-      show-branch \
-      stash \
-      status \
-      submodule \
-      tag \
-      whatchanged \
-      worktree \
-      ; do
-    alias $command="git $command"
-    complete -o bashdefault -o default -o nospace -F _complete_git_aliases $command
-  done
-  if type git-greb &>/dev/null; then
-    source <(git-greb --bash _greb_completion)
-    complete -F _greb_completion greb
-  fi
-fi
+# git hooks
 mkdir -p ~/.git/hooks
 cat > ~/.git/hooks/post-checkout <<-EOF
 	#!/bin/bash
@@ -316,13 +245,88 @@ fi
 # functions
 cd() {
   builtin cd "$@" && {
+    # screen title
     local dir="$(basename "$PWD")"
     if [ "$STY" ]; then
       screen -X title "$dir"
     fi
+    # task
     if type task &>/dev/null; then
       tt
     fi
+    # git aliases
+    if type git &>/dev/null; then
+      _complete_git_aliases() {
+        COMP_CWORD=$((COMP_CWORD+1))
+        COMP_LINE="git $COMP_LINE"
+        COMP_POINT=$((COMP_POINT+4))
+        COMP_WORDS=(git "${COMP_WORDS[@]}")
+        __git_wrap__git_main
+      }
+      for command in $(git config -l | grep ^alias\\. | cut -d= -f1 | cut -c7-)\
+          add \
+          am \
+          apply \
+          archive \
+          bisect \
+          blame \
+          branch \
+          bundle \
+          cherry \
+          cherry-pick \
+          clean \
+          clone \
+          commit-tree \
+          config \
+          describe \
+          diff \
+          difftool \
+          fetch \
+          fsck \
+          gc \
+          help \
+          init \
+          log \
+          ls-files \
+          ls-remote \
+          ls-tree \
+          merge \
+          merge-base \
+          mergetool \
+          mktree \
+          mv \
+          prune \
+          pull \
+          push \
+          rebase \
+          reflog \
+          remote \
+          repack \
+          request-pull \
+          reset \
+          rev-list \
+          rev-parse \
+          revert \
+          rm \
+          shortlog \
+          show \
+          show-branch \
+          stash \
+          status \
+          submodule \
+          tag \
+          whatchanged \
+          worktree \
+          ; do
+        alias $command="git $command"
+        complete -o bashdefault -o default -o nospace -F _complete_git_aliases $command
+      done
+      if type git-greb &>/dev/null; then
+        source <(git-greb --bash _greb_completion)
+        complete -F _greb_completion greb
+      fi
+    fi
+    # source config.sh.gpg
     local dir=$(git rev-parse --git-dir)
     if [ -f "$dir"/config.sh.gpg ]; then
       source <(gpg2 --batch -d "$dir"/config.sh.gpg)
