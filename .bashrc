@@ -769,21 +769,18 @@ fi
 # crawl
 export CRAWL_DIR=~/.crawl
 
+# down
+down
+
 # sudo
 sudo -v
 
-# ssh
-gpg-connect-agent updatestartuptty /bye >/dev/null
-ssh localhost true
-
 # fs
+gpg-connect-agent updatestartuptty /bye >/dev/null
 if type fs &>/dev/null; then
   source <(fs --bash _fs_completion)
   complete -F _fs_completion fs
 fi
-
-# down
-down
 
 # pal
 if type pal &>/dev/null; then
