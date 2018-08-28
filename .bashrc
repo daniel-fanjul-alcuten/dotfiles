@@ -775,12 +775,13 @@ down
 # sudo
 sudo -v
 
-# fs
+# fs && ssh
 gpg-connect-agent updatestartuptty /bye >/dev/null
 if type fs &>/dev/null; then
   source <(fs --bash _fs_completion)
   complete -F _fs_completion fs
 fi
+ssh localhost true
 
 # pal
 if type pal &>/dev/null; then
