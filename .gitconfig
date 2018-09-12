@@ -47,6 +47,7 @@
 	c- = checkout @{-1}
 	ca = commit -v -a
 	caa = !git commit -v -a -m $(git symbolic-ref --short HEAD 2>/dev/null || echo HEAD)
+	cempty = !"git checkout $(git commit-tree $(git mktree </dev/null) </dev/null)"
 	ci = commit -v
 	cii = !git commit -v -m $(git symbolic-ref --short HEAD 2>/dev/null || echo HEAD)
 	cp = checkout -p
