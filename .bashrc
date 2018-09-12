@@ -790,7 +790,7 @@ fi
 
 # gvm
 [ -s ~/.gvm/scripts/gvm ] && source ~/.gvm/scripts/gvm
-type gvm &>/dev/null && gvm use go1.10.3
+type gvm &>/dev/null
 if [ "$GOPATH" ]; then
   GOPATH=~/lib/go:"$GOPATH"
 else
