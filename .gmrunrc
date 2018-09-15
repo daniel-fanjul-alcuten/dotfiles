@@ -1,3 +1,0 @@
-Terminal = gnome-terminal
-TermExec = gnome-terminal -e
-AlwaysInTerm = deluge-console lftp man newsbeuter orpie
