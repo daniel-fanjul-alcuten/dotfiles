@@ -1,17 +1,5 @@
 #!/bin/bash
 
-# quick
-xset -b
-xsetroot -bg black
-
-# agents
-export SSH_AUTH_SOCK=~/.gnupg/S.gpg-agent.ssh
-
-# gnome
-nm-applet &
-pasystray &
-systemctl --user start xscreensaver.service &
-
 # set PATH
 if [ -d ~/usr/local/bin ]; then
   PATH=~/usr/local/bin:"$PATH"
@@ -22,3 +10,20 @@ fi
 if [ -d ~/bin ] ; then
   PATH=~/bin:"$PATH"
 fi
+
+# env
+if vim=$(which vim); then
+  export EDITOR="$vim"
+fi
+unset vim
+export SSH_AUTH_SOCK=~/.gnupg/S.gpg-agent.ssh
+
+# config
+xset -b
+xsetroot -bg black
+systemctl --user start xscreensaver.service
+pactl set-sink-volume 0 100%
+
+# apps
+nm-applet &
+pasystray &
