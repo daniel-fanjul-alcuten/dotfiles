@@ -22,7 +22,6 @@ export SSH_AUTH_SOCK=~/.gnupg/S.gpg-agent.ssh
 xset -b
 xsetroot -bg black
 systemctl --user start xscreensaver.service
-pactl set-sink-volume 0 100%
 
 # apps
 nm-applet &
