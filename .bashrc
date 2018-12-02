@@ -66,7 +66,7 @@ _prompt_status()
 {
   local status=$?
   if [ "$status" != 0 ]; then
-    _prompt_apply_color "[$status] " "exitstatus" "bold red"
+    _prompt_apply_color "[$status] " "status" "bold red"
   fi
 }
 _prompt_date() {
@@ -78,7 +78,7 @@ _prompt__hostname() {
 _prompt_systemd() {
   local target=$({ sudo systemctl --type target; systemctl --user --type target;} | grep dfanjul | sed 's/^  *//' | cut -d ' ' -f 1 | sed 's/\.target//' | sort -u | tr '\n' ' ' | sed 's/ $//')
   if [ "$target" ]; then
-    _prompt_apply_color " {$target}" "target" "cyan"
+    _prompt_apply_color " {$target}" "systemd" "cyan"
   fi
 }
 _prompt_nmcli() {
@@ -107,18 +107,24 @@ _prompt_battery()
     _prompt_apply_color "!" "discharging" "red"
   fi
 }
+_prompt_dirtyvm() {
+  local m1=$(grep ^Dirty /proc/meminfo|cut -c 7-|sed 's/ //g')
+  local m2=$(sysctl -n vm.dirty_expire_centisecs)
+  local m3=$(sysctl -n vm.dirty_writeback_centisecs)
+  _prompt_apply_color " $m1/$m2/$m3" "dirtyvm" "grey"
+}
 _prompt_git() {
   local subdir
   if ! subdir=$(git rev-parse --show-prefix 2>/dev/null); then
-    _prompt_apply_color " ${PWD}" "prefix" "gray"
+    _prompt_apply_color " ${PWD}" "git.prefix" "gray"
     return
   fi
   subdir="${subdir%/}"
   local prefix="${PWD%/$subdir}"
-  _prompt_apply_color " ${prefix/*\/}${subdir:+/$subdir}" "prefix" "gray"
+  _prompt_apply_color " ${prefix/*\/}${subdir:+/$subdir}" "git.prefix" "gray"
   local branch=$(git symbolic-ref -q HEAD 2>/dev/null)
   [ -n "$branch" ] && branch=${branch#refs/heads/} || branch=$(git rev-parse --short HEAD 2>/dev/null)
-  _prompt_apply_color " $branch" "branch" "cyan"
+  _prompt_apply_color " $branch" "git.branch" "cyan"
   local git_dir="$(git rev-parse --git-dir 2>/dev/null)"
   if test -d "$git_dir/rebase-merge"; then
     local marker="(rebase)"
@@ -127,16 +133,16 @@ _prompt_git() {
       local marker="(merge)"
     fi
   fi
-  _prompt_apply_color "$marker" "marker" "red"
+  _prompt_apply_color "$marker" "git.marker" "red"
   local output
   IFS='' output=$(git status --porcelain 2>/dev/null | cut -c-2 | sort -u)
   local staged=$(cut -c1 <<< "$output" | sort -u | grep -v -e ' ' -e '?' -e '!' | tr -d \\n)
   if [ "$staged" ]; then
-    _prompt_apply_color " $staged" "clean" "green"
+    _prompt_apply_color " $staged" "git.clean" "green"
   fi
   local unstaged=$(cut -c2 <<< "$output" | sort -u | grep -v ' ' | tr -d \\n)
   if [ "$unstaged" ]; then
-    _prompt_apply_color " $unstaged" "dirty" "red"
+    _prompt_apply_color " $unstaged" "git.dirty" "red"
   fi
 }
 _prompt_jobscount()
@@ -153,7 +159,7 @@ _prompt_mail()
     _prompt_apply_color " ${count}✉" "jobscount" "yellow"
   fi
 }
-PS1='`_prompt_status``_prompt_date``_prompt__hostname``_prompt_battery``_prompt_systemd``_prompt_nmcli``_prompt_git``_prompt_jobscount``_prompt_mail`\n\$ '
+PS1='`_prompt_status``_prompt_date``_prompt__hostname``_prompt_systemd``_prompt_nmcli``_prompt_battery``_prompt_dirtyvm``_prompt_git``_prompt_jobscount``_prompt_mail`\n\$ '
 
 # aliases
 alias ls='ls -F'
