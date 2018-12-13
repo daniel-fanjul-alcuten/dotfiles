@@ -159,7 +159,7 @@ _prompt_mail()
     _prompt_apply_color " ${count}✉" "jobscount" "yellow"
   fi
 }
-PS1='`_prompt_status``_prompt_date``_prompt__hostname``_prompt_systemd``_prompt_nmcli``_prompt_battery``_prompt_dirtyvm``_prompt_git``_prompt_jobscount``_prompt_mail`\n\$ '
+PS1='`_prompt_status``_prompt_date``_prompt__hostname``_prompt_nmcli``_prompt_battery``_prompt_git``_prompt_jobscount``_prompt_mail`\n\$ '
 
 # aliases
 alias ls='ls -F'
