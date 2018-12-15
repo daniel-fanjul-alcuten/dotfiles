@@ -540,7 +540,7 @@ gt() {
   go test "$@" ./...
 }
 gtt() {
-  for t in $(seq 23); do gt || break; done
+  for t in $(seq 23); do go clean -cache ./... && gt || break; done
 }
 gtc() {
   for p in $(go list ./...); do
