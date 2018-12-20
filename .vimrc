@@ -47,7 +47,6 @@ aug go_filetype
   au Filetype go setl makeprg=go\ test\ ./...
   au Filetype go nnoremap <buffer> <Leader>f :GoFmt<CR>
   au Filetype go nnoremap <buffer> <Leader>t :GoTest<CR>
-  au BufWrite *.go silent !~/lib/go/bin/gotags -L <(find . -type f -name \*.go) > tags
 aug end
 com! -nargs=1 -complete=dir Gg :argl <args>/*.go
 com! -nargs=1 -complete=dir Tg :tabe | :Gg <args>
