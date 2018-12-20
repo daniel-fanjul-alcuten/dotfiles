@@ -527,11 +527,20 @@ if [ "$(uname)" = Darwin ]; then
 else
   GOMAXPROCS=$(grep ^processor /proc/cpuinfo | wc -l)
 fi
+gd() {
+  go doc "$@" | less -F
+}
 gf() {
   go fmt "$@" ./...
 }
 gb() {
   go build "$@" ./...
+}
+gbm() {
+  go build -gcflags -m ./...
+}
+gv() {
+  go vet ./...
 }
 gi() {
   go install "$@" ./...
@@ -540,12 +549,12 @@ gt() {
   go test "$@" ./...
 }
 gtt() {
-  for t in $(seq 23); do go clean -cache ./... && gt || break; done
+  go clean -cache ./... && gt "$@"
 }
 gtc() {
   for p in $(go list ./...); do
     local tmp1=$(tempfile)
-    if ! go test "$@" -coverprofile "$tmp1" "$p"; then
+    if ! go test -coverprofile "$tmp1" "$@" "$p"; then
       command rm "$tmp1"
       return 1
     fi
@@ -568,44 +577,23 @@ gtcc() {
     xdg-open $tmp2
   done
 }
-gv() {
-  go vet ./...
-}
-gtv() {
-  gt "$@" && gv
-}
-gtvi() {
-  if [ "$STY" ]; then
-    screen -X title gtvi
-  fi
-  gtv "$@"
-  inotifywait -m -r -e create -e close_write -e delete --format '%e %f' . \
-    |& grep --line-buffered '.go$' \
-    | while read line; do echo; echo "$line"; while read -t 0.1 line; do echo "$line"; done; gtv "$@"; done;
-}
-gtvn() {
+gtn() {
   f=$(tempfile)
   g=$(tempfile)
   ln -sf ~/usr/share/images/red.gif "$g"
-  { gtv "$@" && ln -sf ~/usr/share/images/blue.gif "$g"; } |& command tee "$f"
-  command notify-send -i "$g" gtv -- "$(cat "$f")"
+  { gt "$@" && ln -sf ~/usr/share/images/blue.gif "$g"; } |& command tee "$f"
+  command notify-send -i "$g" gt -- "$(cat "$f")"
   command rm "$f"
 }
-gtvni() {
+gtni() {
   if [ "$STY" ]; then
-    screen -X title gtvni
+    screen -X title gtni
     screen -X number 99
   fi
-  gtvn "$@" && gi
+  gtn -timeout 1m "$@" && gi
   inotifywait -m -r -e create -e close_write -e delete --format '%e %f' . \
     |& grep --line-buffered '.go$' \
-    | while read line; do echo; echo "$line"; while read -t 0.1 line; do echo "$line"; done; gtvn "$@" && gi; done;
-}
-gd() {
-  go doc "$@" | less -F
-}
-gm() {
-  go build -gcflags -m ./...
+    | while read line; do echo; echo "$line"; while read -t 0.1 line; do echo "$line"; done; gtn -timeout 1m "$@" && gi; done;
 }
 
 # ruby configuration
