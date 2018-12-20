@@ -1,0 +1,5 @@
+[Unit]
+Description=godoc
+
+[Service]
+ExecStart=/bin/bash -c 'set -e; source ~/.gvm/scripts/gvm; gvm use %i; GOPATH=~/lib/go:"$GOPATH" exec nice ~/lib/go/bin/godoc -http=127.0.0.1:6060'
