@@ -198,7 +198,7 @@ _complete_command() {
   _command
 }
 complete -F _complete_command co
-alias alert='notify-send --urgency=low -i ~/usr/share/images/$([ $? = 0 ] && echo blue || echo red).gif "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+alias alert='notify-send --urgency=low -i ~/usr/share/images/$([ $? = 0 ] && echo blue || echo red).gif -- "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # colored aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -249,96 +249,107 @@ fi
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh /usr/bin/lesspipe)"
 
 # functions
+postcd() {
+  # screen title
+  local dir="$(basename "$PWD")"
+  if [ "$STY" ]; then
+    screen -X title "$dir"
+    screen -X chdir "$PWD"
+  fi
+  # task
+  if type task &>/dev/null; then
+    tt
+  fi
+  # git aliases
+  if type git &>/dev/null; then
+    _complete_git_aliases() {
+      COMP_CWORD=$((COMP_CWORD+1))
+      COMP_LINE="git $COMP_LINE"
+      COMP_POINT=$((COMP_POINT+4))
+      COMP_WORDS=(git "${COMP_WORDS[@]}")
+      __git_wrap__git_main
+    }
+    for command in $(git config -l | grep ^alias\\. | cut -d= -f1 | cut -c7-)\
+        add \
+        am \
+        apply \
+        archive \
+        bisect \
+        blame \
+        branch \
+        bundle \
+        cherry \
+        cherry-pick \
+        clean \
+        clone \
+        commit-tree \
+        config \
+        describe \
+        diff \
+        difftool \
+        fetch \
+        fsck \
+        gc \
+        help \
+        init \
+        log \
+        ls-files \
+        ls-remote \
+        ls-tree \
+        merge \
+        merge-base \
+        mergetool \
+        mktree \
+        mv \
+        prune \
+        pull \
+        push \
+        rebase \
+        reflog \
+        remote \
+        repack \
+        request-pull \
+        reset \
+        rev-list \
+        rev-parse \
+        revert \
+        rm \
+        shortlog \
+        show \
+        show-branch \
+        stash \
+        status \
+        submodule \
+        tag \
+        whatchanged \
+        worktree \
+        ; do
+      alias $command="git $command"
+      complete -o bashdefault -o default -o nospace -F _complete_git_aliases $command
+    done
+    if type git-greb &>/dev/null; then
+      source <(git-greb --bash _greb_completion)
+      complete -F _greb_completion greb
+    fi
+  fi
+  # source config.sh.gpg
+  local dir=$(git rev-parse --git-dir 2>/dev/null)
+  if [ -f "$dir"/config.sh.gpg ]; then
+    source <(gpg2 --batch -d "$dir"/config.sh.gpg)
+  fi
+  if [ -f "$dir"/config.sh ]; then
+    source "$dir"/config.sh
+  fi
+  true
+}
 cd() {
-  builtin cd "$@" && {
-    # screen title
-    local dir="$(basename "$PWD")"
-    if [ "$STY" ]; then
-      screen -X title "$dir"
-    fi
-    # task
-    if type task &>/dev/null; then
-      tt
-    fi
-    # git aliases
-    if type git &>/dev/null; then
-      _complete_git_aliases() {
-        COMP_CWORD=$((COMP_CWORD+1))
-        COMP_LINE="git $COMP_LINE"
-        COMP_POINT=$((COMP_POINT+4))
-        COMP_WORDS=(git "${COMP_WORDS[@]}")
-        __git_wrap__git_main
-      }
-      for command in $(git config -l | grep ^alias\\. | cut -d= -f1 | cut -c7-)\
-          add \
-          am \
-          apply \
-          archive \
-          bisect \
-          blame \
-          branch \
-          bundle \
-          cherry \
-          cherry-pick \
-          clean \
-          clone \
-          commit-tree \
-          config \
-          describe \
-          diff \
-          difftool \
-          fetch \
-          fsck \
-          gc \
-          help \
-          init \
-          log \
-          ls-files \
-          ls-remote \
-          ls-tree \
-          merge \
-          merge-base \
-          mergetool \
-          mktree \
-          mv \
-          prune \
-          pull \
-          push \
-          rebase \
-          reflog \
-          remote \
-          repack \
-          request-pull \
-          reset \
-          rev-list \
-          rev-parse \
-          revert \
-          rm \
-          shortlog \
-          show \
-          show-branch \
-          stash \
-          status \
-          submodule \
-          tag \
-          whatchanged \
-          worktree \
-          ; do
-        alias $command="git $command"
-        complete -o bashdefault -o default -o nospace -F _complete_git_aliases $command
-      done
-      if type git-greb &>/dev/null; then
-        source <(git-greb --bash _greb_completion)
-        complete -F _greb_completion greb
-      fi
-    fi
-    # source config.sh.gpg
-    local dir=$(git rev-parse --git-dir)
-    if [ -f "$dir"/config.sh.gpg ]; then
-      source <(gpg2 --batch -d "$dir"/config.sh.gpg)
-    fi
-    true
-  }
+  builtin cd "$@" && postcd
+}
+pushd() {
+  builtin pushd "$@" && postcd
+}
+popd() {
+  builtin popd "$@" && postcd
 }
 function vi-config-sh-gpg() {
   local gitdir="$(git rev-parse --git-dir)"
@@ -346,6 +357,14 @@ function vi-config-sh-gpg() {
     vi config.sh.gpg) && \
     if [ -f "$gitdir"/config.sh.gpg ]; then
       source <(gpg2 --batch -d "$gitdir"/config.sh.gpg)
+    fi
+}
+function vi-config-sh() {
+  local gitdir="$(git rev-parse --git-dir)"
+  (builtin cd "$gitdir" && \
+    vi config.sh) && \
+    if [ -f "$gitdir"/config.sh ]; then
+      source "$gitdir"/config.sh
     fi
 }
 clear() {
@@ -590,10 +609,10 @@ gtni() {
     screen -X title gtni
     screen -X number 99
   fi
-  gtn -timeout 1m "$@" && gi
+  gtn -failfast -timeout 1m "$@" && gi
   inotifywait -m -r -e create -e close_write -e delete --format '%e %f' . \
     |& grep --line-buffered '.go$' \
-    | while read line; do echo; echo "$line"; while read -t 0.1 line; do echo "$line"; done; gtn -timeout 1m "$@" && gi; done;
+    | while read line; do echo; echo "$line"; while read -t 0.1 line; do echo "$line"; done; gtn -failfast -timeout 1m "$@" && gi; done;
 }
 
 # ruby configuration
@@ -605,7 +624,7 @@ fi
 if type wcd.exec &>/dev/null; then
   wcd() {
     mkdir -p ~/var
-    wcd.exec -z 40 -G ~/var "$@"
+    wcd.exec -G ~/var "$@"
     . ~/var/wcd.go
   }
   alias j='wcd -j'
@@ -796,5 +815,5 @@ if type from &>/dev/null; then
   from -c
 fi
 
-# cd .
-cd .
+# postcd
+postcd
