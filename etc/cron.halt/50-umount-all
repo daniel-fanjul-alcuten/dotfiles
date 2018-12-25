@@ -1,4 +1,3 @@
 #!/bin/sh
 
-~/bin/flock-wait ~/var/lock/lock-* ~/var/lock/elock-*
 ~/usr/local/bin/fs -u
