@@ -168,7 +168,7 @@ complete -o default -F _longopt ll
 alias la='ls -a'
 complete -o default -F _longopt la
 alias i='pushd'
-complete -d i
+complete -o nospace -F _cd i
 alias o='popd'
 alias u='dirs -v'
 alias pipe='$(history -p \!\!) |&'
