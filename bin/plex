@@ -1,3 +1,4 @@
 #!/bin/bash
 
-exec google-chrome --profile-directory=daniel.fanjul.alcuten@gmail.com --app='http://localhost:32400/web'
+# http://localhost:32400/web
+exec google-chrome --profile-directory=daniel.fanjul.alcuten@gmail.com --app='https://app.plex.tv/desktop'
