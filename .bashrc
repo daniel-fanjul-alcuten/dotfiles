@@ -12,6 +12,15 @@ export HISTFILESIZE=999999
 export HISTSIZE=999999
 # export HISTTIMEFORMAT='%F:%T '
 
+function vi-bash-history() {
+  history -a &&
+    tac "$HISTFILE" |
+    awk '!x[$0]++' |
+    tac |
+    sponge "$HISTFILE" &&
+    exec vi +$ ~/.bash_history
+}
+
 # append to the history file, don't overwrite it
 shopt -s histappend
 
@@ -46,13 +55,13 @@ if ! shopt -oq posix; then
 fi
 
 # prompt
-_prompt_color_enabled() {
+function _prompt_color_enabled() {
   git config --get-colorbool color.prompt true >/dev/null
 }
-_prompt_color() {
+function _prompt_color() {
   git config --get-color "color.prompt.$1" "$2" 2>/dev/null
 }
-_prompt_apply_color() {
+function _prompt_apply_color() {
   local output="$1" color="$2" default="$3"
   if _prompt_color_enabled; then
     _prompt_color "$color" "$default"
@@ -62,33 +71,31 @@ _prompt_apply_color() {
     echo -ne "$output"
   fi
 }
-_prompt_status()
-{
+function _prompt_status() {
   local status=$?
   if [ "$status" != 0 ]; then
     _prompt_apply_color "[$status] " "status" "bold red"
   fi
 }
-_prompt_date() {
+function _prompt_date() {
   _prompt_apply_color "$(date +%T)" "date" "white"
 }
-_prompt__hostname() {
+function _prompt__hostname() {
   _prompt_apply_color " $(whoami)@$(hostname)" "hostname" "magenta"
 }
-_prompt_systemd() {
+function _prompt_systemd() {
   local target=$({ sudo systemctl --type target; systemctl --user --type target;} | grep dfanjul | sed 's/^  *//' | cut -d ' ' -f 1 | sed 's/\.target//' | sort -u | tr '\n' ' ' | sed 's/ $//')
   if [ "$target" ]; then
     _prompt_apply_color " {$target}" "systemd" "cyan"
   fi
 }
-_prompt_nmcli() {
+function _prompt_nmcli() {
   local nmcli=$(nmcli connection show --active 2>/dev/null | tail -n +2 | grep -v 'docker0 *$' | grep -v 'tun0 *$' | cut -f 1 -d ' ' | sort | tr \\n ' ' | sed 's/ $//')
   if [ "$nmcli" ]; then
     _prompt_apply_color " <$nmcli>" "nmcli" "blue"
   fi
 }
-_prompt_battery()
-{
+function _prompt_battery() {
   local state=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep state | cut -f 2 -d : | sed 's/ //g')
   if [ "${state}" = "fully-charged" ]; then
     return
@@ -107,13 +114,13 @@ _prompt_battery()
     _prompt_apply_color "!" "discharging" "red"
   fi
 }
-_prompt_dirtyvm() {
+function _prompt_dirtyvm() {
   local m1=$(grep ^Dirty /proc/meminfo|cut -c 7-|sed 's/ //g')
   local m2=$(sysctl -n vm.dirty_expire_centisecs)
   local m3=$(sysctl -n vm.dirty_writeback_centisecs)
   _prompt_apply_color " $m1/$m2/$m3" "dirtyvm" "grey"
 }
-_prompt_git() {
+function _prompt_git() {
   local subdir
   if ! subdir=$(git rev-parse --show-prefix 2>/dev/null); then
     _prompt_apply_color " ${PWD}" "git.prefix" "gray"
@@ -145,15 +152,13 @@ _prompt_git() {
     _prompt_apply_color " $unstaged" "git.dirty" "red"
   fi
 }
-_prompt_jobscount()
-{
+function _prompt_jobscount() {
   local count=$(jobs -p | wc -l | tr -d ' ')
   if [ "$count" -gt 0 ]; then
     _prompt_apply_color " [$count]" "jobscount" "yellow"
   fi
 }
-_prompt_mail()
-{
+function _prompt_mail() {
   local count=$(from -c | cut -f 3 -d ' ')
   if [ "$count" -gt 0 ]; then
     _prompt_apply_color " ${count}✉" "jobscount" "yellow"
@@ -166,21 +171,15 @@ alias ls='ls -F'
 alias ll='ls -l'
 complete -o default -F _longopt ll
 alias la='ls -a'
+alias less='less -R'
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh /usr/bin/lesspipe)"
 complete -o default -F _longopt la
-alias i='pushd'
-complete -o nospace -F _cd i
-alias o='popd'
-alias u='dirs -v'
 alias pipe='$(history -p \!\!) |&'
 alias reless='pipe less'
 complete -o default -F _longopt reless
 alias regrep='pipe grep'
 complete -o default -F _longopt regrep
 alias cmatrix='cmatrix -lb'
-alias iocp='ionice -n 7 cp'
-complete -o default -F _longopt iocp
-alias iomv='ionice -n 7 mv'
-complete -o default -F _longopt iomv
 alias m='moosic'
 complete -o filenames -F _moosic m
 alias hgrep='history | grep'
@@ -189,9 +188,8 @@ alias psuxgrep='command ps ux | grep'
 complete -o default -F _longopt psuxgrep
 alias psaxgrep='command ps ax | grep'
 complete -o default -F _longopt psaxgrep
-alias less='less -R'
 alias co='command'
-_complete_command() {
+function _complete_command() {
   COMP_LINE="command ${COMP_LINE#co }"
   COMP_POINT=$((COMP_POINT+5))
   COMP_WORDS[0]=command
@@ -212,118 +210,110 @@ fi
 
 # sudo aliases
 for command in \
-    apt \
-    apt-get \
-    aptitude \
-    debfoster \
-    docker \
-    docker-compose \
-    fdisk \
-    iftop \
-    iotop \
-    service \
-    shutdown \
-    ; do
+  apt \
+  apt-get \
+  aptitude \
+  iftop \
+  iotop \
+  service \
+  ; \
+do
   alias $command="sudo $command"
 done
 
 # git hooks
 mkdir -p ~/.git/hooks
-cat > ~/.git/hooks/post-checkout <<-EOF
-	#!/bin/bash
-	chmod -f -R go-rwx ~/.{ssh,gnupg} ~/.s3ql/authinfo2
-	true
+cat > ~/.git/hooks/post-checkout <<EOF
+#!/bin/bash
+chmod -f -R go-rwx ~/.{ssh,gnupg}
+true
 EOF
-cat > ~/.git/hooks/post-rewrite <<-EOF
-	#!/bin/bash
-	cat >/dev/null
-	chmod -f -R go-rwx ~/.{ssh,gnupg} ~/.s3ql/authinfo2
-	true
+cat > ~/.git/hooks/post-rewrite <<EOF
+#!/bin/bash
+cat >/dev/null
+chmod -f -R go-rwx ~/.{ssh,gnupg}
+true
 EOF
 chmod u+x ~/.git/hooks/post-{checkout,rewrite}
 if [ -f ~/usr/share/hub/etc/hub.bash_completion.sh ]; then
   source ~/usr/share/hub/etc/hub.bash_completion.sh
 fi
 
-# make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh /usr/bin/lesspipe)"
-
-# functions
-postcd() {
+# cd
+function postcd() {
   # screen title
   local dir="$(basename "$PWD")"
   if [ "$STY" ]; then
     screen -X title "$dir"
     screen -X chdir "$PWD"
   fi
-  # task
-  if type task &>/dev/null; then
-    tt
-  fi
   # git aliases
   if type git &>/dev/null; then
-    _complete_git_aliases() {
+    function _complete_git_aliases() {
       COMP_CWORD=$((COMP_CWORD+1))
       COMP_LINE="git $COMP_LINE"
       COMP_POINT=$((COMP_POINT+4))
       COMP_WORDS=(git "${COMP_WORDS[@]}")
       __git_wrap__git_main
     }
-    for command in $(git config -l | grep ^alias\\. | cut -d= -f1 | cut -c7-)\
-        add \
-        am \
-        apply \
-        archive \
-        bisect \
-        blame \
-        branch \
-        bundle \
-        cherry \
-        cherry-pick \
-        clean \
-        clone \
-        commit-tree \
-        config \
-        describe \
-        diff \
-        difftool \
-        fetch \
-        fsck \
-        gc \
-        help \
-        init \
-        log \
-        ls-files \
-        ls-remote \
-        ls-tree \
-        merge \
-        merge-base \
-        mergetool \
-        mktree \
-        mv \
-        prune \
-        pull \
-        push \
-        rebase \
-        reflog \
-        remote \
-        repack \
-        request-pull \
-        reset \
-        rev-list \
-        rev-parse \
-        revert \
-        rm \
-        shortlog \
-        show \
-        show-branch \
-        stash \
-        status \
-        submodule \
-        tag \
-        whatchanged \
-        worktree \
-        ; do
+    for command in \
+      $(git config -l | grep ^alias\\. | cut -d= -f1 | cut -c7-) \
+      add \
+      am \
+      apply \
+      archive \
+      bisect \
+      blame \
+      branch \
+      bundle \
+      cherry \
+      cherry-pick \
+      clean \
+      clone \
+      commit-tree \
+      config \
+      describe \
+      diff \
+      difftool \
+      fetch \
+      fsck \
+      gc \
+      help \
+      init \
+      log \
+      ls-files \
+      ls-remote \
+      ls-tree \
+      merge \
+      merge-base \
+      mergetool \
+      mktree \
+      mv \
+      patch-id \
+      prune \
+      pull \
+      push \
+      rebase \
+      reflog \
+      remote \
+      repack \
+      request-pull \
+      reset \
+      rev-list \
+      rev-parse \
+      revert \
+      rm \
+      shortlog \
+      show \
+      show-branch \
+      stash \
+      status \
+      submodule \
+      tag \
+      whatchanged \
+      worktree \
+      ; \
+    do
       alias $command="git $command"
       complete -o bashdefault -o default -o nospace -F _complete_git_aliases $command
     done
@@ -332,170 +322,172 @@ postcd() {
       complete -F _greb_completion greb
     fi
   fi
+  # lock git-fsck-and-gc
+  dir=$(readlink -e "$(git rev-parse --git-dir)")
+  sum="$(md5sum <<< "$dir" | cut -f 1 -d ' ')"
+  lock=~/var/lock/elock-git-"$sum"
+  exec {gitfd}>"$lock"
+  flock -s "${gitfd}"
   # source config.sh.gpg
   local dir=$(git rev-parse --git-dir 2>/dev/null)
   if [ -f "$dir"/config.sh.gpg ]; then
     source <(gpg2 --batch -d "$dir"/config.sh.gpg)
   fi
+  # source config.sh
   if [ -f "$dir"/config.sh ]; then
     source "$dir"/config.sh
   fi
   true
 }
-cd() {
+function cd() {
   builtin cd "$@" && postcd
 }
-pushd() {
+function pushd() {
   builtin pushd "$@" && postcd
 }
-popd() {
+function popd() {
   builtin popd "$@" && postcd
 }
+alias i='pushd'
+complete -o nospace -F _cd i
+alias o='popd'
+alias u='dirs -v'
+
+# config.sh
 function vi-config-sh-gpg() {
   local gitdir="$(git rev-parse --git-dir)"
-  (builtin cd "$gitdir" && \
-    vi config.sh.gpg) && \
-    if [ -f "$gitdir"/config.sh.gpg ]; then
-      source <(gpg2 --batch -d "$gitdir"/config.sh.gpg)
-    fi
+  (builtin cd "$gitdir" && vi config.sh.gpg)
+  if [ -f "$gitdir"/config.sh.gpg ]; then
+    source <(gpg2 --batch -d "$gitdir"/config.sh.gpg)
+  fi
 }
 function vi-config-sh() {
   local gitdir="$(git rev-parse --git-dir)"
-  (builtin cd "$gitdir" && \
-    vi config.sh) && \
-    if [ -f "$gitdir"/config.sh ]; then
-      source "$gitdir"/config.sh
-    fi
-}
-clear() {
-  command clear
-  down
-}
-t() {
-  command task "$@"
-  local s=$?
-  (builtin cd ~ && {
-    git commit -m .task .task &>/dev/null
-  })
-  return $s
-}
-tt() {
-  local dir="$(basename "$PWD" | sed s/-//g)"
-  if task _tags | grep -q "^$dir$"; then
-    t +"$dir" "$@"
+  (builtin cd "$gitdir" && vi config.sh)
+  if [ -f "$gitdir"/config.sh ]; then
+    source "$gitdir"/config.sh
   fi
 }
-tta() {
-  local dir="$(basename "$PWD" | sed s/-//g)"
-  t add +"$dir" "$@"
-}
-pause() {
+
+# systemctl
+function pause() {
   run-parts-cron -d halt -v
 }
-syshalt() {
+function syshalt() {
   pause &&
     ts -f &&
     sudo systemctl halt "$@" &&
     exit
 }
-syspoweroff() {
+function syspoweroff() {
   pause &&
     ts -f &&
     sudo systemctl poweroff "$@" &&
     exit
 }
-sysreboot() {
+function sysreboot() {
   pause &&
     ts -f &&
     sudo systemctl reboot "$@" &&
     exit
 }
-syssuspend() {
+function syssuspend() {
   pause &&
     ts -f &&
-    { killall -HUP gpg-agent; true; } &&
-    until xscreensaver-command -lock; do systemctl --user start xscreensaver.service; done &&
+    ( killall -HUP gpg-agent; true; ) &&
+    (until xscreensaver-command -lock; do systemctl --user start xscreensaver.service; done) &&
     sudo systemctl suspend "$@" &&
     exit
 }
-syshibernate() {
+function syshibernate() {
   pause &&
     ts -f &&
-    { killall -HUP gpg-agent; true; } &&
-    until xscreensaver-command -lock; do systemctl --user start xscreensaver.service; done &&
+    ( killall -HUP gpg-agent; true; ) &&
+    (until xscreensaver-command -lock; do systemctl --user start xscreensaver.service; done) &&
     sudo systemctl hibernate "$@" &&
     exit
 }
-syshybridsleep() {
+function syshybridsleep() {
   pause &&
     ts -f &&
-    { killall -HUP gpg-agent; true; } &&
-    until xscreensaver-command -lock; do systemctl --user start xscreensaver.service; done &&
+    ( killall -HUP gpg-agent; true; ) &&
+    (until xscreensaver-command -lock; do systemctl --user start xscreensaver.service; done) &&
     sudo systemctl hybrid-sleep "$@" &&
     exit
 }
-xlogout() {
+function xlogout() {
   pause && \
     ts -f &&
     gnome-session-quit --logout
 }
-xpoweroff() {
+function xpoweroff() {
   pause && \
     ts -f &&
     gnome-session-quit --power-off
 }
-xreboot() {
+function xreboot() {
   pause && \
     ts -f &&
     gnome-session-quit --reboot
 }
-down() {
+
+# down
+function down() {
   yes "|" | head -$((LINES - 3)) && echo v
 }
-down() {
+function down() {
   echo -e "\\033[6n"
   read -s -d R foo
   lines=$((LINES - $(echo "$foo" | cut -d \[ -f 2 | cut -d \; -f 1) - 3))
   while [ $lines -gt 0 ]; do
     echo \|
-    lines=$((lines - 1))
+      lines=$((lines - 1))
   done
   echo v
 }
-reuntil() {
+function clear() {
+  command clear
+  down
+}
+
+# loops
+function reuntil() {
   seconds="$1" && shift || seconds=5
   until $(history -p !!); do
     sleep "$seconds"
   done
 }
-rewhile() {
+function rewhile() {
   seconds="$1" && shift || seconds=5
   while $(history -p !!); do
     sleep "$seconds"
   done
 }
-iwhile() {
+function iwhile() {
   while echo && inotifywait -q -e create -e modify -e move -e delete -r . --exclude ".*\\.sw.$"; do
     eval "$*"
     sleep 1
   done
 }
-mailnow() {
+
+# mail
+function mailnow() {
   echo "$*" | mail -s "$*" $(whoami)
 }
-maillater() {
+function maillater() {
   minutes="$1" && shift || minutes=1
   echo echo \""$*"\" \| mail -s \""$*"\" $(whoami) | at now + "$minutes" minute
 }
-complete -o nospace -F _task t
-ts() {
+
+# ts
+function ts() {
   command ts "$@"
   local s=$?
-  (builtin cd ~ && {
-    git commit -m .ts.json .ts.json &>/dev/null
-  })
+  (builtin cd ~ && git commit -m .ts.json .ts.json &>/dev/null)
   return $s
 }
+
+# notify-send
 countdown(){
   date1=$((`date +%s` + $1));
   while [ "$date1" -ge `date +%s` ]; do
@@ -510,14 +502,6 @@ stopwatch(){
     echo -ne "$(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)\r";
     sleep 0.1
   done
-}
-vi-bash-history() {
-  builtin history -a &&
-    command tac "$HISTFILE" |\
-    command awk '!x[$0]++' |\
-    command tac |\
-    command sponge "$HISTFILE" &&\
-    exec vi +$ ~/.bash_history
 }
 
 # set PATH
@@ -546,31 +530,31 @@ if [ "$(uname)" = Darwin ]; then
 else
   GOMAXPROCS=$(grep ^processor /proc/cpuinfo | wc -l)
 fi
-gd() {
+function gd() {
   go doc "$@" | less -F
 }
-gf() {
+function gf() {
   go fmt "$@" ./...
 }
-gb() {
+function gb() {
   go build "$@" ./...
 }
-gbm() {
+function gbm() {
   go build -gcflags -m ./...
 }
-gv() {
+function gv() {
   go vet ./...
 }
-gi() {
+function gi() {
   go install "$@" ./...
 }
-gt() {
+function gt() {
   go test "$@" ./...
 }
-gtt() {
+function gtt() {
   go clean -cache ./... && gt "$@"
 }
-gtc() {
+function gtc() {
   for p in $(go list ./...); do
     local tmp1=$(tempfile)
     if ! go test -coverprofile "$tmp1" "$@" "$p"; then
@@ -580,7 +564,7 @@ gtc() {
     command rm "$tmp1"
   done
 }
-gtcc() {
+function gtcc() {
   for p in $(go list ./...); do
     local tmp1=$(tempfile)
     if ! go test "$@" -coverprofile "$tmp1" "$p"; then
@@ -596,15 +580,15 @@ gtcc() {
     xdg-open $tmp2
   done
 }
-gtn() {
+function gtn() {
   f=$(tempfile)
   g=$(tempfile)
   ln -sf ~/usr/share/images/red.gif "$g"
-  { gt "$@" && ln -sf ~/usr/share/images/blue.gif "$g"; } |& command tee "$f"
+  (gt "$@" && ln -sf ~/usr/share/images/blue.gif "$g") |& command tee "$f"
   command notify-send -i "$g" gt -- "$(cat "$f")"
   command rm "$f"
 }
-gtni() {
+function gtni() {
   if [ "$STY" ]; then
     screen -X title gtni
     screen -X number 99
@@ -615,21 +599,16 @@ gtni() {
     | while read line; do echo; echo "$line"; while read -t 0.1 line; do echo "$line"; done; gtn -failfast -timeout 1m "$@" && gi; done;
 }
 
-# ruby configuration
-if [ -d ~/lib/ruby ]; then
-  export RUBYLIB=~/lib/ruby
-fi
-
 # wcd configuration
 if type wcd.exec &>/dev/null; then
-  wcd() {
+  function wcd() {
     mkdir -p ~/var
     wcd.exec -G ~/var "$@"
     . ~/var/wcd.go
   }
   alias j='wcd -j'
   alias g='wcd -g'
-  _wcd_complete() {
+  function _wcd_complete() {
     local list=$(xargs -a ~/.treedata.wcd -r -n 1 -d '\n' basename | sed 's/ .*//' | sort -u)
     COMPREPLY=( $(compgen -W "$list" "$2") )
   }
@@ -637,13 +616,10 @@ if type wcd.exec &>/dev/null; then
     complete -F _wcd_complete $command
   done
 else
-  wcd() {
+  function wcd() {
     for dir in ~/src/* ~/lib/go/src/github.com/daniel-fanjul-alcuten/*; do
       if local dirname=$(basename "$dir") && grep "^$1" &>/dev/null <<<$dirname; then
-        cd "$dir" && {
-          echo "$PWD"
-          return 0
-        }
+        cd "$dir" && echo "$PWD" && return 0
       fi
     done
     return 1
@@ -655,34 +631,6 @@ else
   done
 fi
 
-# ssh configuration
-ssh() {
-  if [ "$STY" ]; then
-    local skip=
-    for arg in "$@"; do
-      if [ "$skip" ]; then
-        skip=
-      else
-        case "$arg" in
-          -i) skip=true;;
-          -*) :;;
-          *)
-            screen -X title "$arg"
-            break
-            ;;
-        esac
-      fi
-    done
-  fi
-  command ssh "$@"
-  local s=$?
-  local dir="$(basename "$PWD")"
-  if [ "$STY" ]; then
-    screen -X title "$dir"
-  fi
-  return $s
-}
-
 # aws configuration
 if type aws_completer &>/dev/null; then
   complete -C $(which aws_completer) aws
@@ -692,49 +640,49 @@ fi
 # memory
 export MAVEN_OPTS='-XX:MaxPermSize=256m -Xmx2048m'
 # shortcuts
-mi() {
+function mi() {
   mvn install -DskipTests=true "$@"
 }
-mci() {
+function mci() {
   mvn clean install -DskipTests=true "$@"
 }
-mt() {
+function mt() {
   mvn test -DskipTests=false "$@"
 }
-mct() {
+function mct() {
   mvn clean test -DskipTests=false "$@"
 }
-mit() {
+function mit() {
   mvn install -DskipTests=false "$@"
 }
-mcit() {
+function mcit() {
   mvn clean install -DskipTests=false "$@"
 }
-mj() {
+function mj() {
   mvn jetty:run -DskipTests=true "$@"
 }
-mcj() {
+function mcj() {
   mvn clean jetty:run -DskipTests=true "$@"
 }
-mij() {
+function mij() {
   mvn install jetty:run -DskipTests=true "$@"
 }
-mcij() {
+function mcij() {
   mvn clean install jetty:run -DskipTests=true "$@"
 }
-mb() {
+function mb() {
   mvn cobertura:cobertura && xdg-open target/site/cobertura/index.html
 }
-mcb() {
+function mcb() {
   mvn clean cobertura:cobertura && xdg-open target/site/cobertura/index.html
 }
 
 # gpg
 export GPG_TTY=$(tty)
-gpg-connect-agent-updatestartuptty() {
+function gpg-connect-agent-updatestartuptty() {
   gpg-connect-agent updatestartuptty /bye
 }
-gpg-connect-agent-reloadagent() {
+function gpg-connect-agent-reloadagent() {
   gpg-connect-agent reloadagent /bye
 }
 
@@ -803,7 +751,6 @@ fi
 
 # gvm
 [ -s ~/.gvm/scripts/gvm ] && source ~/.gvm/scripts/gvm
-type gvm &>/dev/null
 if [ "$GOPATH" ]; then
   GOPATH=~/lib/go:"$GOPATH"
 else
