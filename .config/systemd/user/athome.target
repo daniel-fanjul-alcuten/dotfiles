@@ -6,6 +6,7 @@ Wants=boinccmd-run@auto.service
 Wants=dstat.service
 Wants=moosic.service
 Wants=mutt.service
+Wants=redshift.service
 Wants=xrandr-edp.service
 Wants=xscreensaver.service
 Wants=xsetroot-black.service
