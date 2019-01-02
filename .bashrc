@@ -637,9 +637,6 @@ if type aws_completer &>/dev/null; then
 fi
 
 # maven configuration
-# memory
-export MAVEN_OPTS='-XX:MaxPermSize=256m -Xmx2048m'
-# shortcuts
 function mi() {
   mvn install -DskipTests=true "$@"
 }
