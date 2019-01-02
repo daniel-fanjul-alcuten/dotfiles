@@ -362,10 +362,6 @@ globalkeys = gears.table.join(
     awful.key({ modkey }, "\\", function () awful.util.spawn_with_shell("scrot") end),
     awful.key({ "Mod1", "Shift" }, "1", function () awful.util.spawn_with_shell("setxkbmap us") end),
     awful.key({ "Mod1", "Shift" }, "2", function () awful.util.spawn_with_shell("setxkbmap es") end),
-    awful.key({ "Mod1", "Shift" }, "3", function () awful.util.spawn_with_shell("setxkbmap se") end),
-    awful.key({ "Mod1", "Shift" }, "4", function () awful.util.spawn_with_shell("setxkbmap gb") end),
-    awful.key({ "Mod1", "Shift" }, "5", function () awful.util.spawn_with_shell("setxkbmap colemak") end),
-    awful.key({ "Mod1", "Shift" }, "6", function () awful.util.spawn_with_shell("setxkbmap dvorak") end),
     awful.key({ modkey }, "a", function () awful.util.spawn_with_shell("gnome-terminal -x sudo aptitude") end),
     awful.key({ modkey }, "b", function () awful.util.spawn("google-chrome --profile-directory=daniel.fanjul.alcuten@gmail.com --incognito") end),
     awful.key({ modkey }, "g", function () awful.util.spawn_with_shell("gnome-terminal -x ranger") end),
@@ -374,10 +370,6 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift" }, "i", function () awful.util.spawn_with_shell("gnome-terminal -x sudo iftop") end),
     awful.key({ modkey, "Shift" }, "t", function () awful.util.spawn_with_shell("gnome-terminal -x top") end),
     awful.key({ modkey, "Shift" }, "v", function () awful.util.spawn("gvim") end)
-    -- awful.key({ "Mod1", "Control" }, "0", function () awful.util.spawn_with_shell("id3 -c 0 \"`moosic current`\"") end),
-    -- awful.key({ "Mod1", "Control" }, "1", function () awful.util.spawn_with_shell("id3 -c 1 \"`moosic current`\"") end),
-    -- awful.key({ "Mod1", "Control" }, "2", function () awful.util.spawn_with_shell("id3 -c 2 \"`moosic current`\"") end),
-    -- awful.key({ "Mod1", "Control" }, "3", function () awful.util.spawn_with_shell("id3 -c 3 \"`moosic current`\"") end),
 )
 
 clientkeys = gears.table.join(
