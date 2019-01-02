@@ -1,0 +1,7 @@
+[Unit]
+Description=redshift
+
+[Service]
+Environment="DISPLAY=:0"
+Environment="XAUTHORITY=/home/dfanjul/.Xauthority"
+ExecStart=/usr/bin/redshift -v
