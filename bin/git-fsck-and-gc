@@ -24,8 +24,10 @@ if [ "$f" ]; then
     nice git fsck --progress
     git config gc.lastfsck $((now+RANDOM))
   fi
+  exit
+fi
 
-elif [ "$g" ]; then
+if [ "$g" ]; then
   now="$(date +%s)"
   lastgc="$(git config gc.lastgc || echo 0)"
   nextgc="$(git config gc.nextgc || echo $((11 * 24 * 3600)))"
@@ -33,36 +35,33 @@ elif [ "$g" ]; then
     nice git gc --aggressive
     git config gc.lastgc $((now+RANDOM))
   fi
+  exit
+fi
 
-else
+mkdir -p ~/var/{lock,log}
+dir=$(readlink -e "$(git rev-parse --git-dir)")
+sum="$(md5sum <<< "$dir" | cut -f 1 -d ' ')"
 
-  mkdir -p ~/var/{lock,log}
-  dir=$(git rev-parse --show-toplevel)
-  if [ -z "$dir" ]; then
-    dir=$(git rev-parse --git-dir)
-  fi
-  dir=$(readlink -e "$dir")
-  sum="$(md5sum <<< "$dir" | cut -f 1 -d ' ')"
+now="$(date +%s)"
+lastfsck="$(git config gc.lastfsck || echo 0)"
+nextfsck="$(git config gc.nextfsck || echo $((3 * 24 * 3600)))"
+if [ "$lastfsck" -lt $((now - nextfsck)) ]; then
+  lock=git-fsck-"$sum"
+  log="$lock-$RANDOM".log
+  postpone -f -l ~/var/lock/lock-"$lock" -L ~/var/lock/elock-git-"$sum" \
+    flock ~/var/lock/elock-git \
+    ~/bin/mail-exec ~/var/log/"$log" "git-fsck $dir" \
+    "$0" -f &>/dev/null &
+fi
 
-  now="$(date +%s)"
-  lastfsck="$(git config gc.lastfsck || echo 0)"
-  nextfsck="$(git config gc.nextfsck || echo $((3 * 24 * 3600)))"
-  if [ "$lastfsck" -lt $((now - nextfsck)) ]; then
-    lock=git-fsck-"$sum"
-    log="$lock-$RANDOM".log
-    postpone -f -l ~/var/lock/lock-"$lock" -L ~/var/lock/elock-git \
-      ~/bin/mail-exec ~/var/log/"$log" "git-fsck $dir" \
-      "$0" -f &>/dev/null &
-  fi
-
-  now="$(date +%s)"
-  lastgc="$(git config gc.lastgc || echo 0)"
-  nextgc="$(git config gc.nextgc || echo $((11 * 24 * 3600)))"
-  if [ "$lastgc" -lt $((now - nextgc)) ]; then
-    lock=git-gc-"$sum"
-    log="$lock-$RANDOM".log
-    postpone -f -l ~/var/lock/lock-"$lock" -L ~/var/lock/elock-git \
-      ~/bin/mail-exec ~/var/log/"$log" "git-gc $dir" \
-      "$0" -g &>/dev/null &
-  fi
+now="$(date +%s)"
+lastgc="$(git config gc.lastgc || echo 0)"
+nextgc="$(git config gc.nextgc || echo $((11 * 24 * 3600)))"
+if [ "$lastgc" -lt $((now - nextgc)) ]; then
+  lock=git-gc-"$sum"
+  log="$lock-$RANDOM".log
+  postpone -f -l ~/var/lock/lock-"$lock" -L ~/var/lock/elock-git-"$sum" \
+    flock ~/var/lock/elock-git \
+    ~/bin/mail-exec ~/var/log/"$log" "git-gc $dir" \
+    "$0" -g &>/dev/null &
 fi
