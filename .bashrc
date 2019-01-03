@@ -323,6 +323,9 @@ function postcd() {
     fi
   fi
   # lock git-fsck-and-gc
+  if [ "$gitfd" ]; then
+    exec {gitfd}>&-
+  fi
   local dir=$(readlink -e "$(git rev-parse --git-dir)")
   local sum="$(md5sum <<< "$dir" | cut -f 1 -d ' ')"
   local lock=~/var/lock/elock-git-"$sum"
@@ -371,7 +374,8 @@ function vi-config-sh() {
 
 # systemctl
 function pause() {
-  run-parts-cron -d halt -v
+  exec {gitfd}>&- &&
+    run-parts-cron -d halt -v
 }
 function syshalt() {
   pause &&
