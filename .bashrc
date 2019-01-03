@@ -325,6 +325,7 @@ function postcd() {
   # lock git-fsck-and-gc
   if [ "$gitfd" ]; then
     exec {gitfd}>&-
+    unset gitfd
   fi
   local dir=$(readlink -e "$(git rev-parse --git-dir)")
   local sum="$(md5sum <<< "$dir" | cut -f 1 -d ' ')"
