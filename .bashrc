@@ -323,9 +323,9 @@ function postcd() {
     fi
   fi
   # lock git-fsck-and-gc
-  dir=$(readlink -e "$(git rev-parse --git-dir)")
-  sum="$(md5sum <<< "$dir" | cut -f 1 -d ' ')"
-  lock=~/var/lock/elock-git-"$sum"
+  local dir=$(readlink -e "$(git rev-parse --git-dir)")
+  local sum="$(md5sum <<< "$dir" | cut -f 1 -d ' ')"
+  local lock=~/var/lock/elock-git-"$sum"
   exec {gitfd}>"$lock"
   flock -s "${gitfd}"
   # source config.sh.gpg
