@@ -322,7 +322,7 @@ function postcd() {
       complete -F _greb_completion greb
     fi
   fi
-  # lock git-fsck-and-gc
+  # git-fsck-and-gc
   if [ "$gitfd" ]; then
     exec {gitfd}>&-
     unset gitfd
@@ -332,6 +332,9 @@ function postcd() {
   local lock=~/var/lock/elock-git-"$sum"
   exec {gitfd}>"$lock"
   flock -s "${gitfd}"
+  function wogitfd() {
+    (exec {gitfd}>&- && "$@")
+  }
   # source config.sh.gpg
   local dir=$(git rev-parse --git-dir 2>/dev/null)
   if [ -f "$dir"/config.sh.gpg ]; then
