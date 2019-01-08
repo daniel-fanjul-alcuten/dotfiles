@@ -34,6 +34,7 @@
 	alog = annex log
 	amove = annex move
 	ap = add -p
+	assume-unchanged = update-index --assume-unchanged
 	astatus = annex status
 	async = annex sync --quiet
 	aunused = !"git async; git annex unused --quiet && git annex dropunused 1-99999"
@@ -105,6 +106,7 @@
 	lgr = log --decorate --graph --show-signature --abbrev-commit --format=raw
 	n = commit -v --amend
 	nn = commit -v --amend --reset-author
+	no-assume-unchanged = update-index --no-assume-unchanged
 	objs = count-objects -v
 	p = diff --cached
 	pf = pull --no-rebase --ff-only
