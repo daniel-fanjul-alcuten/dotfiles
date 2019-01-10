@@ -333,7 +333,7 @@ function postcd() {
   exec {gitfd}>"$lock"
   flock -s "${gitfd}"
   function wogitfd() {
-    (exec {gitfd}>&- && "$@")
+    {gitfd}>&- "$@"
   }
   # source config.sh.gpg
   local dir=$(git rev-parse --git-dir 2>/dev/null)
