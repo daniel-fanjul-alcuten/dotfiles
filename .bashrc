@@ -18,7 +18,7 @@ function vi-bash-history() {
     awk '!x[$0]++' |
     tac |
     sponge "$HISTFILE" &&
-    exec vi +$ ~/.bash_history
+    exec vi +$ "$HISTFILE"
 }
 
 # append to the history file, don't overwrite it
