@@ -1,8 +1,0 @@
-#!/bin/bash
-set -e
-
-~/bin/backup-dir-postpone \
-  ~ par2+rsync://"$(whoami)"@localhost/var/backups/home \
-  --par2-redundancy 1 --volsize 32 \
-  --full-if-older-than 7D --exclude-filelist ~/etc/exclude.home.list \
-  &>/dev/null &

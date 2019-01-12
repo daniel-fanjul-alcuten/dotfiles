@@ -127,7 +127,6 @@
 /tmp
 /usr/local/bin
 /var/backups/docker
-/var/backups/home
 /var/git-fsck-and-gc.list
 /var/lock
 /var/log

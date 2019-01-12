@@ -4,10 +4,6 @@ DISPLAY=:0
 XAUTHORITY=.Xauthority
 
 :0
-* ^Subject: \[exec\] backup par2\+rsync://dfanjul@localhost/var/backups/home: 0$
-$HOME/var/mail/log-backup-home
-
-:0
 * ^Subject: \[exec\] git-fsck .*: 0$
 /dev/null
 
