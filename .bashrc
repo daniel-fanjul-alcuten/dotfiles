@@ -78,7 +78,7 @@ function _prompt_status() {
   fi
 }
 function _prompt_date() {
-  _prompt_apply_color "$(date +%T)" "date" "white"
+  _prompt_apply_color "$(date +'%a %b %d %T')" "date" "white"
 }
 function _prompt__hostname() {
   _prompt_apply_color " $(whoami)@$(hostname)" "hostname" "magenta"
