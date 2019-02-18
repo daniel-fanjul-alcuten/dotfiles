@@ -86,10 +86,10 @@ EOF
   [ ! -s ~/.gvm/scripts/gvm ] && bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
   source ~/.gvm/scripts/gvm
   gvm use system
-  gvm install go1.11.3
-  gvm use go1.11.3
   gvm install go1.11.4
   gvm use go1.11.4
+  gvm install go1.11.5
+  gvm use go1.11.5
   if [ "$GOPATH" ]; then
     export GOPATH=~/lib/go:"$GOPATH"
   else
